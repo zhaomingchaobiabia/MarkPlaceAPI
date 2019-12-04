@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<offers_update xmlns="http://www.fnac.com/schemas/mp-dialog.xsd" shop_id="8290D0BD-61BB-95A9-C33C-74B811429051" partner_id="E572D914-F603-4E7F-D023-4839FD7695A3" token="AB75F068-55E7-D4A6-9B0E-325A3023D6D3">
+  <offer>
+    <!-- Add/update an offer and place it in first position on the showcase page -->
+    <product_reference type="Ean">7321950286485</product_reference>
+    <offer_reference type="SellerSku"><![CDATA[MYSKU_1]]></offer_reference>
+    <price>10.5</price>
+    <product_state>11</product_state>
+    <quantity>10</quantity>
+    <description><![CDATA[A description of the product or some information about delivery]]></description>
+    <showcase>1</showcase>
+  </offer>
+  <offer>
+    <product_reference type="Ean">7321950286485</product_reference>
+    <offer_reference type="SellerSku"><![CDATA[MYSKU_2]]></offer_reference>
+    <price>10.5</price>
+    <product_state>2</product_state>
+    <quantity>10</quantity>
+    <description><![CDATA[A description of the product or some information about delivery]]></description>
+  </offer>
+  <offer>
+    <!-- Adding an "adherent price" to an offer -->
+    <product_reference type="Ean">0886971942323</product_reference>
+    <offer_reference type="SellerSku"><![CDATA[MYSKU_3]]></offer_reference>
+    <price>10.5</price>
+    <adherent_price>9.5</adherent_price>
+    <product_state>11</product_state>
+    <quantity>10</quantity>
+    <description><![CDATA[A description of the product or some information about delivery]]></description>
+  </offer>
+  <offer>
+    <!-- Deleting an offer -->
+    <offer_reference type="SellerSku"><![CDATA[MYSKU_TO_DELETE]]></offer_reference>
+    <treatment>delete</treatment>
+  </offer>
+</offers_update>
