@@ -2,7 +2,7 @@
 import requests
 import json
 import xmltodict
-import dicttoxml
+
 import xml.etree.ElementTree as ET
 
 
@@ -18,12 +18,13 @@ class MarketPlaceApi:
     # 身份验证 返回token
     def authentication(self):
         url = self.url + '/auth'
-        with open('api_xml/auth.xml', 'r', encoding='utf-8') as file:
-            xml = file.read()
-        response = requests.post(url, headers=self.headers, data=xml)
-        content = xmltodict.parse(response.text)
-        content_str = json.dumps(content)
-        self.token = json.loads(content_str)['auth_response']['token']
+        data_dict = {
+            'auth': {'@xmlns': self.xmlns, 'shop_id': self.shop_id, 'partner_id': self.partner_id,
+                     'key': self.key}}
+        data_xml = xmltodict.unparse(data_dict, encoding='utf-8')
+        response = requests.post(url, headers=self.headers, data=data_xml.encode('utf-8'))
+        content = self.xml_to_dict(response.text)
+        self.token = content['auth_response']['token']
         return self.token
 
     def xml_to_dict(self, response):
@@ -37,34 +38,45 @@ class MarketPlaceApi:
         return new_dict
 
     # 定价更新
-    def offers_update(self, ls_dict, *args, **kwargs):
+    def offers_update(self, l_dict, *args, **kwargs):
         """
         :param args: 接收一个字典数组
         :param kwargs:
         :return:
         """
         self.authentication()
-        while True:
-            data_dict = {
-                'offers_update': {'@xmlns': self.xmlns, '@shop_id': self.shop_id, '@partner_id': self.partner_id,
-                                  '@token': self.token}}
-            ls = []
-            for dic in ls_dict:
-                li_dict = {"product_reference": {"@type": "Ean", "#text": dic['product_reference']},
-                           "offer_reference": {"@type": "SellerSku", "#text": dic['offer_reference']},
-                           "price": dic['price'],
-                           "product_state": dic['product_state'],
-                           "quantity": dic['quantity'], "description": dic['description'],
-                           "showcase": dic['showcase']}
-                ls.append(li_dict)
-            data_dict['offers_update']['offer'] = ls
-            xml = xmltodict.unparse(data_dict, encoding='utf-8')
-            response = requests.post(self.url + '/offers_update', headers=self.headers, data=xml.encode())
-            if response.status_code == 200:
-                token = self.xml_to_dict(response.text)['offers_update_response']['batch_id']
-                return token
-            # 失效 重新获取token
-            self.token = self.authentication()
+
+        data_dict = {
+            'offers_update': {'@xmlns': self.xmlns, '@shop_id': self.shop_id, '@partner_id': self.partner_id,
+                              '@token': self.token}}
+        li_dict = {"product_reference": {"@type": "Ean", "#text": l_dict['product_reference']},
+                   "offer_reference": {"@type": "SellerSku", "#text": l_dict['offer_reference']},
+                   "price": l_dict['price'],
+                   "product_state": l_dict['product_state'],
+                   "quantity": l_dict['quantity'], "description": l_dict['description'],
+                   "adherent_price": l_dict['adherent_price'],
+                   "internal_comment": l_dict['internal_comment'],
+                   "showcase": l_dict['showcase'],
+                   "treatment": l_dict['treatment'],
+                   "pictures": l_dict['pictures'],
+                   "logistic_type_id": l_dict['logistic_type_id'],
+                   "is_shipping_free": l_dict['is_shipping_free'],
+                   "promotion": l_dict['promotion'],
+                   "time_to_ship": l_dict['time_to_ship']
+                   }
+        for k in list(li_dict.keys()):
+            if not li_dict[k]:
+                del li_dict[k]
+        data_dict['offers_update']['offer'] = li_dict
+        print(data_dict)
+        xml = xmltodict.unparse(data_dict, encoding='utf-8')
+        print(xml)
+        response = requests.post(self.url + '/offers_update', headers=self.headers, data=xml.encode())
+        print(response.text)
+        if response.status_code == 200:
+            batch_id = self.xml_to_dict(response.text)['offers_update_response']['batch_id']
+            return batch_id
+        return 400
 
     def batch_status(self, batch_id):
         '''
@@ -81,7 +93,7 @@ class MarketPlaceApi:
         if response.status_code == 200:
             response_dic = self.xml_to_dict(response.text)
             return response_dic
-        self.authentication()
+        return 400
 
     def offers_query(self, qu_dict):
         '''
@@ -89,20 +101,64 @@ class MarketPlaceApi:
         :return:
         '''
         self.authentication()
-        while True:
-            dict_data = {
-                'offers_query': {'@xmlns': self.xmlns, '@shop_id': self.shop_id, '@partner_id': self.partner_id,
-                                 '@token': self.token, '@results_count': qu_dict['results_count'],
-                                 'paging': qu_dict['paging']}}
 
-            dict_data['offers_query']['date'] = {'@type': 'Created', 'min': qu_dict['min'], 'max': qu_dict['max']}
-            dict_data = xmltodict.unparse(dict_data, encoding='utf-8')
-            url = self.url + '/offers_query'
-            response = requests.post(url, data=dict_data.encode('utf-8'), headers=self.headers)
-            if response.status_code == 200:
-                of_dict = self.xml_to_dict(response.text)
-                return of_dict
-            self.authentication()
+        dict_data = {
+            'offers_query': {'@xmlns': self.xmlns, '@shop_id': self.shop_id, '@partner_id': self.partner_id,
+                             '@token': self.token, '@results_count': qu_dict['results_count'],
+                             'paging': qu_dict['paging']}}
+
+        # dict_data['offers_query']['promotion_types'] = {'@type': qu_dict['promotion_types']}
+
+        dict_xml = xmltodict.unparse(dict_data, encoding='utf-8')
+        url = self.url + '/offers_query'
+        response = requests.post(url, data=dict_xml.encode('utf-8'), headers=self.headers)
+        print(response.text)
+        if response.status_code == 200:
+            of_dict = self.xml_to_dict(response.text)
+            return of_dict
+        return 400
+
+    def offers_query_date(self, qu_dict):
+        '''
+        :param qu_dict:传入一个字典
+        :return:
+        '''
+        self.authentication()
+        dict_data = {
+            'offers_query': {'@xmlns': self.xmlns, '@shop_id': self.shop_id, '@partner_id': self.partner_id,
+                             '@token': self.token, '@results_count': qu_dict['results_count'],
+                             'paging': qu_dict['paging'],
+                             'date': {'@type': qu_dict['date-type'], 'min': qu_dict['min'], 'max': qu_dict['max']}
+                             }
+        }
+        dict_xml = xmltodict.unparse(dict_data, encoding='utf-8')
+        url = self.url + '/offers_query'
+        response = requests.post(url, data=dict_xml.encode('utf-8'), headers=self.headers)
+        print(response.text)
+        if response.status_code == 200:
+            of_dict = self.xml_to_dict(response.text)
+            return of_dict
+        return 400
+
+    def offers_query_quantity(self, qu_dict):
+        '''
+        :param qu_dict:传入一个字典
+        :return:
+        '''
+        self.authentication()
+        dict_data = {
+            'offers_query': {'@xmlns': self.xmlns, '@shop_id': self.shop_id, '@partner_id': self.partner_id,
+                             '@token': self.token, '@results_count': qu_dict['results_count'],
+                             'paging': qu_dict['paging']}}
+        dict_data['offers_query']['quantity'] = {'@mode': qu_dict['quantity-type'], '@value': qu_dict['quantity']}
+        dict_xml = xmltodict.unparse(dict_data, encoding='utf-8')
+        url = self.url + '/offers_query'
+        response = requests.post(url, data=dict_xml.encode('utf-8'), headers=self.headers)
+        print(response.text)
+        if response.status_code == 200:
+            of_dict = self.xml_to_dict(response.text)
+            return of_dict
+        return 400
 
     def batch_query(self):
         '''批次查询
@@ -122,13 +178,14 @@ class MarketPlaceApi:
             response_dict = self.xml_to_dict(response.text)
             print(response_dict)
             return response_dict
+        return 400
 
 
 class MarketPlaceOrderApi(MarketPlaceApi):
     def orders_update(self):
         pass
 
-    def orders_query(self, query_dict):
+    def orders_query1(self, query_dict):
         '''
         :param query_dict: 订单查询 接收一个字典
         :return:
@@ -148,6 +205,68 @@ class MarketPlaceOrderApi(MarketPlaceApi):
             return response_dict
         self.authentication()
         self.orders_query(query_dict)
+
+    def orders_query(self, query_dict):
+        '''
+                :param query_dict: 订单查询 接收一个字典
+                :return:
+                '''
+        self.authentication()
+        order_dict = {
+            'orders_query': {'@xmlns': self.xmlns, '@shop_id': self.shop_id, '@partner_id': self.partner_id,
+                             '@token': self.token, '@results_count': query_dict['results_count']}}
+        order_dict['orders_query']['paging'] = query_dict['paging']
+        order_xml = xmltodict.unparse(order_dict, encoding='utf-8')
+        url = self.url + '/orders_query'
+        response = requests.post(url, headers=self.headers, data=order_xml.encode('utf-8'))
+        if response.status_code == 200:
+            response_dict = self.xml_to_dict(response.text)
+            return response_dict
+        return 400
+
+    def orders_query_date(self, qu_dict):
+        '''
+                :param qu_dict:传入一个字典
+                :return:
+                '''
+        self.authentication()
+        dict_data = {
+            'orders_query': {'@xmlns': self.xmlns, '@shop_id': self.shop_id, '@partner_id': self.partner_id,
+                             '@token': self.token, '@results_count': qu_dict['results_count'],
+                             'paging': qu_dict['paging'],
+                             'states': {'state': qu_dict['state']},
+                             'date': {'@type': qu_dict['date-type'], 'min': qu_dict['min'], 'max': qu_dict['max']}
+                             }
+        }
+        dict_xml = xmltodict.unparse(dict_data, encoding='utf-8')
+        url = self.url + '/orders_query'
+        response = requests.post(url, data=dict_xml.encode('utf-8'), headers=self.headers)
+        print(response.text)
+        if response.status_code == 200:
+            of_dict = self.xml_to_dict(response.text)
+            return of_dict
+        return 400
+
+    def orders_query_id(self, qu_ls):
+        '''
+                :param qu_dict:传入一个字典
+                :return:
+                '''
+        self.authentication()
+        dict_data = {
+            'orders_query': {'@xmlns': self.xmlns, '@shop_id': self.shop_id, '@partner_id': self.partner_id,
+                             '@token': self.token,
+                             'orders_fnac_id': {'order_fnac_id': qu_ls}
+                             }
+        }
+        dict_xml = xmltodict.unparse(dict_data, encoding='utf-8')
+        url = self.url + '/orders_query'
+        response = requests.post(url, data=dict_xml.encode('utf-8'), headers=self.headers)
+        print(response.text)
+        if response.status_code == 200:
+            of_dict = self.xml_to_dict(response.text)
+            return of_dict
+        return 400
 
 
 class MarketPlacePricingApi(MarketPlaceApi):
@@ -174,6 +293,24 @@ class MarketPlacePricingApi(MarketPlaceApi):
 
         self.authentication()
         self.pricing_query(query_dict)
+
+    def carriers_query(self):
+        '''
+                :param query_dict:定价查询
+                :return:
+                '''
+        self.authentication()
+        pricing_dict = {
+            'carriers_query': {'@xmlns': self.xmlns, '@shop_id': self.shop_id, '@partner_id': self.partner_id,
+                               '@token': self.token, 'query': 'all'}}
+        pricing_xml = xmltodict.unparse(pricing_dict, encoding='UTF-8')
+        url = self.url + '/carriers_query'
+        response = requests.post(url, headers=self.headers, data=pricing_xml)
+        if response.status_code == 200:
+            response_dict = self.xml_to_dict(response.text)
+            return response_dict
+        print(response.text)
+        return 400
 
 
 class ClientOrderApi(MarketPlaceApi):
@@ -246,12 +383,12 @@ class ClientOrderApi(MarketPlaceApi):
 
 
 if __name__ == '__main__':
-    mark1 = ClientOrderApi()
+    # mark1 = ClientOrderApi()
     # mark1.client_order_query({'results_count': '3', 'paging': '1'})
-    id = mark1.carriers_query()
-    print(id)
-    # mark = MarketPlaceApi()
-    # mark.authentication()
+    # id = mark1.carriers_query()
+    # print(id)
+    mark = MarketPlaceApi()
+    mark.authentication()
     # mark.batch_query()
     # marks = MarketPlacePricingApi()
     # id = marks.pricing_query({'sellers': 'all', 'product_reference': '0886971942323'})

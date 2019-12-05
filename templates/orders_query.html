@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>orders_query</title>
+</head>
+<body>
+    <div>
+        <form action="{% url 'orders_query' %}" enctype="multipart/form-data" method="post" accept-charset="UTF-8">
+            results_count:
+            <input type="text" name="results_count" value=""><br>
+            paging:
+            <input type="text" name="paging" value=""><br>
+            <input type="submit" value="提交">
+        </form>
+
+        <form action="{% url 'orders_query_date' %}" method="post" accept-charset="UTF-8" enctype="multipart/form-data">
+            results_count:
+            <input type="text" name="results_count" value=""><br>
+           paging:
+            <input type="text" name="paging" value=""><br>
+            state:
+            <select name="state">
+              <option value ="Created">Created</option>
+              <option value ="Accepted">Modified</option>
+              <option value ="Refused">Created</option>
+              <option value ="ToShip">Modified</option>
+              <option value ="Shipped">Created</option>
+              <option value ="NotReceived">Modified</option>
+              <option value ="Received">Created</option>
+              <option value ="Cancelled">Modified</option>
+              <option value ="Refunded">Created</option>
+              <option value ="Error">Modified</option>
+            </select><br>
+           date:
+            <select name="date-type">
+              <option value ="CreatedAt">Created</option>
+              <option value ="UpdatedAt">Modified</option>
+                <option value ="AcceptedAt">Created</option>
+              <option value ="ReceivedAt">Modified</option>
+                <option value ="DebitedAt">Created</option>
+              <option value ="ShippedAt">Modified</option>
+                <option value ="RefusedAt">Created</option>
+              <option value ="CancelledAt">Modified</option>
+            </select><br>
+           min:
+            <input type="datetime-local" name="min" value=""><br>
+           max:
+            <input type="datetime-local" name="max" value=""><br>
+            <input type="submit" value="提交">
+        </form>
+
+        <form action="{% url 'orders_query_id' %}" enctype="multipart/form-data" accept-charset="UTF-8" method="post">
+            orders_fnac_id:
+            <input type="text" name="orders_fnac_id" value=""><br>
+            <input type="submit" value="提交">
+        </form>
+        <form>
+            results_count:
+            <input type="text" name="results_count" value=""><br>
+           results_count:
+            <input type="text" name="results_count" value=""><br>
+           results_count:
+            <input type="text" name="results_count" value=""><br>
+            state:
+            <select name="state">
+              <option value ="Created">Created</option>
+              <option value ="Accepted">Modified</option>
+              <option value ="Refused">Created</option>
+              <option value ="ToShip">Modified</option>
+              <option value ="Shipped">Created</option>
+              <option value ="NotReceived">Modified</option>
+              <option value ="Received">Created</option>
+              <option value ="Cancelled">Modified</option>
+              <option value ="Refunded">Created</option>
+              <option value ="Error">Modified</option>
+            </select><br>
+
+        </form>
+    </div>
+    <a href="{% url 'index' %}" methods="GET"><input type="button" value="返回首页"></a>
+</body>
+</html>

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>offers_query</title>
+</head>
+<body>
+    <div>
+        <form action="{% url 'offers_query' %}" accept-charset="UTF-8" method="post" enctype="multipart/form-data">
+            paging:
+            <input type="text" name="paging" value=""><br>
+            results_count:
+            <input type="text" name="results_count" value=""><br>
+            <input type="submit" value="提交">
+        </form>
+        <form action="{% url 'offers_query_date' %}" accept-charset="UTF-8" enctype="multipart/form-data" method="post">
+            paging:
+            <input type="text" name="paging" value=""><br>
+            results_count:
+            <input type="text" name="results_count" value=""><br>
+            date:
+            <select name="date-type">
+              <option value ="Created">Created</option>
+              <option value ="Modified">Modified</option>
+            </select><br>
+            min:<input type="datetime-local" name="min" value=""><br>
+            max:<input type="datetime-local" name="max" value=""><br>
+            <input type="submit" value="提交">
+        </form>
+        <form action="{% url 'offers_query_quantity' %}" method="post" enctype="multipart/form-data" accept-charset="UTF-8">
+            paging:
+            <input type="text" name="paging" value=""><br>
+            results_count:
+            <input type="text" name="results_count" value=""><br>
+            quantity:
+            <select name="quantity-type">
+              <option value ="Equals">Equals</option>
+              <option value ="LessThan">LessThan</option>
+              <option value="GreaterThan">GreaterThan</option>
+              <option value="LessThanOrEquals">LessThanOrEquals</option>
+              <option value="GreaterThanOrEquals">GreaterThanOrEquals</option>
+            </select>
+            <input type="number" name="quantity" value=""><br>
+            <input type="submit" value="提交">
+        </form>
+        <form>
+             paging:
+            <input type="text" name="paging" value=""><br>
+            results_count:
+            <input type="text" name="results_count" value=""><br>
+            product_fnac_id:
+            <input type="text" name="product_fnac_id" value=""><br>
+            offer_fnac_id:
+            <input type="text" name="offer_fnac_id" value=""><br>
+            offer_seller_id:
+            <input type="text" name="offer_seller_id" value=""><br>
+            Promotion_types:
+            <select name="Promotion_types">
+              <option value ="Sales">Sales</option>
+              <option value ="Destocking">Destocking</option>
+              <option value="GoodDeal">GoodDeal</option>
+              <option value="Batch">Batch</option>
+              <option value="FlashSale">FlashSale</option>
+              <option value="FreeShipping">FreeShipping</option>
+            </select><br>
+            <input type="submit" value="提交">
+        </form>
+            <a href="{% url 'index' %}" methods="GET"><input type="button" value="返回首页"></a>
+    </div>
+    <div>
+        {{ data_dict }}
+    </div>
+</body>
+</html>

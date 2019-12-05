@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>batch_status</title>
+</head>
+<body>
+    <div>
+        <form action="{% url 'batch_status' %}" accept-charset="UTF-8" enctype="multipart/form-data" method="post">
+            batch_id:
+            <input type="text" name="batch_id" value="">
+            <input type="submit" value="提交batch_id">
+        </form>
+    </div>
+    <div>
+        <p>{{ status }}</p>
+    </div>
+    <a href="{% url 'index' %}" methods="GET"><input type="button" value="返回首页"></a>
+</body>
+</html>

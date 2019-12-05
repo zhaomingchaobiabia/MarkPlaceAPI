@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>offer_update</title>
+</head>
+<body>
+    <form action="{% url 'offers_update' %}" accept-charset="UTF-8" enctype="multipart/form-data" method="post">
+        product_reference :
+    <input type="text" name="product_reference" value="" placeholder="Ean">
+    <br>
+        offer_reference :
+    <input type="text" name="offer_reference" value="" placeholder="SellerSku">
+        <br>
+        price:
+    <input type="text" name="price" value=""><br>
+        adherent_price:
+    <input type="text" name="adherent_price" value=""><br>
+        product_state:<br>
+        <label><input type="radio" name="product_state" value="1">1</label>
+		<label><input type="radio" name="product_state" value="2">2</label>
+        <label><input type="radio" name="product_state" value="3">3</label>
+		<label><input type="radio" name="product_state" value="4">4</label>
+        <label><input type="radio" name="product_state" value="5">5</label>
+		<label><input type="radio" name="product_state" value="6">6</label>
+        <label><input type="radio" name="product_state" value="7">7</label>
+		<label><input type="radio" name="product_state" value="8">8</label>
+		<label><input type="radio" name="product_state" value="10">10</label>
+        <label><input type="radio" name="product_state" value="11">11</label><br>
+        internal_comment:
+    <input type="text" name="internal_comment" value=""><br>
+        quantity:
+    <input type="text" name="quantity" value=""><br>
+         description:
+    <input type="text" name="description" value=""><br>
+        showcase:
+    <input type="text" name="showcase" value=""><br>
+        treatment:
+    <input type="text" name="treatment" value=""><br>
+        pictures:
+    <input type="text" name="pictures" value=""><br>
+        logistic_type_id:
+    <input type="text" name="logistic_type_id" value=""><br>
+        is_shipping_free:
+    <input type="text" name="is_shipping_free" value=""><br>
+        promotion:<br>
+        <label><input type="radio" name="promotion" value="Sales">Sales</label>
+        <label><input type="radio" name="promotion" value="Destocking">Destocking</label>
+        <label><input type="radio" name="promotion" value="GoodDeal">GoodDeal</label>
+        <label><input type="radio" name="promotion" value="Batch">Batch</label>
+        <label><input type="radio" name="promotion" value="FlashSale">FlashSale</label>
+        <label><input type="radio" name="promotion" value="FreeShipping">FreeShipping</label><br>
+        time_to_ship:
+    <input type="text" name="time_to_ship" value=""><br>
+        <br><br>
+    <input type="submit" value="提交offer">
+    </form>
+
+
+    <a href="{% url 'index' %}" methods="GET"><input type="button" value="返回首页"></a>
+    <div>
+        <p>{{ batch_id }}</p>
+    </div>
+</body>
+</html>
