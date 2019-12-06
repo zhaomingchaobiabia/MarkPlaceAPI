@@ -21,4 +21,5 @@ urlpatterns = [
     path('order_comments_query_date/', views.order_comments_query_date, name='order_comments_query_date'),
     path('order-comments-query-id/', views.order_comments_query_id, name='order_comments_query_id'),
     path('client-order-comments-update/', views.client_order_comments_update, name='client_order_comments_update'),
+    path('incidents-query', views.incidents_query, name='incidents_query')
 ]

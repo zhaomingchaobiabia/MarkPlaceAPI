@@ -1,5 +1,6 @@
 from django.shortcuts import render
-from markerplace.market_api import MarketPlaceApi, MarketPlacePricingApi, MarketPlaceOrderApi, ClientOrderApi
+from markerplace.market_api import MarketPlaceApi, MarketPlacePricingApi, MarketPlaceOrderApi, ClientOrderApi, \
+    IncidentsApi
 from django.shortcuts import render, redirect, reverse
 import hashlib, json
 from django.http import HttpResponse
@@ -13,6 +14,7 @@ mark = MarketPlaceApi()
 mark_order = MarketPlaceOrderApi()
 mark_query = MarketPlacePricingApi()
 client = ClientOrderApi()
+incident = IncidentsApi()
 
 
 # Create your views here.
@@ -216,6 +218,7 @@ def order_comments_query_id(request):
         data_dict = client.client_order_query_id(dict_d)
         return render(request, 'client_comments_show.html', {'data': data_dict})
 
+
 @csrf_exempt
 def client_order_comments_update(request):
     if request.method == 'GET':
@@ -224,4 +227,51 @@ def client_order_comments_update(request):
         data = request.POST
         data_dict = {'id': data.get('id'), 'comment_reply': data.get('comment_reply')}
         data = client.client_order_comments_update(data_dict)
-        return render(request, 'client_order_comments_update.html', {'data':data})
+        return render(request, 'client_order_comments_update.html', {'data': data})
+
+
+# 废弃
+@csrf_exempt
+def incidents_query1(request):
+    if request.method == 'GET':
+        return render(request, 'incidents_query.html')
+    if request.method == 'POST':
+        data = request.POST
+        incident_id = data.get('incident_id')
+        incident_id = incident_id.split(',')
+        order = data.get('order')
+        order = order.split(',')
+        if data.get('min') != '':
+            min = data.get('min') + ':00'
+            max = data.get('max') + ':00'
+        else:
+            min = ''
+            max = ''
+        data_dict = {
+            'results_count': data.get('results_count'), 'paging': data.get('paging'),
+            'date_type': data.get('date-type'), 'min': min, 'max': max, 'status': data.get('status'),
+            'type': data.getlist('type'), 'incident_id': incident_id, 'closed_status': data.getlist('closed_status'),
+            'waiting_for_seller_answer': data.get('waiting_for_seller_answer'), 'opened_by': data.get('opened_by'),
+            'closed_by': data.get('closed_by'), 'sort_by': data.get('sort_by'), 'order': order
+        }
+        print(data_dict)
+        data = incident.incidents_query(data_dict)
+        return render(request, 'incidents_query.html', {'data': data})
+
+# 废弃
+@csrf_exempt
+def incidents_query(request):
+    if request.method == 'GET':
+        return render(request, 'incidents_query.html')
+    if request.method == 'POST':
+        data = request.POST
+        min = data.get('min') + ':00'
+        max = data.get('max') + ':00'
+        data_dict = {
+            'results_count': data.get('results_count'), 'paging': data.get('paging'),
+            'date_type': data.get('date-type'), 'min': min, 'max': max, 'status': data.get('status'),
+        }
+        print(data_dict)
+        data = incident.incidents_query(data_dict)
+        return render(request, 'incidents_query.html', {'data': data})
+

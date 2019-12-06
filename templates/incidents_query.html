@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>incidents_query</title>
+</head>
+<body>
+
+    <div>
+        <form action="{% url 'incidents_query' %}" method="post" enctype="multipart/form-data" accept-charset="UTF-8">
+            results_count:
+            <input type="text" name="results_count" value=""><br>
+            paging:
+            <input type="text" name="paging" value=""><br>
+            date:
+            <select name="date-type">
+                <option value="CreatedAt">CreatedAt</option>
+                <option value="UpdatedAt">UpdatedAt</option>
+                <option value="ClosedAt">ClosedAt</option>
+            </select><br>
+            min:
+            <input type="datetime-local" name="min" value=""><br>
+            max:
+            <input type="datetime-local" name="max" value=""><br>
+            status:
+            <select name="status">
+                <option value="OPENED">OPENED</option>
+                <option value="CLOSED">CLOSED</option>
+            </select><br>
+                        <input type="submit" value="提交">
+        </form>
+    </div>
+    <div>
+        type:
+            <label><input name="type" type="checkbox" value="1" />1</label>
+            <label><input name="type" type="checkbox" value="2" />2</label>
+            <label><input name="type" type="checkbox" value="3" />3</label>
+            <label><input name="type" type="checkbox" value="4" />4</label>
+            <label><input name="type" type="checkbox" value="5" />5</label>
+            <label><input name="type" type="checkbox" value="6" />6</label>
+            <label><input name="type" type="checkbox" value="7" />7</label>
+            <label><input name="type" type="checkbox" value="8" />8</label>
+            <label><input name="type" type="checkbox" value="9" />9</label>
+            <label><input name="type" type="checkbox" value="10" />10</label>
+            <label><input name="type" type="checkbox" value="11" />11</label>
+            <label><input name="type" type="checkbox" value="12" />12</label>
+            <label><input name="type" type="checkbox" value="13" />13</label>
+            <label><input name="type" type="checkbox" value="14" />14</label>
+            <label><input name="type" type="checkbox" value="15" />15</label>
+            <label><input name="type" type="checkbox" value="16" />16</label>
+            <label><input name="type" type="checkbox" value="17" />17</label>
+            <label><input name="type" type="checkbox" value="18" />18</label><br>
+            incident_id:
+            <input type="text" name="incident_id" value=""><br>
+            closed_status:
+            <label><input name="closed_status" type="checkbox" value="1" />1</label>
+            <label><input name="closed_status" type="checkbox" value="2" />2</label>
+            <label><input name="closed_status" type="checkbox" value="3" />3</label>
+            <label><input name="closed_status" type="checkbox" value="4" />4</label>
+            <label><input name="closed_status" type="checkbox" value="5" />5</label>
+            <label><input name="closed_status" type="checkbox" value="6" />6</label>
+            <label><input name="closed_status" type="checkbox" value="7" />7</label>
+            <label><input name="closed_status" type="checkbox" value="8" />8</label>
+            <label><input name="closed_status" type="checkbox" value="9" />9</label>
+            <label><input name="closed_status" type="checkbox" value="10" />10</label>
+            <label><input name="closed_status" type="checkbox" value="11" />11</label>
+            <label><input name="closed_status" type="checkbox" value="12" />12</label>
+            <label><input name="closed_status" type="checkbox" value="13" />13</label>
+            <label><input name="closed_status" type="checkbox" value="14" />14</label>
+            <label><input name="closed_status" type="checkbox" value="15" />15</label>
+            <label><input name="closed_status" type="checkbox" value="16" />16</label>
+            <label><input name="closed_status" type="checkbox" value="17" />17</label>
+            <label><input name="closed_status" type="checkbox" value="18" />18</label>
+            <label><input name="closed_status" type="checkbox" value="19" />19</label>
+            <label><input name="closed_status" type="checkbox" value="20" />20</label>
+            <label><input name="closed_status" type="checkbox" value="21" />21</label>
+            <label><input name="closed_status" type="checkbox" value="22" />22</label><br>
+            waiting_for_seller_answer:
+            <select name="waiting_for_seller_answer">
+                <option value="TRUE">TRUE</option>
+                <option value="FALSE">FALSE</option>
+            </select><br>
+            opened_by:
+            <select name="opened_by">
+                <option value="CLIENT">CLIENT</option>
+                <option value="CALLCENTER">CALLCENTER</option>
+                <option value="SELLER">SELLER</option>
+            </select><br>
+            closed_by:
+            <select name="closed_by">
+                <option value="CLIENT">CLIENT</option>
+                <option value="CALLCENTER">CALLCENTER</option>
+                <option value="SELLER">SELLER</option>
+            </select><br>
+            sort_by:
+            <select name="sort_by">
+                <option value="DESC">DESC</option>
+                <option value="ASC">ASC</option>
+            </select><br>
+            order:
+            <input type="text" name="order" value=""><br>
+
+    </div>
+    <a href="{% url 'index' %}" methods="get"><input type="button" value="首页"></a>
+    <div>
+        {{ data }}
+    </div>
+</body>
+</html>

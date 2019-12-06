@@ -1,0 +1,13 @@
+body {
+    text-align: center;
+}
+#title_d {
+    margin: 0 auto;
+    width: 1450px;
+    height: 40px;
+    border: 1px solid #FF0000;
+}
+
+#title_d_ul li{
+    display: inline-block;
+}

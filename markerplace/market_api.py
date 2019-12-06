@@ -471,25 +471,75 @@ class ClientOrderApi(MarketPlaceApi):
             return response_dict
         return response.status_code
 
+    def carriers_query(self):
+        '''
+        运营商查询
+        :return:
+        '''
+        self.authentication()
+        carriers_dict = {
+            'carriers_query': {'@xmlns': self.xmlns, '@shop_id': self.shop_id,
+                               '@partner_id': self.partner_id,
+                               '@token': self.token, 'query': 'all'}}
+        carriers_xml = xmltodict.unparse(carriers_dict, encoding='utf-8')
+        url = self.url + '/carriers_query'
+        response = requests.post(url, headers=self.headers, data=carriers_xml.encode('UTF-8'))
+        print(response.text)
+        if response.status_code == 200:
+            response_dict = self.xml_to_dict(response.text)
+            return response_dict
+        return 400
 
-def carriers_query(self):
-    '''
-    运营商查询
-    :return:
-    '''
-    self.authentication()
-    carriers_dict = {
-        'carriers_query': {'@xmlns': self.xmlns, '@shop_id': self.shop_id,
-                           '@partner_id': self.partner_id,
-                           '@token': self.token, 'query': 'all'}}
-    carriers_xml = xmltodict.unparse(carriers_dict, encoding='utf-8')
-    url = self.url + '/carriers_query'
-    response = requests.post(url, headers=self.headers, data=carriers_xml.encode('UTF-8'))
-    print(response.text)
-    if response.status_code == 200:
-        response_dict = self.xml_to_dict(response.text)
-        return response_dict
-    return 400
+
+class IncidentsApi(MarketPlaceApi):
+    # 废弃
+    def incidents_query1(self, query_dict):
+        self.authentication()
+        data_dict = {
+            'incidents_query ': {'@xmlns': self.xmlns, '@shop_id': self.shop_id,
+                                 '@partner_id': self.partner_id,
+                                 '@token': self.token, '@results_count': query_dict['results_count'],
+                                 'paging': query_dict['paging'],
+                                 'date': {'@type': query_dict['date_type'], 'min': query_dict['min'],
+                                          'max': query_dict['max']},
+                                 'status': query_dict['status'], 'types': {'type': query_dict['type']},
+                                 'incidents_id': {'incident_id': query_dict['incident_id']},
+                                 'closed_statuses': {'closed_status': query_dict['closed_status']},
+                                 'waiting_for_seller_answer': query_dict['waiting_for_seller_answer'],
+                                 'opened_by': query_dict['opened_by'], 'closed_by': query_dict['closed_by'],
+                                 'sort_by': query_dict['sort_by'],
+                                 'orders': {'order': query_dict['order']}
+                                 }
+        }
+
+        data_xml = xmltodict.unparse(data_dict, encoding='utf-8')
+        print(data_xml)
+        url = self.url + '/incidents_query'
+        response = requests.post(url, headers=self.headers, data=data_xml.encode('utf-8'))
+        if response.status_code == 200:
+            data = self.xml_to_dict(response.text)
+            return data
+        return response.text
+
+    def incidents_query(self, query_dict):
+        self.authentication()
+        data_dict = {
+            'incidents_query ': {'@xmlns': self.xmlns, '@shop_id': self.shop_id,
+                                 '@partner_id': self.partner_id,
+                                 '@token': self.token, '@results_count': query_dict['results_count'],
+                                 'paging': query_dict['paging'],
+                                 'date': {'@type': query_dict['date_type'], 'min': query_dict['min'],
+                                          'max': query_dict['max']},
+                                 }
+        }
+        data_xml = xmltodict.unparse(data_dict, encoding='utf-8')
+        print(data_xml)
+        url = self.url + '/incidents_query'
+        response = requests.post(url, headers=self.headers, data=data_xml.encode('utf-8'))
+        if response.status_code == 200:
+            data = self.xml_to_dict(response.text)
+            return data
+        return response.text
 
 
 if __name__ == '__main__':

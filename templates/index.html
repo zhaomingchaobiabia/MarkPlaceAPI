@@ -1,27 +1,40 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link rel="stylesheet" type="text/css" href="/static/mystyle.css" />
     <meta charset="UTF-8">
     <title>首页</title>
 </head>
 <body>
 <p><a href="{% url 'index' %}">index页面</a></p>
-    <ul>
+    <div id="title_d">
+        <ul id="title_d_ul">
+            <li>订单管理</li>
+            <li>商品管理</li>
+            <li>事件管理</li>
+            <li>订单评论</li>
+            <li>留言管理</li>
+            <li>查询管理</li>
+        </ul>
+    </div>
+    <div>
         <li><a href="{% url 'offers_update' %}" methods="GET">Offers Update</a></li>
-        <li><a href="{% url 'offers_query' %}" methods="GET">Offers Query</a></li>
-        <li><a href="{% url 'batch_query' %}" methods="GET">Batch Query</a></li>
-        <li><a href="{% url 'batch_status' %}" methods="GET">Batch Status</a></li>
-        <li><a href="{% url 'orders_query' %}" methods="GET">Orders Query</a></li>
-        <li><a href="{% url 'orders_update' %}" methods="GET">Orders Update</a></li>
-        <li><a href="{% url 'carriers_query' %}" methods="GET">Carriers Query</a></li>
-        <li><a href="{% url 'order_comments_query' %}">Client Order Comments Query</a></li>
-        <li><a href="{% url 'client_order_comments_update' %}">Client Order Comments Update</a></li>
-        <li><a>Messages Query</a></li>
-        <li><a>Messages Update</a></li>
-        <li><a>Incidents Query</a></li>
-        <li><a>Incidents Update</a></li>
-        <li><a>Pricing Query</a></li>
-    </ul>
+            <li><a href="{% url 'offers_query' %}" methods="GET">Offers Query</a></li>
+            <li><a href="{% url 'batch_query' %}" methods="GET">Batch Query</a></li>
+            <li><a href="{% url 'batch_status' %}" methods="GET">Batch Status</a></li>
+            <li><a href="{% url 'orders_query' %}" methods="GET">Orders Query</a></li>
+            <li><a href="{% url 'orders_update' %}" methods="GET">Orders Update</a></li>
+            <li><a href="{% url 'carriers_query' %}" methods="GET">Carriers Query</a></li>
+            <li><a href="{% url 'order_comments_query' %}">Client Order Comments Query</a></li>
+            <li><a href="{% url 'client_order_comments_update' %}">Client Order Comments Update</a></li>
+            <li><a href="{% url 'messages_query' %}" methods="get">Messages Query</a></li>
+            <li><a>Messages Update</a></li>
+            <li><a href="{% url 'incidents_query' %}" methods="get">Incidents Query</a></li>
+            <li><a>Incidents Update</a></li>
+            <li><a href="{% url 'pricing_query' %}">Pricing Query</a></li>
+            <li><a href="{% url 'sales_periods_query' %}" methods="get">Sales Periods Query</a></li>
+
+    </div>
     <div>
         {{ data_dict }}
     </div>

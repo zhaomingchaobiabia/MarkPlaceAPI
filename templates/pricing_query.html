@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>pricing_query</title>
+</head>
+<body>
+    <div>
+        <form action="{% url 'pricing_query' %}" method="post" enctype="multipart/form-data" accept-charset="UTF-8">
+            sellers:
+            <select name="sellers">
+                <option value="all">all</option>
+                <option value="others">others</option>
+            </select><br>
+            reference:
+            <select name="reference-type">
+                <option value="FnacId">FnacId</option>
+                <option value="Ean">Ean</option>
+                <option value="Isbn">Isbn</option>
+                <option value="PartNumber">PartNumber</option>
+                <option value="CnetId">CnetId</option>
+            </select><br>
+            <input type="text" name="reference" value=""><br>
+            <input type="submit" value="提交">
+        </form>
+    </div>
+    <a href="{% url 'index' %}" type="get"><input type="button" value="首页"></a>
+    <div>
+        <ul>
+            <li>ean:{{ data.ean }}</li>
+            <li>product_url:{{ data.product_url }}</li>
+            <li>seller_shipping:{{ data.seller_shipping }}</li>
+            <li>seller_offer_state:{{ data.seller_offer_state }}</li>
+            <li>seller_adherent_price:{{ data.seller_adherent_price }}</li>
+            <li>seller_adherent_shipping:{{ data.seller_adherent_shipping }}</li>
+            <li>seller_adherent_offer_state:{{ data.seller_adherent_offer_state }}</li>
+            <li>seller_adherent_offer_sku:{{ data.seller_adherent_offer_sku }}</li>
+            <li>new_price:{{ data.new_price }}</li>
+            <li>new_shipping:{{ data.new_shipping }}</li>
+            <li>refurbished_price:{{ data.refurbished_price }}</li>
+            <li>refurbished_shipping:{{ data.refurbished_shipping }}</li>
+            <li>used_price:{{ data.used_price }}</li>
+            <li>used_shipping:{{ data.used_shipping }}</li>
+            <li>new_adherent_price:{{ data.new_adherent_price }}</li>
+            <li>new_adherent_shipping:{{ data.new_adherent_shipping }}</li>
+            <li>refurbished_adherent_price:{{ data.refurbished_adherent_price }}</li>
+            <li>refurbished_adherent_shipping:{{ data.refurbished_adherent_shipping }}</li>
+            <li>used_adherent_price:{{ data.used_adherent_price }}</li>
+            <li>used_adherent_shipping:{{ data.used_adherent_shipping }}</li>
+        </ul>
+    </div>
+</body>
+</html>
