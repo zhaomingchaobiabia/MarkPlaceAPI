@@ -5,17 +5,17 @@
     <title>首页</title>
 </head>
 <body>
-    <p>index页面</p>
+<p><a href="{% url 'index' %}">index页面</a></p>
     <ul>
         <li><a href="{% url 'offers_update' %}" methods="GET">Offers Update</a></li>
         <li><a href="{% url 'offers_query' %}" methods="GET">Offers Query</a></li>
         <li><a href="{% url 'batch_query' %}" methods="GET">Batch Query</a></li>
         <li><a href="{% url 'batch_status' %}" methods="GET">Batch Status</a></li>
         <li><a href="{% url 'orders_query' %}" methods="GET">Orders Query</a></li>
-        <li><a href="{% url 'order_update' %}" methods="GET">Orders Update</a></li>
+        <li><a href="{% url 'orders_update' %}" methods="GET">Orders Update</a></li>
         <li><a href="{% url 'carriers_query' %}" methods="GET">Carriers Query</a></li>
-        <li><a>Client Order Comments Query</a></li>
-        <li><a>Client Order Comments Update</a></li>
+        <li><a href="{% url 'order_comments_query' %}">Client Order Comments Query</a></li>
+        <li><a href="{% url 'client_order_comments_update' %}">Client Order Comments Update</a></li>
         <li><a>Messages Query</a></li>
         <li><a>Messages Update</a></li>
         <li><a>Incidents Query</a></li>

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>client_order_comments_update</title>
+</head>
+<body>
+
+    <div>
+        <form action="{% url 'client_order_comments_update' %}" accept-charset="UTF-8" enctype="multipart/form-data" method="post">
+            id:
+            <input type="text" name="id" value=""><br>
+            comment_reply:
+            <input type="text" name="comment_reply" value=""><br>
+            <input type="submit" value="提交">
+        </form>
+    </div>
+    <div>
+        {{ data }}
+    </div>
+</body>
+</html>

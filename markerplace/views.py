@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from markerplace.market_api import MarketPlaceApi, MarketPlacePricingApi, MarketPlaceOrderApi
+from markerplace.market_api import MarketPlaceApi, MarketPlacePricingApi, MarketPlaceOrderApi, ClientOrderApi
 from django.shortcuts import render, redirect, reverse
 import hashlib, json
 from django.http import HttpResponse
@@ -12,6 +12,7 @@ import time
 mark = MarketPlaceApi()
 mark_order = MarketPlaceOrderApi()
 mark_query = MarketPlacePricingApi()
+client = ClientOrderApi()
 
 
 # Create your views here.
@@ -149,13 +150,34 @@ def orders_query_id(request):
     return render(request, 'order_query_show.html', {'data_dict': data_dict})
 
 
-def order_update(request):
+@csrf_exempt
+def orders_update(request):
     if request.method == 'GET':
         return render(request, 'order_update.html')
     if request.method == 'POST':
         data = request.POST
+        dict_data = {}
+        dict_data['order_id'] = data.get('order_id')
+        dict_data['action'] = data.get('action')
+        dict_data['order_detail_action'] = data.get('order_detail_action')
+        data = mark_order.orders_update(dict_data)
+        return render(request, 'order_update.html', {'data': data})
 
-    return None
+
+@csrf_exempt
+def orders_update_accept(request):
+    if request.method == 'GET':
+        return render(request, 'order_update.html')
+    if request.method == 'POST':
+        data = request.POST
+        dict_data = {}
+        dict_data['order_id'] = data.get('order_id')
+        dict_data['action'] = data.get('action')
+        dict_data['order_detail_action'] = data.get('order_detail_action')
+        dict_data['tracking_number'] = data.get('tracking_number')
+        dict_data['tracking_company'] = data.get('tracking_company')
+        data = mark_order.orders_update_accept(dict_data)
+        return render(request, 'order_update.html', {'data': data})
 
 
 @csrf_exempt
@@ -164,8 +186,42 @@ def carriers_query(request):
     return render(request, 'index.html', {'data_dict': data})
 
 
-def carriers_update_accept(request):
+@csrf_exempt
+def order_comments_query(request):
+    if request.method == 'GET':
+        return render(request, 'order_comments_query.html')
     if request.method == 'POST':
         data = request.POST
-        
-    return None
+        dict_query = {'paging': data.get('paging'), 'results_count': data.get('results_count')}
+        dict_data = client.client_order_query(dict_query)
+        return render(request, 'client_comments_show.html', {'data': dict_data})
+
+
+@csrf_exempt
+def order_comments_query_date(request):
+    if request.method == 'POST':
+        data = request.POST
+        dict_d = {'paging': data.get('paging'), 'results_count': data.get('results_count'),
+                  'date-type': data.get('date-type'), 'min': data.get('min') + ':00',
+                  'max': data.get('max') + ':00'}
+        data_dict = client.offers_query_date(dict_d)
+        return render(request, 'client_comments_show.html', {'data': data_dict})
+
+
+@csrf_exempt
+def order_comments_query_id(request):
+    if request.method == 'POST':
+        data = request.POST
+        dict_d = {'order_fnac_id': data.get('order_fnac_id')}
+        data_dict = client.client_order_query_id(dict_d)
+        return render(request, 'client_comments_show.html', {'data': data_dict})
+
+@csrf_exempt
+def client_order_comments_update(request):
+    if request.method == 'GET':
+        return render(request, 'client_order_comments_update.html')
+    if request.method == 'POST':
+        data = request.POST
+        data_dict = {'id': data.get('id'), 'comment_reply': data.get('comment_reply')}
+        data = client.client_order_comments_update(data_dict)
+        return render(request, 'client_order_comments_update.html', {'data':data})

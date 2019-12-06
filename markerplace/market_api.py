@@ -182,14 +182,54 @@ class MarketPlaceApi:
 
 
 class MarketPlaceOrderApi(MarketPlaceApi):
-    def orders_update(self):
-        pass
+    def orders_update(self, update_dict):
+        self.authentication()
+        dict_data = {
+            'orders_update': {'@xmlns': self.xmlns, '@shop_id': self.shop_id, '@partner_id': self.partner_id,
+                              '@token': self.token,
+                              'order': {'@order_id': update_dict['order_id'], '@action': update_dict['action'],
+                                        'order_detail': {'action': update_dict['order_detail_action']}
+                                        }
 
+                              }
+        }
+        data_xml = xmltodict.unparse(dict_data, encoding='utf-8')
+        print(data_xml)
+        url = self.url + '/orders_update'
+        response = requests.post(url, headers=self.headers, data=data_xml.encode('utf-8'))
+        print(response.text)
+        if response.status_code == 200:
+            data = self.xml_to_dict(response.text)
+            return data
+        return response.status_code
+
+    def orders_update_accept(self, update_dict):
+        self.authentication()
+        dict_data = {
+            'orders_update': {'@xmlns': self.xmlns, '@shop_id': self.shop_id, '@partner_id': self.partner_id,
+                              '@token': self.token,
+                              'order': {'@order_id': update_dict['order_id'], '@action': update_dict['action']},
+                              'order_detail': {'action': update_dict['order_detail_action'],
+                                               'tracking_number': update_dict['tracking_number'],
+                                               'tracking_company': update_dict['tracking_company']
+                                               }
+                              }
+        }
+        data_xml = xmltodict.unparse(dict_data, encoding='utf-8')
+        url = self.url + '/orders_update'
+        response = requests.post(url, headers=self.headers, data=data_xml.encode('utf-8'))
+        if response.status_code == 200:
+            data = self.xml_to_dict(response.text)
+            return data
+        return response.status_code
+
+    # 废弃
     def orders_query1(self, query_dict):
         '''
         :param query_dict: 订单查询 接收一个字典
         :return:
         '''
+        self.authentication()
         order_dict = {
             'offers_update': {'@xmlns': self.xmlns, '@shop_id': self.shop_id, '@partner_id': self.partner_id,
                               '@token': self.token, '@results_count': query_dict['results_count']}}
@@ -295,10 +335,7 @@ class MarketPlacePricingApi(MarketPlaceApi):
         self.pricing_query(query_dict)
 
     def carriers_query(self):
-        '''
-                :param query_dict:定价查询
-                :return:
-                '''
+
         self.authentication()
         pricing_dict = {
             'carriers_query': {'@xmlns': self.xmlns, '@shop_id': self.shop_id, '@partner_id': self.partner_id,
@@ -314,7 +351,8 @@ class MarketPlacePricingApi(MarketPlaceApi):
 
 
 class ClientOrderApi(MarketPlaceApi):
-    def client_order_query(self, client_query):
+    # 废弃
+    def client_order_query1(self, client_query):
         '''
         客户订单评论查询
         :param client_query:
@@ -340,6 +378,75 @@ class ClientOrderApi(MarketPlaceApi):
         print(response.text)
         return 400
 
+    def client_order_query(self, client_query):
+        '''
+        客户订单评论查询
+        :param client_query:
+        :return:
+        '''
+        self.authentication()
+        client_dict = {
+            'client_order_comments_query': {'@xmlns': self.xmlns, '@shop_id': self.shop_id,
+                                            '@partner_id': self.partner_id,
+                                            '@token': self.token, '@results_count': client_query['results_count'],
+                                            'paging': client_query['paging']}}
+        client_xml = xmltodict.unparse(client_dict, encoding='utf-8')
+        url = self.url + '/client_order_comments_query'
+        response = requests.post(url, headers=self.headers, data=client_xml.encode('utf-8'))
+        print(response.text)
+        if response.status_code == 200:
+            response_dict = self.xml_to_dict(response.text)
+            return response_dict
+        response_dict = self.xml_to_dict(response.text)
+        return response_dict['client_order_comments_query_response']['error']['#text']
+
+    def client_order_query_id(self, client_query):
+        '''
+        客户订单评论查询
+        :param client_query:
+        :return:
+        '''
+        self.authentication()
+        client_dict = {
+            'client_order_comments_query': {'@xmlns': self.xmlns, '@shop_id': self.shop_id,
+                                            '@partner_id': self.partner_id,
+                                            '@token': self.token, 'order_fnac_id': client_query['order_fnac_id']}}
+        client_xml = xmltodict.unparse(client_dict, encoding='utf-8')
+        url = self.url + '/client_order_comments_query'
+        response = requests.post(url, headers=self.headers, data=client_xml.encode('utf-8'))
+        print(response.text)
+        if response.status_code == 200:
+            response_dict = self.xml_to_dict(response.text)
+            return response_dict
+        response_dict = self.xml_to_dict(response.text)
+        return response_dict['client_order_comments_query_response']['error']['#text']
+
+    def client_order_query_date(self, client_query):
+        '''
+        客户订单评论查询
+        :param client_query:
+        :return:
+        '''
+        self.authentication()
+        client_dict = {
+            'client_order_comments_query': {'@xmlns': self.xmlns, '@shop_id': self.shop_id,
+                                            '@partner_id': self.partner_id,
+                                            '@token': self.token, '@results_count': client_query['results_count'],
+                                            'paging': client_query['paging'],
+                                            'date': {'@type': client_query['type'], 'min': client_query['min'],
+                                                     'max': client_query['max']}
+                                            }
+        }
+        client_xml = xmltodict.unparse(client_dict, encoding='utf-8')
+        url = self.url + '/client_order_comments_query'
+        response = requests.post(url, headers=self.headers, data=client_xml.encode('utf-8'))
+        print(response.text)
+        if response.status_code == 200:
+            response_dict = self.xml_to_dict(response.text)
+            return response_dict
+        response_dict = self.xml_to_dict(response.text)
+        return response_dict['client_order_comments_query_response']['error']['#text']
+
     def client_order_comments_update(self, client_query):
         '''
         客户订单评论更新
@@ -348,11 +455,13 @@ class ClientOrderApi(MarketPlaceApi):
         '''
         self.authentication()
         client_dict = {
-            'client_order_comments_query': {'@xmlns': self.xmlns, '@shop_id': self.shop_id,
-                                            '@partner_id': self.partner_id,
-                                            '@token': self.token, '@results_count': client_query['results_count']}}
-        client_dict['client_order_comments_query']['comment'] = {'@id': client_query['id'],
-                                                                 'comment_reply': client_query['comment_reply']}
+            'client_order_comments_update': {'@xmlns': self.xmlns, '@shop_id': self.shop_id,
+                                             '@partner_id': self.partner_id,
+                                             '@token': self.token,
+                                             'comment': {'@id': client_query['id'],
+                                                         'comment_reply': client_query['comment_reply']}
+                                             }
+        }
         client_xml = xmltodict.unparse(client_dict, encoding='utf-8')
         url = self.url + '/client_order_comments_update'
         response = requests.post(url, headers=self.headers, data=client_xml.encode('utf-8'))
@@ -360,26 +469,27 @@ class ClientOrderApi(MarketPlaceApi):
         if response == 200:
             response_dict = self.xml_to_dict(response.text)
             return response_dict
-        return 400
+        return response.status_code
 
-    def carriers_query(self):
-        '''
-        运营商查询
-        :return:
-        '''
-        self.authentication()
-        carriers_dict = {
-            'carriers_query': {'@xmlns': self.xmlns, '@shop_id': self.shop_id,
-                               '@partner_id': self.partner_id,
-                               '@token': self.token, 'query': 'all'}}
-        carriers_xml = xmltodict.unparse(carriers_dict, encoding='utf-8')
-        url = self.url + '/carriers_query'
-        response = requests.post(url, headers=self.headers, data=carriers_xml.encode('UTF-8'))
-        print(response.text)
-        if response.status_code == 200:
-            response_dict = self.xml_to_dict(response.text)
-            return response_dict
-        return 400
+
+def carriers_query(self):
+    '''
+    运营商查询
+    :return:
+    '''
+    self.authentication()
+    carriers_dict = {
+        'carriers_query': {'@xmlns': self.xmlns, '@shop_id': self.shop_id,
+                           '@partner_id': self.partner_id,
+                           '@token': self.token, 'query': 'all'}}
+    carriers_xml = xmltodict.unparse(carriers_dict, encoding='utf-8')
+    url = self.url + '/carriers_query'
+    response = requests.post(url, headers=self.headers, data=carriers_xml.encode('UTF-8'))
+    print(response.text)
+    if response.status_code == 200:
+        response_dict = self.xml_to_dict(response.text)
+        return response_dict
+    return 400
 
 
 if __name__ == '__main__':

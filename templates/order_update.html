@@ -6,7 +6,7 @@
 </head>
 <body>
     <div>
-        <form>
+        <form action="{% url 'orders_update' %}" method="post" accept-charset="UTF-8" enctype="multipart/form-data">
             order_id:
             <input type="text" name="order_id" value=""><br>
             action:
@@ -19,7 +19,7 @@
                 <option value="update_all">update_all</option>
             </select>
             order_detail_action:
-            <select name="detail_action">
+            <select name="order_detail_action">
                 <option value="Accepted">Accepted</option>
                 <option value="Refused">Refused</option>
                 <option value="Shipped">Shipped</option>
@@ -29,7 +29,7 @@
             <input type="submit" value="提交">
         </form>
 
-        <form>
+        <form method="post" action="{% url 'orders_update_accept' %}" enctype="multipart/form-data" accept-charset="UTF-8">
             order_id:
             <input type="text" name="order_id" value=""><br>
             action:
@@ -42,7 +42,7 @@
                 <option value="update_all">update_all</option>
             </select>
             order_detail_action:
-            <select name="detail_action">
+            <select name="order_detail_action">
                 <option value="Accepted">Accepted</option>
                 <option value="Refused">Refused</option>
                 <option value="Shipped">Shipped</option>
@@ -55,6 +55,10 @@
             <input type="text" name="tracking_company" value=""><br>
             <input type="submit" value="提交">
         </form>
+    </div>
+    <a href="{% url 'index' %}"><input type="button" value="上一页"></a>
+    <div>
+        {{ data }}
     </div>
 </body>
 </html>

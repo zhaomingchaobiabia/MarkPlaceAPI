@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>order_comments_query</title>
+</head>
+<body>
+    <div>
+        <form action="{% url 'order_comments_query' %}" accept-charset="UTF-8" method="post" enctype="multipart/form-data">
+            paging:
+            <input type="text" name="paging" value=""><br>
+            results_count:
+            <input type="text" name="results_count" value=""><br>
+            <input type="submit" value="提交">
+        </form>
+        <form action="{% url 'order_comments_query_date' %}" accept-charset="UTF-8" enctype="multipart/form-data" method="post">
+            paging:
+            <input type="text" name="paging" value=""><br>
+            results_count:
+            <input type="text" name="results_count" value=""><br>
+            date:
+            <select name="date-type">
+              <option value ="Created">Created</option>
+              <option value ="Modified">Modified</option>
+            </select><br>
+            min:<input type="datetime-local" name="min" value=""><br>
+            max:<input type="datetime-local" name="max" value=""><br>
+            <input type="submit" value="提交">
+        </form>
+        <form action="{% url 'order_comments_query_id' %}" accept-charset="UTF-8" method="post" enctype="multipart/form-data">
+            order_fnac_id:
+            <input type="text" name="order_fnac_id" value=""><br>
+            <input type="submit" value="提交">
+        </form>
+    </div>
+    <a href="{% url 'index' %}" methods="get"><input type="button" value="首页"></a>
+</body>
+</html>
