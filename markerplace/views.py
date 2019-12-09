@@ -19,13 +19,13 @@ incident = IncidentsApi()
 
 # Create your views here.
 def index(request):
-    return render(request, 'index.html')
+    return render(request, 'test/dashboard.html')
 
 
 @csrf_exempt
 def offers_update(request):
     if request.method == 'GET':
-        return render(request, 'offer_update.html')
+        return render(request, 'test/profile.html')
     if request.method == 'POST':
         dict_data = request.POST
         dic_da = {}
@@ -52,7 +52,7 @@ def offers_update(request):
 @csrf_exempt
 def batch_status(request):
     if request.method == 'GET':
-        return render(request, 'batch_status.html')
+        return render(request, 'test/batch.html')
     if request.method == 'POST':
         batch_id = request.POST.get('batch_id')
         status = mark.batch_status(batch_id)
@@ -63,7 +63,7 @@ def batch_status(request):
 @csrf_exempt
 def offers_query(request):
     if request.method == 'GET':
-        return render(request, 'offers_query.html')
+        return render(request, 'test/offers_query.html')
     if request.method == 'POST':
         data = request.POST
         print(data)
@@ -75,7 +75,7 @@ def offers_query(request):
         dict_d['offer_seller_id'] = data.get('offer_seller_id')
         dict_d['promotion_types'] = data.get('promotion_types')
         data_dict = mark.offers_query(dict_d)
-        return render(request, 'offers_query_show.html', {'data_dict_ls': data_dict['offers_query_response']['offer']})
+        return render(request, 'test/basic-table.html', {'data_dict_ls': data_dict['offers_query_response']['offer']})
 
 
 @csrf_exempt
@@ -90,7 +90,7 @@ def offers_query_date(request):
     dict_d['max'] = data.get('max') + ':00'
     print(dict_d['max'])
     data_dict = mark.offers_query_date(dict_d)
-    return render(request, 'offers_query_show.html', {'data_dict_ls': data_dict['offers_query_response']['offer']})
+    return render(request, 'test/basic-table.html', {'data_dict_ls': data_dict['offers_query_response']['offer']})
 
 
 @csrf_exempt
@@ -103,7 +103,7 @@ def offers_query_quantity(request):
     dict_d['quantity-type'] = data.get('quantity-type')
     dict_d['quantity'] = data.get('quantity')
     data_dict = mark.offers_query_quantity(dict_d)
-    return render(request, 'offers_query_show.html', {'data_dict_ls': data_dict['offers_query_response']['offer']})
+    return render(request, 'test/basic-table.html', {'data_dict_ls': data_dict['offers_query_response']['offer']})
 
 
 @csrf_exempt
@@ -116,7 +116,7 @@ def batch_query(request):
 @csrf_exempt
 def orders_query(request):
     if request.method == 'GET':
-        return render(request, 'orders_query.html')
+        return render(request, 'test/orders.html')
     if request.method == 'POST':
         data = request.POST
         dicts = {}
@@ -155,7 +155,7 @@ def orders_query_id(request):
 @csrf_exempt
 def orders_update(request):
     if request.method == 'GET':
-        return render(request, 'order_update.html')
+        return render(request, 'test/orders_update.html')
     if request.method == 'POST':
         data = request.POST
         dict_data = {}
@@ -185,13 +185,13 @@ def orders_update_accept(request):
 @csrf_exempt
 def carriers_query(request):
     data = mark_query.carriers_query()['carriers_query_response']['carrier']
-    return render(request, 'index.html', {'data_dict': data})
+    return render(request, 'test/sales_peoriods_query.html', {'data': data})
 
 
 @csrf_exempt
 def order_comments_query(request):
     if request.method == 'GET':
-        return render(request, 'order_comments_query.html')
+        return render(request, 'test/order_comments.html')
     if request.method == 'POST':
         data = request.POST
         dict_query = {'paging': data.get('paging'), 'results_count': data.get('results_count')}
@@ -258,11 +258,12 @@ def incidents_query1(request):
         data = incident.incidents_query(data_dict)
         return render(request, 'incidents_query.html', {'data': data})
 
+
 # 废弃
 @csrf_exempt
 def incidents_query(request):
     if request.method == 'GET':
-        return render(request, 'incidents_query.html')
+        return render(request, 'test/incidents.html')
     if request.method == 'POST':
         data = request.POST
         min = data.get('min') + ':00'
@@ -275,3 +276,15 @@ def incidents_query(request):
         data = incident.incidents_query(data_dict)
         return render(request, 'incidents_query.html', {'data': data})
 
+
+@csrf_exempt
+def incident_update(request):
+    if request.method == 'GET':
+        return render(request, 'incident_update.html')
+    if request.method == 'POST':
+        data = request.POST
+        data_dict = {'order_id': data.get('order_id'), 'order_detail_id': data.get('order_detail_id'),
+                     'refund_reason': data.get('refund_reason')}
+
+        data = incident.incidents_update(data_dict)
+        return render(request, 'incident_update.html', {'data': data})

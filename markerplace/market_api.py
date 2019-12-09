@@ -541,6 +541,28 @@ class IncidentsApi(MarketPlaceApi):
             return data
         return response.text
 
+    def incidents_update(self, update_dict):
+        self.authentication()
+        data_dict = {
+            'incidents_update': {'@xmlns': self.xmlns, '@shop_id': self.shop_id,
+                                 '@partner_id': self.partner_id,
+                                 '@token': self.token,
+                                 'order': {'@order_id': update_dict['order_id'], '@action': 'refund',
+                                           'order_detail': {
+                                               'order_detail_id': update_dict['order_detail_id'],
+                                               'refund_reason': update_dict['refund_reason']
+                                           }}
+                                 }
+        }
+        data_xml = xmltodict.unparse(data_dict, encoding='utf-8')
+        url = self.url + '/incidents_update'
+        response = requests.post(url, headers=self.headers, data=data_xml.encode('utf-8'))
+        print(response.text)
+        if response.status_code == 200:
+            data = self.xml_to_dict(response.text)
+            return data
+        return response.status_code
+
 
 if __name__ == '__main__':
     # mark1 = ClientOrderApi()

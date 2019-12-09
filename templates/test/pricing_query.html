@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" type="image/png" sizes="16x16" href="/static/images/favicon.png">
+    <title>My Admin - is a responsive admin template</title>
+    <!-- Bootstrap Core CSS -->
+    <link href="/static/bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Menu CSS -->
+    <link href="/static/bower_components/metisMenu/dist/metisMenu.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="/static/css/style.css" rel="stylesheet">
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
+</head>
+
+<body>
+<!-- Preloader -->
+<div class="preloader">
+    <div class="cssload-speeding-wheel"></div>
+</div>
+{% include 'test/wrapper.html' %}
+<!-- Page Content -->
+<div id="page-wrapper">
+    <form action="{% url 'pricing_query' %}" method="post" enctype="multipart/form-data" accept-charset="UTF-8">
+        <table>
+            <tr>
+                <th>pricing query:</th>
+                <th></th>
+            </tr>
+            <tr>
+                <td>sellers:</td>
+                <td><select name="sellers">
+                    <option value="all">all</option>
+                    <option value="others">others</option>
+                </select></td>
+            </tr>
+            <tr>
+                <td>reference:</td>
+                <td><select name="reference-type">
+                    <option value="FnacId">FnacId</option>
+                    <option value="Ean">Ean</option>
+                    <option value="Isbn">Isbn</option>
+                    <option value="PartNumber">PartNumber</option>
+                    <option value="CnetId">CnetId</option>
+                </select></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td><input type="text" name="reference" value=""></td>
+            </tr>
+            <tr>
+                <td><input type="submit" value="提交"></td>
+                <td></td>
+            </tr>
+        </table>
+    </form>
+    <br>
+        <ul>
+            <li>ean:{{ data.ean }}</li>
+            <li>product_url:{{ data.product_url }}</li>
+            <li>seller_shipping:{{ data.seller_shipping }}</li>
+            <li>seller_offer_state:{{ data.seller_offer_state }}</li>
+            <li>seller_adherent_price:{{ data.seller_adherent_price }}</li>
+            <li>seller_adherent_shipping:{{ data.seller_adherent_shipping }}</li>
+            <li>seller_adherent_offer_state:{{ data.seller_adherent_offer_state }}</li>
+            <li>seller_adherent_offer_sku:{{ data.seller_adherent_offer_sku }}</li>
+            <li>new_price:{{ data.new_price }}</li>
+            <li>new_shipping:{{ data.new_shipping }}</li>
+            <li>refurbished_price:{{ data.refurbished_price }}</li>
+            <li>refurbished_shipping:{{ data.refurbished_shipping }}</li>
+            <li>used_price:{{ data.used_price }}</li>
+            <li>used_shipping:{{ data.used_shipping }}</li>
+            <li>new_adherent_price:{{ data.new_adherent_price }}</li>
+            <li>new_adherent_shipping:{{ data.new_adherent_shipping }}</li>
+            <li>refurbished_adherent_price:{{ data.refurbished_adherent_price }}</li>
+            <li>refurbished_adherent_shipping:{{ data.refurbished_adherent_shipping }}</li>
+            <li>used_adherent_price:{{ data.used_adherent_price }}</li>
+            <li>used_adherent_shipping:{{ data.used_adherent_shipping }}</li>
+        </ul>
+    <!-- /.container-fluid -->
+</div>
+<!-- /#page-wrapper -->
+<footer class="footer text-center"> 2017 &copy; Myadmin brought to you by wrappixe - More Templates <a
+        href="http://www.cssmoban.com/" target="_blank" title="模板之家">模板之家</a> - Collect from <a
+        href="http://www.cssmoban.com/" title="网页模板" target="_blank">网页模板</a></footer>
+
+<!-- /#wrapper -->
+<!-- jQuery -->
+<script src="/static/bower_components/jquery/dist/jquery.min.js"></script>
+<!-- Bootstrap Core JavaScript -->
+<script src="/static/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+<!-- Menu Plugin JavaScript -->
+<script src="/static/bower_components/metisMenu/dist/metisMenu.min.js"></script>
+<!--Nice scroll JavaScript -->
+<script src="/static/js/jquery.nicescroll.js"></script>
+<!--Wave Effects -->
+<script src="/static/js/waves.js"></script>
+<!-- Custom Theme JavaScript -->
+<script src="/static/js/myadmin.js"></script>
+</body>
+
+</html>

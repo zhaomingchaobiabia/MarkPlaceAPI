@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>messages_update</title>
+</head>
+<body>
+    <div>
+        <form action="{% url 'message_update' %}" enctype="multipart/form-data" method="post" accept-charset="UTF-8">
+            action:
+            <select name="action">
+                <option value="mark_as_read">已读</option>
+                <option value="mark_as_unread">未读</option>
+                <option value="archive">存档</option>
+                <option value="mark_as_read_and_archive">已读并存档</option>
+                <option value="unarchive">删除存档</option>
+                <option value="reply">回复</option>
+                <option value="create">创建</option>
+            </select><br>
+            id:
+            <input type="text" name="id" value=""><br>
+            action:
+            <select name="action1">
+                <option value="mark_as_read">已读</option>
+                <option value="mark_as_unread">未读</option>
+                <option value="archive">存档</option>
+                <option value="mark_as_read_and_archive">已读并存档</option>
+                <option value="unarchive">删除存档</option>
+                <option value="reply">回复</option>
+                <option value="create">创建</option>
+            </select><br>
+            message_to:
+            <select name="message_to">
+                <option value="CALLCENTER">CALLCENTER</option>
+                <option value="CLIENT">CLIENT</option>
+                <option value="ALL">ALL</option>
+            </select><br>
+            message_subject:
+            <select name="message_subject">
+                <option value="product_information">product_information</option>
+                <option value="shipping_information">shipping_information</option>
+                <option value="order_information">order_information</option>
+                <option value="offer_problem">offer_problem</option>
+                <option value="offer_not_received">offer_not_received</option>
+                <option value="other_question">other_question</option>
+            </select><br>
+            message_description:
+            <input name="message_description" value=""><br>
+            message_type:
+            <select name="message_type">
+                <option value="OFFER">OFFER</option>
+                <option value="ORDER">ORDER</option>
+            </select><br>
+            <input type="submit" value="提交">
+        </form>
+    </div>
+    <a href="{% url 'index' %}" methods="get"><input type="button" value="首页"></a>
+    <div>
+        {{ data }}
+    </div>
+</body>
+</html>

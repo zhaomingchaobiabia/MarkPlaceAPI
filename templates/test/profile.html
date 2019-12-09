@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" type="image/png" sizes="16x16" href="/static/images/favicon.png">
+    <title>My Admin - is a responsive admin template</title>
+    <!-- Bootstrap Core CSS -->
+    <link href="/static/bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Menu CSS -->
+    <link href="/static/bower_components/metisMenu/dist/metisMenu.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="/static/css/style.css" rel="stylesheet">
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
+</head>
+
+<body>
+    <!-- Preloader -->
+    <div class="preloader">
+        <div class="cssload-speeding-wheel"></div>
+    </div>
+{% include 'test/wrapper.html' %}
+    <!-- Page Content -->
+    <div id="page-wrapper">
+        <form action="{% url 'offers_update' %}" accept-charset="UTF-8" enctype="multipart/form-data" method="post">
+        <table>
+            <tr>
+                <td>product_reference :</td>
+                <td><input type="text" name="product_reference" value="" placeholder="Ean"></td>
+            </tr>
+            <tr>
+                <td>offer_reference :</td>
+                <td><input type="text" name="offer_reference" value="" placeholder="SellerSku"></td>
+            </tr>
+            <tr>
+                <td>price:</td>
+                <td><input type="text" name="price" value=""></td>
+            </tr>
+            <tr>
+                <td>adherent_price:</td>
+                <td><input type="text" name="adherent_price" value=""></td>
+            </tr>
+            <tr>
+                <td>product_state:</td>
+                <td><select name="product_state">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+                <option value="8">8</option>
+                <option value="10">10</option>
+                <option value="11">11</option>
+            </select></td>
+            </tr><tr>
+                <td>internal_comment:</td>
+                <td><input type="text" name="internal_comment" value=""></td>
+            </tr>
+            <tr>
+                <td>quantity:</td>
+                <td><input type="text" name="quantity" value=""></td>
+            </tr>
+            <tr>
+                <td>description:</td>
+                <td><input type="text" name="description" value=""></td>
+            </tr><tr>
+                <td>showcase:</td>
+                <td><input type="text" name="showcase" value=""></td>
+            </tr>
+            <tr>
+                <td>treatment:</td>
+                <td><input type="text" name="treatment" value=""></td>
+            </tr>
+            <tr>
+                <td> pictures:</td>
+                <td><input type="text" name="pictures" value=""></td>
+            </tr>
+            <tr>
+                <td>logistic_type_id:</td>
+                <td><input type="text" name="logistic_type_id" value=""></td>
+            </tr>
+            <tr>
+                <td>is_shipping_free:</td>
+                <td><input type="text" name="is_shipping_free" value=""></td>
+            </tr>
+            <tr>
+                <td>promotion:</td>
+                <td><select name="promotion">
+                <option value="Sales">Sales</option>
+                <option value="Destocking">Destocking</option>
+                <option value="GoodDeal">GoodDeal</option>
+                <option value="Batch">Batch</option>
+                <option value="FlashSale">FlashSale</option>
+                <option value="FreeShipping">FreeShipping</option>
+            </select></td>
+            </tr>
+            <tr>
+                <td>time_to_ship</td>
+                <td><input type="text" name="time_to_ship" value=""></td>
+            </tr>
+            <tr>
+                <td><input type="submit" value="提交offer"></td>
+                <td></td>
+            </tr>
+        </table>
+    </form>
+
+        <!-- /.container-fluid -->
+    </div>
+    <!-- /#page-wrapper -->
+    <footer class="footer text-center"> 2017 &copy; Myadmin brought to you by wrappixe - More Templates <a href="http://www.cssmoban.com/" target="_blank" title="模板之家">模板之家</a> - Collect from <a href="http://www.cssmoban.com/" title="网页模板" target="_blank">网页模板</a> </footer>
+    </div>
+    <!-- /#wrapper -->
+    <!-- jQuery -->
+    <script src="/static/bower_components/jquery/dist/jquery.min.js"></script>
+    <!-- Bootstrap Core JavaScript -->
+    <script src="/static/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+    <!-- Menu Plugin JavaScript -->
+    <script src="/static/bower_components/metisMenu/dist/metisMenu.min.js"></script>
+    <!--Nice scroll JavaScript -->
+    <script src="/static/js/jquery.nicescroll.js"></script>
+    <!--Wave Effects -->
+    <script src="/static/js/waves.js"></script>
+    <!-- Custom Theme JavaScript -->
+    <script src="/static/js/myadmin.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>incident_update</title>
+</head>
+<body>
+    <div>
+        <form action="{% url 'incident_update' %}" enctype="multipart/form-data" method="post" accept-charset="UTF-8">
+            order_id；
+            <input type="text" name="order_id" value=""><br>
+            order_detail_id:
+            <input type="text" name="order_detail_id" value=""><br>
+            refund_reason:
+            <select name="refund_reason">
+                <option value="no_stock">no_stock</option>
+                <option value="other">other</option>
+            </select><br>
+            <input type="submit" value="提交">
+        </form>
+    </div>
+    <a href="{% url 'index' %}" methods="get"><input type="button" value="首页"></a>
+    <div>
+        {{ data }}
+    </div>
+</body>
+</html>

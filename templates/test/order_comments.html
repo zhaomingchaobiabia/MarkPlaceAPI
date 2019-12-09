@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" type="image/png" sizes="16x16" href="/static/images/favicon.png">
+    <title>My Admin - is a responsive admin template</title>
+    <!-- Bootstrap Core CSS -->
+    <link href="/static/bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Menu CSS -->
+    <link href="/static/bower_components/metisMenu/dist/metisMenu.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="/static/css/style.css" rel="stylesheet">
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
+</head>
+
+<body>
+<!-- Preloader -->
+<div class="preloader">
+    <div class="cssload-speeding-wheel"></div>
+</div>
+{% include 'test/wrapper.html' %}
+<!-- Page Content -->
+<div id="page-wrapper">
+    <form action="{% url 'order_comments_query_date' %}" accept-charset="UTF-8" enctype="multipart/form-data"
+          method="post">
+        <table>
+            <tr>
+                <th>query:</th>
+                <th></th>
+            </tr>
+            <tr>
+                <td>paging:</td>
+                <td><input type="text" name="paging" value=""></td>
+            </tr>
+            <tr>
+                <td>results_count:</td>
+                <td><input type="text" name="results_count" value=""></td>
+            </tr>
+            <tr>
+                <td>date:</td>
+                <td><select name="date-type">
+                    <option value="Created">Created</option>
+                    <option value="Modified">Modified</option>
+                </select></td>
+            </tr>
+            <tr>
+                <td>min:</td>
+                <td><input type="datetime-local" name="min" value=""></td>
+            </tr>
+            <tr>
+                <td>max:</td>
+                <td><input type="datetime-local" name="max" value=""></td>
+            </tr>
+            <tr>
+                <td><input type="submit" value="提交"></td>
+                <td></td>
+            </tr>
+        </table>
+    </form>
+    <br>
+    <form action="{% url 'order_comments_query_id' %}" accept-charset="UTF-8" method="post"
+          enctype="multipart/form-data">
+        <table>
+            <tr>
+                <th>order_fnac_id_query:</th>
+                <th></th>
+            </tr>
+            <tr>
+                <td>order_fnac_id:</td>
+                <td><input type="text" name="order_fnac_id" value=""></td>
+            </tr>
+            <tr>
+                <td><input type="submit" value="提交"></td>
+                <td></td>
+            </tr>
+        </table>
+    </form>
+    <br>
+    <form action="{% url 'client_order_comments_update' %}" accept-charset="UTF-8" enctype="multipart/form-data" method="post">
+        <table>
+            <tr>
+                <th>update:</th>
+                <th></th>
+            </tr>
+            <tr>
+                <td>id:</td>
+                <td><input type="text" name="id" value=""></td>
+            </tr>
+            <tr>
+                <td>comment_reply:</td>
+{#                <td><input type="text" name="comment_reply" value=""></td>#}
+                <td><textarea name="comment_reply"></textarea></td>
+            </tr>
+            <tr>
+                <td><input type="submit" value="提交"></td>
+                <td></td>
+            </tr>
+        </table>
+        </form>
+    <!-- /.container-fluid -->
+</div>
+<!-- /#page-wrapper -->
+<footer class="footer text-center"> 2017 &copy; Myadmin brought to you by wrappixe - More Templates <a
+        href="http://www.cssmoban.com/" target="_blank" title="模板之家">模板之家</a> - Collect from <a
+        href="http://www.cssmoban.com/" title="网页模板" target="_blank">网页模板</a></footer>
+</div>
+<!-- /#wrapper -->
+<!-- jQuery -->
+<script src="/static/bower_components/jquery/dist/jquery.min.js"></script>
+<!-- Bootstrap Core JavaScript -->
+<script src="/static/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+<!-- Menu Plugin JavaScript -->
+<script src="/static/bower_components/metisMenu/dist/metisMenu.min.js"></script>
+<!--Nice scroll JavaScript -->
+<script src="/static/js/jquery.nicescroll.js"></script>
+<!--Wave Effects -->
+<script src="/static/js/waves.js"></script>
+<!-- Custom Theme JavaScript -->
+<script src="/static/js/myadmin.js"></script>
+</body>
+
+</html>

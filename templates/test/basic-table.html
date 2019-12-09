@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" type="image/png" sizes="16x16" href="/static/images/favicon.png">
+    <title>My Admin - is a responsive admin template</title>
+    <!-- Bootstrap Core CSS -->
+    <link href="/static/bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Menu CSS -->
+    <link href="/static/bower_components/metisMenu/dist/metisMenu.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="/static/css/style.css" rel="stylesheet">
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
+</head>
+
+<body>
+    <!-- Preloader -->
+    <div class="preloader">
+        <div class="cssload-speeding-wheel"></div>
+    </div>
+    {% include 'test/wrapper.html' %}
+            <!-- /.navbar-header -->
+            <!-- /.navbar-top-links -->
+            <!-- /.navbar-static-side -->
+
+
+        <!-- Page Content -->
+        <div id="page-wrapper">
+            <div class="container-fluid">
+                <div class="row bg-title">
+                    <div class="col-lg-12">
+                        <h4 class="page-title">Basic Table</h4>
+                        <ol class="breadcrumb">
+                            <li><a href="#">Dashboard</a></li>
+                            <li class="active">Basic Table</li>
+                        </ol>
+                    </div>
+                    <!-- /.col-lg-12 -->
+                </div>
+                <!-- row -->
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="white-box">
+                            <h3>Basic Table</h3>
+                            <p class="text-muted">Add class <code>.table</code></p>
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>image</th>
+                                            <th>product_name</th>
+                                            <th>product_fnac_id</th>
+                                            <th>offer_fnac_id</th>
+                                            <th>offer_seller_id</th>
+                                            <th>product_state</th>
+                                            <th>price</th>
+                                            <th>quantity</th>
+                                            <th>description</th>
+                                            <th>internal_comment</th>
+                                            <th>nb_messages</th>
+                                            <th>showcase</th>
+                                            <th>is_shipping_free</th>
+                                            <th>type_label</th>
+                                            <th>product_url</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for dict_data in data_dict_ls %}
+                                        <tr>
+                                            <td><img src="{{ dict_data.image }}"/></td>
+                                            <td>{{ dict_data.product_name }}</td>
+                                            <td>{{ dict_data.product_fnac_id }}</td>
+                                            <td>{{ dict_data.offer_fnac_id }}</td>
+                                            <td>{{ dict_data.offer_seller_id }}</td>
+                                            <td>{{ dict_data.product_state }}</td>
+                                            <td>{{ dict_data.price }}</td>
+                                            <td>{{ dict_data.quantity }}</td>
+                                            <td>{{ dict_data.description }}</td>
+                                            <td>{{ dict_data.internal_comment }}</td>
+                                            <td>{{ dict_data.nb_messages }}</td>
+                                            <td>{{ dict_data.showcase }}</td>
+                                            <td>{{ dict_data.is_shipping_free }}</td>
+                                            <td>{{ dict_data.type_label }}</td>
+                                            <td><a href="{{ dict_data.product_url }}"><input type="button" value="转到fanc"></a></td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /.container-fluid -->
+        </div>
+        <!-- /#page-wrapper -->
+        <footer class="footer text-center"> 2017 &copy; Myadmin brought to you by wrappixe - More Templates <a href="http://www.cssmoban.com/" target="_blank" title="模板之家">模板之家</a> - Collect from <a href="http://www.cssmoban.com/" title="网页模板" target="_blank">网页模板</a> </footer>
+    </div>
+    <!-- /#wrapper -->
+    <!-- jQuery -->
+    <script src="/static/bower_components/jquery/dist/jquery.min.js"></script>
+    <!-- Bootstrap Core JavaScript -->
+    <script src="/static/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+    <!-- Menu Plugin JavaScript -->
+    <script src="/static/bower_components/metisMenu/dist/metisMenu.min.js"></script>
+    <!--Nice scroll JavaScript -->
+    <script src="/static/js/jquery.nicescroll.js"></script>
+    <!--Wave Effects -->
+    <script src="/static/js/waves.js"></script>
+    <!-- Custom Theme JavaScript -->
+    <script src="/static/js/myadmin.js"></script>
+</body>
+
+</html>

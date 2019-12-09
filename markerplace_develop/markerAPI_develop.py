@@ -83,13 +83,39 @@ class SalesPeriodsApi(MarketPlaceApi):
                     '@token': self.token, 'message_type': query_dict['message_type'],
                     'message_archived': query_dict['message_archived'],
                     'message_state': query_dict['message_state'],
-                    'sort_by': query_dict['@type'],
-                    'message_from_types': query_dict['message_from_types']
+                    # 'sort_by': {'@type': query_dict['sort_type']},
+                    # 'message_from_types': query_dict['message_from_types']
                 }
         }
         data_xml = xmltodict.unparse(data_dict, encoding='utf-8')
         print(data_xml)
         url = self.url + '/messages_query'
+        response = requests.post(url, headers=self.headers, data=data_xml.encode('utf-8'))
+        print(response.text)
+        if response.status_code == 200:
+            data = self.xml_to_dict(response.text)
+            return data
+        return response.status_code
+
+    def messages_update(self, update_dict):
+        self.authentication()
+        data_dict = {
+            'messages_update':
+                {
+                    '@xmlns': self.xmlns, '@shop_id': self.shop_id,
+                    '@partner_id': self.partner_id,
+                    '@token': self.token,
+                    'message': [{'@action': update_dict['action'], "@id": update_dict['id']},
+                                {'@action': update_dict['action1'], '@id': update_dict['id'],
+                                 'message_to': update_dict['message_to'],
+                                 'message_subject': update_dict['message_subject'],
+                                 'message_description': update_dict['message_description'],
+                                 'message_type': update_dict['message_type']}
+                                ]
+                }
+        }
+        url = self.url + '/messages_update'
+        data_xml = xmltodict.unparse(data_dict, encoding='utf-8')
         response = requests.post(url, headers=self.headers, data=data_xml.encode('utf-8'))
         print(response.text)
         if response.status_code == 200:

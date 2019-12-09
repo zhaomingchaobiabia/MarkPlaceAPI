@@ -1,0 +1,50 @@
+<div class="sidebar-nav navbar-collapse ">
+                <ul class="nav" id="side-menu">
+                    <li class="sidebar-search hidden-sm hidden-md hidden-lg">
+                        <div class="input-group custom-search-form">
+                            <input type="text" class="form-control" placeholder="Search...">
+                            <span class="input-group-btn">
+                                <button class="btn btn-default" type="button"><i class="ti-search"></i> </button>
+                            </span>
+                        </div>
+                    </li>
+                    <li>
+                        <a href="{% url 'offers_query' %}" class="waves-effect"><i class="glyphicon glyphicon-fire fa-fw"></i> Offers Query</a>
+                    </li>
+                    <li>
+                        <a href="{% url 'offers_update' %}" class="waves-effect"><i class="ti-user fa-fw"></i>Offers Update</a>
+                    </li>
+                    <li>
+                        <a href="{% url 'batch_status' %}" class="waves-effect"><i class="ti-layout fa-fw"></i>Batch</a>
+                    </li>
+                    <li>
+                        <a href="{% url 'orders_query' %}" class="waves-effect"><i class="ti-face-smile fa-fw"></i>Orders Query</a>
+                    </li>
+                    <li>
+                        <a href="{% url 'orders_update' %}" class="waves-effect"><i class="ti-face-smile fa-fw"></i>Orders Update</a>
+                    </li>
+                    <li>
+                        <a href="{% url 'order_comments_query' %}" class="waves-effect"><i class="ti-face-smile fa-fw"></i>Client Order Comments</a>
+                    </li>
+                    <li>
+                        <a href="{% url 'messages_query' %}" class="waves-effect"><i class="ti-face-smile fa-fw"></i> Messages Query</a>
+                    </li>
+                    <li>
+                        <a href="{% url 'message_update' %}" class="waves-effect"><i class="ti-face-smile fa-fw"></i> Messages Update</a>
+                    </li>
+                    <li>
+                        <a href="{% url 'incidents_query' %}" class="waves-effect"><i class="ti-face-smile fa-fw"></i> Incidents</a>
+                    </li>
+                    <li>
+                        <a href="{% url 'pricing_query' %}" class="waves-effect"><i class="ti-face-smile fa-fw"></i> Pricing Query</a>
+                    </li>
+
+                    <li>
+                        <a href="{% url 'sales_periods_query' %}" class="waves-effect"><i class="ti-face-smile fa-fw"></i> More Query</a>
+                    </li>
+
+                </ul>
+                <div class="center p-20">
+                    <span class="hide-menu"><a href="#"  class="btn btn-info btn-block btn-rounded waves-effect waves-light">Upgrade to Pro</a></span>
+                </div>
+            </div>

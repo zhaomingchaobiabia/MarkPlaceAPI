@@ -5,9 +5,16 @@ body {
     margin: 0 auto;
     width: 1450px;
     height: 40px;
-    border: 1px solid #FF0000;
+    border: 1px solid #26ff4c;
 }
 
-#title_d_ul li{
+#title_d_ul {
+    text-align: center;
     display: inline-block;
+    position:absolute;
+    left:10px;
+    top:150px;
+    font-size: 14px;
+    background: #74c242;
+
 }

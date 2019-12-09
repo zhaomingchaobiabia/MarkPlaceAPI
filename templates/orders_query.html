@@ -51,9 +51,19 @@
         </form>
 
         <form action="{% url 'orders_query_id' %}" enctype="multipart/form-data" accept-charset="UTF-8" method="post">
-            orders_fnac_id:
-            <input type="text" name="orders_fnac_id" value=""><br>
-            <input type="submit" value="提交">
+            <table>
+                <tr>
+                    <th>orders_fnac_id_query:</th>
+                </tr>
+                <tr>
+                    <td>orders_fnac_id:</td>
+                    <td><input type="text" name="orders_fnac_id" value=""></td>
+                </tr>
+                <tr>
+                    <td><input type="submit" value="提交"></td>
+                    <td></td>
+                </tr>
+            </table>
         </form>
         <form>
             results_count:
