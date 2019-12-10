@@ -95,7 +95,7 @@ class MarketPlaceApi:
             return response_dic
         return 400
 
-    def offers_query(self, qu_dict):
+    def offers_query(self):
         '''
         :param qu_dict:传入一个字典
         :return:
@@ -104,8 +104,8 @@ class MarketPlaceApi:
 
         dict_data = {
             'offers_query': {'@xmlns': self.xmlns, '@shop_id': self.shop_id, '@partner_id': self.partner_id,
-                             '@token': self.token, '@results_count': qu_dict['results_count'],
-                             'paging': qu_dict['paging']}}
+                             '@token': self.token, '@results_count': 100,
+                             'paging': 1}}
 
         # dict_data['offers_query']['promotion_types'] = {'@type': qu_dict['promotion_types']}
 
@@ -126,8 +126,8 @@ class MarketPlaceApi:
         self.authentication()
         dict_data = {
             'offers_query': {'@xmlns': self.xmlns, '@shop_id': self.shop_id, '@partner_id': self.partner_id,
-                             '@token': self.token, '@results_count': qu_dict['results_count'],
-                             'paging': qu_dict['paging'],
+                             '@token': self.token, '@results_count': 100,
+                             'paging': 1,
                              'date': {'@type': qu_dict['date-type'], 'min': qu_dict['min'], 'max': qu_dict['max']}
                              }
         }
@@ -148,8 +148,8 @@ class MarketPlaceApi:
         self.authentication()
         dict_data = {
             'offers_query': {'@xmlns': self.xmlns, '@shop_id': self.shop_id, '@partner_id': self.partner_id,
-                             '@token': self.token, '@results_count': qu_dict['results_count'],
-                             'paging': qu_dict['paging']}}
+                             '@token': self.token, '@results_count': 100,
+                             'paging': 1}}
         dict_data['offers_query']['quantity'] = {'@mode': qu_dict['quantity-type'], '@value': qu_dict['quantity']}
         dict_xml = xmltodict.unparse(dict_data, encoding='utf-8')
         url = self.url + '/offers_query'
@@ -254,7 +254,7 @@ class MarketPlaceOrderApi(MarketPlaceApi):
         self.authentication()
         order_dict = {
             'orders_query': {'@xmlns': self.xmlns, '@shop_id': self.shop_id, '@partner_id': self.partner_id,
-                             '@token': self.token, '@results_count': query_dict['results_count']}}
+                             '@token': self.token, '@results_count': 100}}
         order_dict['orders_query']['paging'] = query_dict['paging']
         order_xml = xmltodict.unparse(order_dict, encoding='utf-8')
         url = self.url + '/orders_query'
@@ -272,7 +272,7 @@ class MarketPlaceOrderApi(MarketPlaceApi):
         self.authentication()
         dict_data = {
             'orders_query': {'@xmlns': self.xmlns, '@shop_id': self.shop_id, '@partner_id': self.partner_id,
-                             '@token': self.token, '@results_count': qu_dict['results_count'],
+                             '@token': self.token, '@results_count': 100,
                              'paging': qu_dict['paging'],
                              'states': {'state': qu_dict['state']},
                              'date': {'@type': qu_dict['date-type'], 'min': qu_dict['min'], 'max': qu_dict['max']}
@@ -388,7 +388,7 @@ class ClientOrderApi(MarketPlaceApi):
         client_dict = {
             'client_order_comments_query': {'@xmlns': self.xmlns, '@shop_id': self.shop_id,
                                             '@partner_id': self.partner_id,
-                                            '@token': self.token, '@results_count': client_query['results_count'],
+                                            '@token': self.token, '@results_count': '50',
                                             'paging': client_query['paging']}}
         client_xml = xmltodict.unparse(client_dict, encoding='utf-8')
         url = self.url + '/client_order_comments_query'
@@ -433,7 +433,7 @@ class ClientOrderApi(MarketPlaceApi):
                                             '@partner_id': self.partner_id,
                                             '@token': self.token, '@results_count': client_query['results_count'],
                                             'paging': client_query['paging'],
-                                            'date': {'@type': client_query['type'], 'min': client_query['min'],
+                                            'date': {'@type': client_query['date-type'], 'min': client_query['min'],
                                                      'max': client_query['max']}
                                             }
         }

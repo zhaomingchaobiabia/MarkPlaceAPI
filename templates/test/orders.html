@@ -2,11 +2,13 @@
 <html lang="en">
 
 <head>
+    {% load date_filter %}
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
+
     <link rel="icon" type="image/png" sizes="16x16" href="/static/images/favicon.png">
     <title>My Admin - is a responsive admin template</title>
     <!-- Bootstrap Core CSS -->
@@ -15,6 +17,7 @@
     <link href="/static/bower_components/metisMenu/dist/metisMenu.min.css" rel="stylesheet">
     <!-- Custom CSS -->
     <link href="/static/css/style.css" rel="stylesheet">
+    <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -34,12 +37,8 @@
     <form action="{% url 'orders_query' %}" enctype="multipart/form-data" method="post" accept-charset="UTF-8">
         <table>
             <tr>
-                <th>订单查找：</th>
+                <th>order query：</th>
                 <th></th>
-            </tr>
-            <tr>
-                <td>results_count:</td>
-                <td><input type="text" name="results_count" value=""></td>
             </tr>
             <tr>
                 <td> paging:</td>
@@ -55,12 +54,8 @@
     <form action="{% url 'orders_query_date' %}" method="post" accept-charset="UTF-8" enctype="multipart/form-data">
         <table>
             <tr>
-                <th>根据时间查找：</th>
+                <th>order time query：</th>
                 <th></th>
-            </tr>
-            <tr>
-                <td>results_count:</td>
-                <td><input type="text" name="results_count" value=""></td>
             </tr>
             <tr>
                 <td>paging:</td>
@@ -90,11 +85,11 @@
             </tr>
             <tr>
                 <td>min:</td>
-                <td><input type="datetime-local" name="min" value=""></td>
+                <td><input type="date" name="min" value=""></td>
             </tr>
             <tr>
                 <td>max:</td>
-                <td><input type="datetime-local" name="max" value=""></td>
+                <td><input type="date" name="max" value=""></td>
             </tr>
             <tr>
                 <td><input type="submit" value="提交"></td>
@@ -118,7 +113,74 @@
                 </tr>
             </table>
         </form>
+        <div class="row">
+                    <div class="col-sm-12">
+                        <div class="white-box">
+                                <h3>Order Table</h3>
+                            <p class="text-muted">Add class <code>.table</code></p>
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th><input id="all_check" type="checkbox">all</th>
+                                            <th>order_id</th>
+                                            <th>state</th>
+                                            <th>client_firstname</th>
+                                            <th>client_lastname</th>
+                                            <th>created_at</th>
+                                            <th>updated_at</th>
+                                            <th>fees</th>
+                                            <th>vat_rate</th>
+                                            <th>order_detail</th>
+                                            <th>shipping_address</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for li in data_dict_ls %}
+                                        <tr class="tr_order">
+                                            <td><input type="checkbox"></td>
+                                            <td class="order_id">{{ li.order_id }}</td>
+                                            <td>{{ li.state }}</td>
+                                            <td>{{ li.client_firstname }}</td>
+                                            <td>{{ li.client_lastname }}</td>
+                                            <td>{{ li.created_at| too }}</td>
+                                            <td>{{ li.updated_at | too }}</td>
+                                            <td>{{ li.fees }}</td>
+                                            <td>{{ li.vat_rate }}</td>
+                                            <td ><a class="detail" href="">查看</a></td>
+                                            <td><a class="shop" href="">查看</a></td>
+                                        </tr>
+                                        {% endfor %}
+                                        <script>
+                                            $(document).ready(function(){
+                                                  $(".detail").click(function(){
+                                                      th = $(this);
+                                                      id = th.parents('.tr_order').children('.order_id').text();
+                                                      this.href = '/order/' + id+ '/';
+                                                  });
 
+                                                  $(".shop").click(function(){
+                                                      th = $(this);
+                                                      id = th.parents('.tr_order').children('.order_id').text();
+                                                      this.href = '/order-shop/' + id+ '/';
+                                                  });
+
+                                                  $('#all_check').click(function () {
+                                                      th = $(this);
+                                                      
+
+                                                  })
+                                                });
+                                        </script>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /.container-fluid -->
+        </div>
     <!-- /.container-fluid -->
 </div>
 <!-- /#page-wrapper -->

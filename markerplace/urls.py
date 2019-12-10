@@ -1,5 +1,5 @@
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, re_path
 from markerplace import views
 
 urlpatterns = [
@@ -23,4 +23,6 @@ urlpatterns = [
     path('client-order-comments-update/', views.client_order_comments_update, name='client_order_comments_update'),
     path('incidents-query/', views.incidents_query, name='incidents_query'),
     path('incident-update/', views.incident_update, name='incident_update'),
+    re_path(r'^order/(.+)/$', views.order),
+    re_path(r'^order-shop/(.+)/$', views.order_shop),
 ]

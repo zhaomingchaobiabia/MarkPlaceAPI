@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'markerplace',
     'markerplace_develop',
+    'markerplace.templatetags',
 ]
 
 MIDDLEWARE = [

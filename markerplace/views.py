@@ -44,9 +44,8 @@ def offers_update(request):
         dic_da['is_shipping_free'] = dict_data.get('is_shipping_free')
         dic_da['promotion'] = dict_data.get('promotion')
         dic_da['time_to_ship'] = dict_data.get('time_to_ship')
-        print(dic_da)
         batch_id = mark.offers_update(dic_da)
-        return render(request, 'offer_update.html', {'batch_id': batch_id})
+        return render(request, 'test/profile.html', {'batch_id': batch_id})
 
 
 @csrf_exempt
@@ -63,34 +62,32 @@ def batch_status(request):
 @csrf_exempt
 def offers_query(request):
     if request.method == 'GET':
-        return render(request, 'test/offers_query.html')
-    if request.method == 'POST':
-        data = request.POST
-        print(data)
-        dict_d = {}
-        dict_d['paging'] = data.get('paging')
-        dict_d['results_count'] = data.get('results_count')
-        dict_d['product_fnac_id'] = data.get('product_fnac_id')
-        dict_d['offer_fnac_id'] = data.get('offer_fnac_id')
-        dict_d['offer_seller_id'] = data.get('offer_seller_id')
-        dict_d['promotion_types'] = data.get('promotion_types')
-        data_dict = mark.offers_query(dict_d)
-        return render(request, 'test/basic-table.html', {'data_dict_ls': data_dict['offers_query_response']['offer']})
+        data_dict = mark.offers_query()
+        return render(request, 'test/offers_query.html', {'data_dict_ls': data_dict['offers_query_response']['offer']})
+
+
+        # return render(request, 'test/basic-table.html', {'data_dict_ls': data_dict['offers_query_response']['offer']})
 
 
 @csrf_exempt
 def offers_query_date(request):
     data = request.POST
     dict_d = {}
-    dict_d['paging'] = data.get('paging')
-    dict_d['results_count'] = data.get('results_count')
     dict_d['date-type'] = data.get('date-type')
     print(type(data.get('min')))
-    dict_d['min'] = data.get('min') + ':00'
-    dict_d['max'] = data.get('max') + ':00'
+    dict_d['min'] = data.get('min') + 'T00:00:00'
+    dict_d['max'] = data.get('max') + 'T00:00:00'
     print(dict_d['max'])
-    data_dict = mark.offers_query_date(dict_d)
-    return render(request, 'test/basic-table.html', {'data_dict_ls': data_dict['offers_query_response']['offer']})
+    try:
+        data_dict = mark.offers_query_date(dict_d)['offers_query_response']['offer']
+    except:
+        data_dict = ''
+        return render(request, 'test/offers_query.html', {'data_dict_ls': data_dict})
+    if type(data_dict) is list:
+        return render(request, 'test/offers_query.html', {'data_dict_ls': data_dict})
+    ls = []
+    ls.append(data_dict)
+    return render(request, 'test/offers_query.html', {'data_dict_ls': ls})
 
 
 @csrf_exempt
@@ -98,12 +95,18 @@ def offers_query_quantity(request):
     data = request.POST
     print(data)
     dict_d = {}
-    dict_d['paging'] = data.get('paging')
-    dict_d['results_count'] = data.get('results_count')
     dict_d['quantity-type'] = data.get('quantity-type')
     dict_d['quantity'] = data.get('quantity')
-    data_dict = mark.offers_query_quantity(dict_d)
-    return render(request, 'test/basic-table.html', {'data_dict_ls': data_dict['offers_query_response']['offer']})
+    try:
+        data_dict = mark.offers_query_quantity(dict_d)['offers_query_response']['offer']
+    except:
+        data_dict = ''
+        return render(request, 'test/offers_query.html', {'data_dict_ls': data_dict})
+    if type(data_dict) is list:
+        return render(request, 'test/offers_query.html', {'data_dict_ls': data_dict})
+    ls = []
+    ls.append(data_dict)
+    return render(request, 'test/offers_query.html', {'data_dict_ls': ls})
 
 
 @csrf_exempt
@@ -116,40 +119,67 @@ def batch_query(request):
 @csrf_exempt
 def orders_query(request):
     if request.method == 'GET':
-        return render(request, 'test/orders.html')
-    if request.method == 'POST':
+        dicts = {}
+        dicts['paging'] = 1
+    else:
         data = request.POST
         dicts = {}
-        dicts['results_count'] = data.get('results_count')
         dicts['paging'] = data.get('paging')
-        data_dict = mark_order.orders_query(dicts)
-        return render(request, 'order_query_show.html', {'data_dict': data_dict})
-
+    try:
+        data_dict = mark_order.orders_query(dicts)['orders_query_response']['order']
+    except:
+        data_dict = ''
+        return render(request, 'test/orders.html', {'data_dict_ls': data_dict})
+    if type(data_dict) is list:
+        return render(request, 'test/orders.html', {'data_dict_ls': data_dict})
+    ls = []
+    ls.append(data_dict)
+    return render(request, 'test/orders.html', {'data_dict_ls': ls})
 
 @csrf_exempt
 def orders_query_date(request):
     data = request.POST
     dict_d = {}
     dict_d['paging'] = data.get('paging')
-    dict_d['results_count'] = data.get('results_count')
     dict_d['date-type'] = data.get('date-type')
     print(type(data.get('min')))
-    dict_d['min'] = data.get('min') + ':00'
-    dict_d['max'] = data.get('max') + ':00'
+    dict_d['min'] = data.get('min') + 'T00:00:00'
+    dict_d['max'] = data.get('max') + 'T23:59:59'
     dict_d['state'] = data.get('state')
     print(dict_d['max'])
-    data_dict = mark_order.orders_query_date(dict_d)
-    return render(request, 'order_query_show.html', {'data_dict': data_dict})
+    try:
+        data_dict = mark_order.orders_query_date(dict_d)['orders_query_response']['order']
+    except:
+        data_dict = ''
+        return render(request, 'test/orders.html', {'data_dict_ls': data_dict})
+
+    if type(data_dict) is list:
+        return render(request, 'test/orders.html', {'data_dict_ls': data_dict})
+    ls = []
+    ls.append(data_dict)
+    return render(request, 'test/orders.html', {'data_dict_ls': ls})
+
 
 
 @csrf_exempt
 def orders_query_id(request):
     data = request.POST
-    ls_id = data.get('orders_fnac_id')
-    if ',' in ls_id:
-        ls_id = ','.join(ls_id)
-    data_dict = mark_order.orders_query_id(ls_id)
-    return render(request, 'order_query_show.html', {'data_dict': data_dict})
+    id = data.get('orders_fnac_id')
+    if ',' in id:
+        ls_id = id.split(',')
+    else:
+        ls_id = id
+    try:
+        data_dict = mark_order.orders_query_id(ls_id)['orders_query_response']['order']
+    except:
+        data_dict = ''
+        return render(request, 'test/orders.html', {'data_dict_ls': data_dict})
+    if type(data_dict) is list:
+        return render(request, 'test/orders.html', {'data_dict_ls': data_dict})
+    else:
+        ls = []
+        ls.append(data_dict)
+        return render(request, 'test/orders.html', {'data_dict_ls': ls})
 
 
 @csrf_exempt
@@ -161,6 +191,7 @@ def orders_update(request):
         dict_data = {}
         dict_data['order_id'] = data.get('order_id')
         dict_data['action'] = data.get('action')
+
         dict_data['order_detail_action'] = data.get('order_detail_action')
         data = mark_order.orders_update(dict_data)
         return render(request, 'order_update.html', {'data': data})
@@ -194,7 +225,7 @@ def order_comments_query(request):
         return render(request, 'test/order_comments.html')
     if request.method == 'POST':
         data = request.POST
-        dict_query = {'paging': data.get('paging'), 'results_count': data.get('results_count')}
+        dict_query = {'paging': data.get('paging')}
         dict_data = client.client_order_query(dict_query)
         return render(request, 'client_comments_show.html', {'data': dict_data})
 
@@ -203,10 +234,10 @@ def order_comments_query(request):
 def order_comments_query_date(request):
     if request.method == 'POST':
         data = request.POST
-        dict_d = {'paging': data.get('paging'), 'results_count': data.get('results_count'),
-                  'date-type': data.get('date-type'), 'min': data.get('min') + ':00',
-                  'max': data.get('max') + ':00'}
-        data_dict = client.offers_query_date(dict_d)
+        dict_d = {'paging': data.get('paging'), 'results_count': 50,
+                  'date-type': data.get('date-type'), 'min': data.get('min') + 'T00:00:00',
+                  'max': data.get('max') + 'T23:59:59'}
+        data_dict = client.client_order_query_date(dict_d)
         return render(request, 'client_comments_show.html', {'data': data_dict})
 
 
@@ -266,10 +297,10 @@ def incidents_query(request):
         return render(request, 'test/incidents.html')
     if request.method == 'POST':
         data = request.POST
-        min = data.get('min') + ':00'
-        max = data.get('max') + ':00'
+        min = data.get('min') + 'T00:00:00'
+        max = data.get('max') + 'T23:59:59'
         data_dict = {
-            'results_count': data.get('results_count'), 'paging': data.get('paging'),
+            'results_count': 50, 'paging': data.get('paging'),
             'date_type': data.get('date-type'), 'min': min, 'max': max, 'status': data.get('status'),
         }
         print(data_dict)
@@ -288,3 +319,22 @@ def incident_update(request):
 
         data = incident.incidents_update(data_dict)
         return render(request, 'incident_update.html', {'data': data})
+
+
+def order(request, param1):
+    data_dict = mark_order.orders_query_id(param1)['orders_query_response']['order']['order_detail']
+    if type(data_dict) is list:
+        return render(request, 'order_query_show.html', {'data_dict': data_dict})
+    ls = []
+    ls.append(data_dict)
+    return render(request, 'order_query_show.html', {'data_dict': ls})
+
+
+def order_shop(request, param1):
+    data_dict = mark_order.orders_query_id(param1)['orders_query_response']['order']['shipping_address']
+    if type(data_dict) is list:
+        return render(request, 'order_query_show.html', {'data_dict': data_dict})
+    ls = []
+    ls.append(data_dict)
+    return render(request, 'order_query_show.html', {'data_dict': ls})
+

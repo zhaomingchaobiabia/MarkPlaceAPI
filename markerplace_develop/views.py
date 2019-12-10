@@ -14,8 +14,8 @@ def sales_periods_query(request):
     if request.method == 'POST':
         data = request.POST
         dict_data = {'results_count': data.get('results_count'), 'paging': data.get('paging'),
-                     'date_type': data.get('date_type'), 'min': data.get('min') + ':00',
-                     'max': data.get('max') + ':00'
+                     'date_type': data.get('date_type'), 'min': data.get('min') + 'T00:00:00',
+                     'max': data.get('max') + 'T23:59:59'
                      }
         data = sales.sales_periods_query(dict_data)
         return render(request, 'sales.html', {'data': data})
@@ -40,7 +40,7 @@ def messages_query(request):
         return render(request, 'test/message.html')
     if request.method == 'POST':
         data = request.POST
-        data_dict = {'results_count': data.get('results_count'), 'paging': data.get('paging'),
+        data_dict = {'paging': data.get('paging'),
                      'date_type': data.get('date_type'), 'min': data.get('min'),
                      'max': data.get('max')
                      }

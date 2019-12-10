@@ -38,10 +38,6 @@
                 <th></th>
             </tr>
             <tr>
-                <td>results_count:</td>
-                <td><input type="text" name="results_count" value=""></td>
-            </tr>
-            <tr>
                 <td>paging:</td>
                 <td><input type="text" name="paging" value=""></td>
             </tr>
@@ -55,11 +51,11 @@
             </tr>
             <tr>
                 <td>min:</td>
-                <td><input type="datetime-local" name="min" value=""></td>
+                <td><input type="date" name="min" value=""></td>
             </tr>
             <tr>
                 <td>max:</td>
-                <td><input type="datetime-local" name="max" value=""></td>
+                <td><input type="date" name="max" value=""></td>
             </tr>
             <tr>
                 <td>status:</td>
@@ -78,7 +74,7 @@
     <form action="{% url 'incident_update' %}" enctype="multipart/form-data" method="post" accept-charset="UTF-8">
         <table>
             <tr>
-                <th>incident update:</th>
+                <th>incident update(refund):</th>
                 <th></th>
             </tr>
             <tr>
