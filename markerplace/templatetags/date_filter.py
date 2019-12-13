@@ -13,8 +13,20 @@ def too(value):
     return value
 
 
+#[{'order_detail_id': '1', 'type': '1', 'status': '1',
+# 'created_at': '2019-12-13T08:19:15+01:00', 'updated_at': '2019-12-13T08:19:15+01:00'}]
+def detail_filter(value):
+    ls = ''
+    for li in value:
+        upd_date = datetime.datetime.strptime(li['updated_at'], "%Y-%m-%dT%H:%M:%S+01:00")
+        cre_date = datetime.datetime.strptime(li['created_at'], "%Y-%m-%dT%H:%M:%S+01:00")
+        ls += f"detail_id:{li['order_detail_id']};type:{li['type']};status:{li['status']}" \
+              f"\ncreated_at:{cre_date}\nupdated_at:{upd_date}\n\n"
+    return ls
+
+
 # too('2019-12-10T02:27:19+01:00')
 
 register.filter(too)
 
-
+register.filter(detail_filter)

@@ -21,17 +21,30 @@
     <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
     <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
 <![endif]-->
+    <style>
+        textarea {
+            width: 500px;
+            height: 100px;
+        }
+        #tr_cen th{
+            text-align: center;
+        }
+        .table {
+            vertical-align: middle;
+            text-align: center;
+        }
+    </style>
 </head>
 
 <body>
-    <!-- Preloader -->
-    <div class="preloader">
-        <div class="cssload-speeding-wheel"></div>
-    </div>
+<!-- Preloader -->
+<div class="preloader">
+    <div class="cssload-speeding-wheel"></div>
+</div>
 {% include 'test/wrapper.html' %}
-    <!-- Page Content -->
-    <div id="page-wrapper">
-        <form action="{% url 'offers_update' %}" accept-charset="UTF-8" enctype="multipart/form-data" method="post">
+<!-- Page Content -->
+<div id="page-wrapper">
+    <form action="{% url 'offers_update' %}" accept-charset="UTF-8" enctype="multipart/form-data" method="post">
         <table>
             <tr>
                 <td>product_reference :</td>
@@ -43,67 +56,113 @@
             </tr>
             <tr>
                 <td>price:</td>
-                <td><input type="text" name="price" value=""></td>
+                <td><input type="number" name="price" value=""></td>
             </tr>
             <tr>
                 <td>adherent_price:</td>
-                <td><input type="text" name="adherent_price" value=""></td>
+                <td><input type="number" name="adherent_price" value=""></td>
             </tr>
             <tr>
                 <td>product_state:</td>
                 <td><select name="product_state">
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5">5</option>
-                <option value="6">6</option>
-                <option value="7">7</option>
-                <option value="8">8</option>
-                <option value="10">10</option>
-                <option value="11">11</option>
-            </select></td>
-            </tr><tr>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                    <option value="10">10</option>
+                    <option value="11">11</option>
+                </select></td>
+            </tr>
+            <tr>
                 <td>internal_comment:</td>
                 <td><input type="text" name="internal_comment" value=""></td>
             </tr>
             <tr>
                 <td>quantity:</td>
-                <td><input type="text" name="quantity" value=""></td>
+                <td><input type="number" name="quantity" value=""></td>
             </tr>
             <tr>
                 <td>description:</td>
-                <td><input type="text" name="description" value=""></td>
-            </tr><tr>
+                <td><textarea name="description"></textarea></td>
+            </tr>
+            <tr>
                 <td>showcase:</td>
                 <td><input type="text" name="showcase" value=""></td>
             </tr>
             <tr>
-                <td>treatment:</td>
-                <td><input type="text" name="treatment" value=""></td>
-            </tr>
-            <tr>
-                <td> pictures:</td>
-                <td><input type="text" name="pictures" value=""></td>
-            </tr>
-            <tr>
                 <td>logistic_type_id:</td>
-                <td><input type="text" name="logistic_type_id" value=""></td>
+                <td><select name="logistic_type_id">
+                    <option value="101">Logistic type / Category A</option>
+                    <option value="102">Logistic type / Category B</option>
+                    <option value="103">Logistic type / Category C</option>
+                    <option value="104">Logistic type / Category D</option>
+                    <option value="105">Logistic type / Category E</option>
+                    <option value="106">Logistic type / Category F</option>
+                    <option value="107">Logistic type / Category G</option>
+                    <option value="108">Logistic type / Category H</option>
+                    <option value="109">Logistic type / Category I</option>
+                    <option value="110">Logistic type / Category J</option>
+                    <option value="111">Logistic type / Category K</option>
+                    <option value="201">Logistic type / Category custom #1</option>
+                    <option value="202">Logistic type / Category custom #2</option>
+                    <option value="203">Logistic type / Category custom #3</option>
+                    <option value="204">Logistic type / Category custom #4</option>
+                    <option value="205">Logistic type / Category custom #5</option>
+                    <option value="206">Logistic type / Category large products #1 (qualified sellers only)</option>
+                    <option value="207">Logistic type / Category large products #2 (qualified sellers only)</option>
+                    <option value="208">Logistic type / Category large products #3 (qualified sellers only)</option>
+                    <option value="209">Logistic type / Category large products #4 (qualified sellers only)</option>
+                    <option value="210">Logistic type / Category large products #5 (qualified sellers only)</option>
+                </select></td>
             </tr>
             <tr>
-                <td>is_shipping_free:</td>
-                <td><input type="text" name="is_shipping_free" value=""></td>
+                <td>promotion-type:</td>
+                <td><select name="promotion-type">
+                    <option value="Sales">Sales</option>
+                    <option value="Destocking">Destocking</option>
+                    <option value="GoodDeal">GoodDeal</option>
+                    <option value="Batch">Batch</option>
+                    <option value="FlashSale">FlashSale</option>
+                    <option value="FreeShipping">FreeShipping</option>
+                </select></td>
             </tr>
             <tr>
-                <td>promotion:</td>
-                <td><select name="promotion">
-                <option value="Sales">Sales</option>
-                <option value="Destocking">Destocking</option>
-                <option value="GoodDeal">GoodDeal</option>
-                <option value="Batch">Batch</option>
-                <option value="FlashSale">FlashSale</option>
-                <option value="FreeShipping">FreeShipping</option>
-            </select></td>
+                <td>sales_period_reference:</td>
+                <td><input type="text" name="sales_period_reference" value=""></td>
+            </tr>
+            <tr>
+                <td>Promotion_uid:</td>
+                <td><input type="text" name="Promotion_uid" value=""></td>
+            </tr>
+            <tr>
+                <td>starts_at:</td>
+                <td><input type="date" name="starts_at" value=""></td>
+            </tr>
+            <tr>
+                <td>ends_at:</td>
+                <td><input type="date" name="ends_at" value=""></td>
+            </tr>
+            <tr>
+                <td>discount_type:</td>
+                <td><select name="discount_type">
+                    <option value="percentage">fixed</option>
+                    <option value="percentage">percentage</option>
+                </select></td>
+            </tr>
+            <tr>
+                <td>discount_value:</td>
+                <td><input type="number" name="discount_value" value=""></td>
+            </tr>
+            <tr>
+                <td>trigger_customer_type:</td>
+                <td><select name="trigger_customer_type">
+                    <option value="all">all</option>
+                    <option value="adherent">adherent</option>
+                </select></td>
             </tr>
             <tr>
                 <td>time_to_ship</td>
@@ -114,31 +173,130 @@
                 <td></td>
             </tr>
         </table>
+    </form>
+    <br>
+    <form action="{% url 'update_offer_price' %}" accept-charset="UTF-8" enctype="multipart/form-data" method="post">
+        update price:<br>
+        offer_reference :
+        <input type="text" name="offer_reference" value="" placeholder="SellerSku">
+        price:
+        <input type="number" name="price" value="" >
+        <input type="submit" value="提交">
+    </form><br>
+    <form action="{% url 'delete_offer' %}" accept-charset="UTF-8" enctype="multipart/form-data" method="post">
+        delete offer:<br>
+        offer_reference :
+        <input type="text" name="offer_reference" value="" placeholder="SellerSku">
+        <input type="submit" value="提交">
     </form><br>
     <div>
-        {{ batch_id }}
+        <a id="batch_query" href="">{{ batch_id }}</a>
     </div>
+    <div class="row">
+                    <div class="col-sm-12">
+                        <div class="white-box">
+                            <h3>Basic Table</h3>
+                            <p class="text-muted">Add class <code>.table</code></p>
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <thead>
+                                        <tr id="tr_cen">
+                                            <th>status</th>
+                                            <th>batch_id</th>
+                                            <th>offer_status</th>
+                                            <th>product_fnac_id</th>
+                                            <th>offer_fnac_id</th>
+                                            <th>offer_seller_id</th>
+                                            <th>error</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% if dict_status == '' %}
+                                        <tr>
+                                            <td></td>
+                                        </tr>
+                                    {% else %}
+                                        <tr>
+                                            <td>{{ dict_status.status }}</td>
+                                            <td>{{ dict_status.batch_id }}</td>
+                                            <td>{{ dict_status.offer.status }}</td>
+                                            <td>{{ dict_status.offer.product_fnac_id }}</td>
+                                            <td>{{ dict_status.offer.offer_fnac_id }}</td>
+                                            <td>{{ dict_status.offer.offer_seller_id }}</td>
+                                            <td>{{ dict_status.offer.error.text }}</td>
+                                        </tr>
+                                    {% endif %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="white-box">
+                <h3>Basic Table</h3>
+                <p class="text-muted">Add class <code>.table</code></p>
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>product_reference</th>
+                            <th>offer_reference</th>
+                            <th>price</th>
+                            <th>adherent_price</th>
+                            <th>product_state</th>
+                            <th>quantity</th>
+                            <th>description</th>
+                            <th>showcase</th>
+                            <th>logistic_type_id</th>
+                            <th>promotion-type</th>
+                            <th>starts_at</th>
+                            <th>ends_at</th>
+                            <th>discount_value</th>
+                            <th>trigger_customer_type</th>
+                            <th>time_to_ship</th>
+
+                        </tr>
+                        </thead>
+                        <tbody>
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
     </div>
+</div>
 
 
-        <!-- /.container-fluid -->
-    <div>
+<!-- /.container-fluid -->
+<div>
     <!-- /#page-wrapper -->
-    <footer class="footer text-center"> 2017 &copy; Myadmin brought to you by wrappixe - More Templates <a href="http://www.cssmoban.com/" target="_blank" title="模板之家">模板之家</a> - Collect from <a href="http://www.cssmoban.com/" title="网页模板" target="_blank">网页模板</a> </footer>
-    </div>
-    <!-- /#wrapper -->
-    <!-- jQuery -->
-    <script src="/static/bower_components/jquery/dist/jquery.min.js"></script>
-    <!-- Bootstrap Core JavaScript -->
-    <script src="/static/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
-    <!-- Menu Plugin JavaScript -->
-    <script src="/static/bower_components/metisMenu/dist/metisMenu.min.js"></script>
-    <!--Nice scroll JavaScript -->
-    <script src="/static/js/jquery.nicescroll.js"></script>
-    <!--Wave Effects -->
-    <script src="/static/js/waves.js"></script>
-    <!-- Custom Theme JavaScript -->
-    <script src="/static/js/myadmin.js"></script>
+    {% include 'test/end.html' %}
+</div>
+<!-- /#wrapper -->
+<!-- jQuery -->
+<script src="/static/bower_components/jquery/dist/jquery.min.js"></script>
+<!-- Bootstrap Core JavaScript -->
+<script src="/static/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+<!-- Menu Plugin JavaScript -->
+<script src="/static/bower_components/metisMenu/dist/metisMenu.min.js"></script>
+<!--Nice scroll JavaScript -->
+<script src="/static/js/jquery.nicescroll.js"></script>
+<!--Wave Effects -->
+<script src="/static/js/waves.js"></script>
+<!-- Custom Theme JavaScript -->
+<script src="/static/js/myadmin.js"></script>
+<script>
+    $(document).ready(function() {
+        $('#batch_query').click(function () {
+            th = $(this);
+            var id = th.text();
+            th.attr('href', '/batch_query/'+ id + '/' )
+        })
+    })
+</script>
 </body>
 
 </html>

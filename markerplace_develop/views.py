@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 from markerplace_develop.markerAPI_develop import SalesPeriodsApi
+from markerplace.views import fault_decorator
 
 sales = SalesPeriodsApi()
 
@@ -8,20 +9,23 @@ sales = SalesPeriodsApi()
 # Create your views here.
 
 @csrf_exempt
+@fault_decorator
 def sales_periods_query(request):
     if request.method == 'GET':
         return render(request, 'test/sales_peoriods_query.html')
     if request.method == 'POST':
         data = request.POST
-        dict_data = {'results_count': data.get('results_count'), 'paging': data.get('paging'),
+        dict_data = {'paging': data.get('paging'),
                      'date_type': data.get('date_type'), 'min': data.get('min') + 'T00:00:00',
-                     'max': data.get('max') + 'T23:59:59'
+                     'max': data.get('max') + 'T23:59:59',
+                     'reference': data.get('reference')
                      }
         data = sales.sales_periods_query(dict_data)
         return render(request, 'sales.html', {'data': data})
 
 
 @csrf_exempt
+@fault_decorator
 def pricing_query(request):
     if request.method == 'GET':
         return render(request, 'test/pricing_query.html')
@@ -35,6 +39,7 @@ def pricing_query(request):
 
 
 @csrf_exempt
+@fault_decorator
 def messages_query(request):
     if request.method == 'GET':
         return render(request, 'test/message.html')
@@ -49,6 +54,7 @@ def messages_query(request):
 
 
 @csrf_exempt
+@fault_decorator
 def messages_query_type(request):
     if request.method == 'POST':
         data = request.POST
@@ -62,6 +68,7 @@ def messages_query_type(request):
 
 
 @csrf_exempt
+@fault_decorator
 def message_update(request):
     if request.method == 'GET':
         return render(request, 'test/message_update.html')

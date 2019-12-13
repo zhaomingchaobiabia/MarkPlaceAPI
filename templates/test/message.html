@@ -32,68 +32,39 @@
 <!-- Page Content -->
 <div id="page-wrapper">
     <form action="{% url 'messages_query' %}" accept-charset="UTF-8" enctype="multipart/form-data" method="post">
-        <table>
-            <tr>
-                <th>message query:</th>
-                <th></th>
-            </tr>
-            <tr>
-                <td>paging:</td>
-                <td><input type="text" name="paging" value=""></td>
-            </tr>
-            <tr>
-                <td>date:</td>
-                <td><select name="date_type">
-                    <option value="CreatedAt">CreatedAt</option>
-                    <option value="UpdatedAt">UpdatedAt</option>
-                </select></td>
-            </tr>
-            <tr>
-                <td>min:</td>
-                <td><input type="date" name="min" value=""></td>
-            </tr>
-            <tr>
-                <td>max:</td>
-                <td><input type="date" name="max" value=""></td>
-            </tr>
-            <tr>
-                <td><input type="submit" value="提交"></td>
-                <td></td>
-            </tr>
-        </table>
-    </form><br>
+        message query:<br>
+        paging:
+        <input type="text" name="paging" value="">
+        date:
+        <select name="date_type">
+            <option value="CreatedAt">CreatedAt</option>
+            <option value="UpdatedAt">UpdatedAt</option>
+        </select>
+        min:
+        <input type="date" name="min" value="">
+        max:
+        <input type="date" name="max" value="">
+        <input type="submit" value="提交">
+    </form>
+    <br>
     <form action="{% url 'messages_query_type' %}" method="post" enctype="multipart/form-data" accept-charset="UTF-8">
-        <table>
-            <tr>
-                <th>messagetype_query：</th>
-                <th></th>
-            </tr>
-            <tr>
-                <td>message_type:</td>
-                <td><select name="message_type">
+        message type query：<br>
+        message_type:
+        <select name="message_type">
             <option value="OFFER">OFFER</option>
             <option value="ORDER">ORDER</option>
-        </select></td>
-            </tr>
-            <tr>
-                <td>message_archived:</td>
-                <td><select name="message_archived">
+        </select>
+        message_archived:
+        <select name="message_archived">
             <option value="TRUE">TRUE</option>
             <OPTION value="FALSE">FALSE</OPTION>
-        </select></td>
-            </tr>
-            <tr>
-                <td>message_state:</td>
-                <td><select name="message_state">
+        </select>
+        message_state:
+        <select name="message_state">
             <option value="READ">READ</option>
             <option value="UNREAD">UNREAD</option>
-        </select></td>
-            </tr>
-            <tr>
-                <td><input type="submit" value="提交"></td>
-                <td></td>
-            </tr>
-        </table>
+        </select>
+        <input type="submit" value="提交">
     </form>
 </div>
 <div>
@@ -101,10 +72,8 @@
 
     <!-- /.container-fluid -->
 
-<!-- /#page-wrapper -->
-<footer class="footer text-center"> 2017 &copy; Myadmin brought to you by wrappixe - More Templates <a
-        href="http://www.cssmoban.com/" target="_blank" title="模板之家">模板之家</a> - Collect from <a
-        href="http://www.cssmoban.com/" title="网页模板" target="_blank">网页模板</a></footer>
+    <!-- /#page-wrapper -->
+    {% include 'test/end.html' %}
 </div>
 <!-- /#wrapper -->
 <!-- jQuery -->

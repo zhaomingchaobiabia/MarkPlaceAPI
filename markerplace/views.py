@@ -1,14 +1,12 @@
-from django.shortcuts import render
 from markerplace.market_api import MarketPlaceApi, MarketPlacePricingApi, MarketPlaceOrderApi, ClientOrderApi, \
     IncidentsApi
 from django.shortcuts import render, redirect, reverse
-import hashlib, json
 from django.http import HttpResponse
 from django.http.response import JsonResponse
-from django.core.paginator import Paginator
 from django.views.decorators.csrf import csrf_exempt
-import datetime
+
 import time
+import math
 
 mark = MarketPlaceApi()
 mark_order = MarketPlaceOrderApi()
@@ -17,12 +15,27 @@ client = ClientOrderApi()
 incident = IncidentsApi()
 
 
+def fault_decorator(func):
+    func = func
+
+    def inner(request, *args, **kwargs):
+        try:
+            return func(request, *args, **kwargs)
+        except Exception as e:
+            print(e)
+            return render(request, 'test/404.html')
+
+    return inner
+
+
+@fault_decorator
 # Create your views here.
 def index(request):
     return render(request, 'test/dashboard.html')
 
 
 @csrf_exempt
+@fault_decorator
 def offers_update(request):
     if request.method == 'GET':
         return render(request, 'test/profile.html')
@@ -38,38 +51,60 @@ def offers_update(request):
         dic_da['showcase'] = dict_data.get('showcase')
         dic_da['adherent_price'] = dict_data.get('adherent_price')
         dic_da['internal_comment'] = dict_data.get('internal_comment')
-        dic_da['treatment'] = dict_data.get('treatment')
-        dic_da['pictures'] = dict_data.get('pictures')
         dic_da['logistic_type_id'] = dict_data.get('logistic_type_id')
-        dic_da['is_shipping_free'] = dict_data.get('is_shipping_free')
-        dic_da['promotion'] = dict_data.get('promotion')
+        dic_da['promotion-type'] = dict_data.get('promotion-type')
+        dic_da['starts_at'] = dict_data.get('starts_at') + 'T00:00:00+02:00'
+        dic_da['ends_at'] = dict_data.get('ends_at') + 'T23:59:00+02:00'
+        dic_da['discount_type'] = dict_data.get('discount_type')
+        dic_da['discount_value'] = dict_data.get('discount_value')
+        dic_da['trigger_customer_type'] = dict_data.get('trigger_customer_type')
         dic_da['time_to_ship'] = dict_data.get('time_to_ship')
+        dic_da['Promotion_uid'] = dict_data.get('Promotion_uid')
+        dic_da['sales_period_reference'] = dict_data.get('sales_period_reference')
         batch_id = mark.offers_update(dic_da)
+        # request.session['batch_id'] = batch_id
+        # return redirect(batch_query_offer, {'batch_id': batch_id})
         return render(request, 'test/profile.html', {'batch_id': batch_id})
 
 
 @csrf_exempt
+@fault_decorator
 def batch_status(request):
     if request.method == 'GET':
         return render(request, 'test/batch.html')
     if request.method == 'POST':
         batch_id = request.POST.get('batch_id')
-        status = mark.batch_status(batch_id)
+        status = mark.batch_status(batch_id)['batch_status_response']
+        try:
+            status['status'] = status['@status']
+            status['offer']['status'] = status['offer']['@status']
+        except:
+            status['status'] = ''
+            status['offer']['status'] = ''
+        try:
+            status['offer']['error']['text'] = status['offer']['error']['#text']
+        except:
+            pass
         print(status)
-        return render(request, 'batch_status.html', {'status': status})
+        return render(request, 'test/batch.html', {'dict_status': status})
 
 
 @csrf_exempt
+@fault_decorator
 def offers_query(request):
     if request.method == 'GET':
-        data_dict = mark.offers_query()
-        return render(request, 'test/offers_query.html', {'data_dict_ls': data_dict['offers_query_response']['offer']})
-
+        data_dict = mark.offers_query()['offers_query_response']['offer']
+        if type(data_dict) is list:
+            return render(request, 'test/offers_query.html', {'data_dict_ls': data_dict})
+        ls = []
+        ls.append(data_dict)
+        return render(request, 'test/offers_query.html', {'data_dict_ls': ls})
 
         # return render(request, 'test/basic-table.html', {'data_dict_ls': data_dict['offers_query_response']['offer']})
 
 
 @csrf_exempt
+@fault_decorator
 def offers_query_date(request):
     data = request.POST
     dict_d = {}
@@ -91,6 +126,7 @@ def offers_query_date(request):
 
 
 @csrf_exempt
+@fault_decorator
 def offers_query_quantity(request):
     data = request.POST
     print(data)
@@ -110,6 +146,7 @@ def offers_query_quantity(request):
 
 
 @csrf_exempt
+@fault_decorator
 def batch_query(request):
     if request.method == 'GET':
         data = mark.batch_query()
@@ -117,6 +154,7 @@ def batch_query(request):
 
 
 @csrf_exempt
+@fault_decorator
 def orders_query(request):
     if request.method == 'GET':
         dicts = {}
@@ -136,13 +174,17 @@ def orders_query(request):
     ls.append(data_dict)
     return render(request, 'test/orders.html', {'data_dict_ls': ls})
 
+
 @csrf_exempt
+@fault_decorator
 def orders_query_date(request):
     data = request.POST
     dict_d = {}
     dict_d['paging'] = data.get('paging')
     dict_d['date-type'] = data.get('date-type')
     print(type(data.get('min')))
+    if data.get('min') or data.get('max') == '':
+        dict_d['date-type'] = ''
     dict_d['min'] = data.get('min') + 'T00:00:00'
     dict_d['max'] = data.get('max') + 'T23:59:59'
     dict_d['state'] = data.get('state')
@@ -160,8 +202,8 @@ def orders_query_date(request):
     return render(request, 'test/orders.html', {'data_dict_ls': ls})
 
 
-
 @csrf_exempt
+@fault_decorator
 def orders_query_id(request):
     data = request.POST
     id = data.get('orders_fnac_id')
@@ -183,21 +225,27 @@ def orders_query_id(request):
 
 
 @csrf_exempt
+@fault_decorator
 def orders_update(request):
     if request.method == 'GET':
         return render(request, 'test/orders_update.html')
     if request.method == 'POST':
         data = request.POST
         dict_data = {}
-        dict_data['order_id'] = data.get('order_id')
+        dict_data['order_id'] = data.get('orders_id')
         dict_data['action'] = data.get('action')
 
         dict_data['order_detail_action'] = data.get('order_detail_action')
-        data = mark_order.orders_update(dict_data)
-        return render(request, 'order_update.html', {'data': data})
+        data = mark_order.orders_update(dict_data)['orders_update_response']['order']
+        if type(data) is list:
+            return render(request, 'test/orders_update.html', {'data_dict_ls': data})
+        ls = []
+        ls.append(data)
+        return render(request, 'test/orders_update.html', {'data_dict_ls': ls})
 
 
 @csrf_exempt
+@fault_decorator
 def orders_update_accept(request):
     if request.method == 'GET':
         return render(request, 'order_update.html')
@@ -214,12 +262,14 @@ def orders_update_accept(request):
 
 
 @csrf_exempt
+@fault_decorator
 def carriers_query(request):
     data = mark_query.carriers_query()['carriers_query_response']['carrier']
     return render(request, 'test/sales_peoriods_query.html', {'data': data})
 
 
 @csrf_exempt
+@fault_decorator
 def order_comments_query(request):
     if request.method == 'GET':
         return render(request, 'test/order_comments.html')
@@ -231,6 +281,7 @@ def order_comments_query(request):
 
 
 @csrf_exempt
+@fault_decorator
 def order_comments_query_date(request):
     if request.method == 'POST':
         data = request.POST
@@ -242,6 +293,7 @@ def order_comments_query_date(request):
 
 
 @csrf_exempt
+@fault_decorator
 def order_comments_query_id(request):
     if request.method == 'POST':
         data = request.POST
@@ -251,6 +303,7 @@ def order_comments_query_id(request):
 
 
 @csrf_exempt
+@fault_decorator
 def client_order_comments_update(request):
     if request.method == 'GET':
         return render(request, 'client_order_comments_update.html')
@@ -263,6 +316,7 @@ def client_order_comments_update(request):
 
 # 废弃
 @csrf_exempt
+@fault_decorator
 def incidents_query1(request):
     if request.method == 'GET':
         return render(request, 'incidents_query.html')
@@ -292,6 +346,7 @@ def incidents_query1(request):
 
 # 废弃
 @csrf_exempt
+@fault_decorator
 def incidents_query(request):
     if request.method == 'GET':
         return render(request, 'test/incidents.html')
@@ -304,11 +359,27 @@ def incidents_query(request):
             'date_type': data.get('date-type'), 'min': min, 'max': max, 'status': data.get('status'),
         }
         print(data_dict)
-        data = incident.incidents_query(data_dict)
-        return render(request, 'incidents_query.html', {'data': data})
+        data = incident.incidents_query(data_dict)['incidents_query_response']['incident']
+        print(data)
+        for da in data:
+            print(da['order_details_incident']['order_detail_incident'])
+        if type(data) is list:
+            for da in data:
+                if not type(da['order_details_incident']['order_detail_incident']) is list:
+                    da['order_details_incident']['order_detail_incident'] = [
+                        da['order_details_incident']['order_detail_incident'], ]
+
+            return render(request, 'test/incidents.html', {'dict_data_ls': data})
+        ls = []
+        if not type(data['order_details_incident']['order_detail_incident']) is list:
+            data['order_details_incident']['order_detail_incident'] = [
+                data['order_details_incident']['order_detail_incident'], ]
+        ls.append(data)
+        return render(request, 'test/incidents.html', {'dict_data_ls': ls})
 
 
 @csrf_exempt
+@fault_decorator
 def incident_update(request):
     if request.method == 'GET':
         return render(request, 'incident_update.html')
@@ -321,6 +392,7 @@ def incident_update(request):
         return render(request, 'incident_update.html', {'data': data})
 
 
+@fault_decorator
 def order(request, param1):
     data_dict = mark_order.orders_query_id(param1)['orders_query_response']['order']['order_detail']
     if type(data_dict) is list:
@@ -330,11 +402,97 @@ def order(request, param1):
     return render(request, 'order_query_show.html', {'data_dict': ls})
 
 
+@fault_decorator
 def order_shop(request, param1):
     data_dict = mark_order.orders_query_id(param1)['orders_query_response']['order']['shipping_address']
     if type(data_dict) is list:
-        return render(request, 'order_query_show.html', {'data_dict': data_dict})
+        return render(request, 'order_query_shop.html', {'data_dict': data_dict})
     ls = []
     ls.append(data_dict)
-    return render(request, 'order_query_show.html', {'data_dict': ls})
+    return render(request, 'order_query_shop.html', {'data_dict': ls})
 
+
+@csrf_exempt
+@fault_decorator
+def delete_offer(request):
+    if request.method == 'POST':
+        data = request.POST
+        data_dict = {'offer_reference': data.get('offer_reference')}
+        batch_id = mark.delete_offer(data_dict)
+        return render(request, 'test/profile.html', {'batch_id': batch_id})
+
+
+@csrf_exempt
+@fault_decorator
+def update_offer_price(request):
+    if request.method == 'POST':
+        data = request.POST
+        data_dict = {
+            'offer_reference': data.get('offer_reference'),
+            'price': data.get('price')
+        }
+        batch_id = mark.update_offer_price(data_dict)
+        time.sleep(1)
+        status = mark.batch_status(batch_id)['batch_status_response']
+        print(status)
+        try:
+            status['status'] = status['@status']
+            status['offer']['status'] = status['offer']['@status']
+        except:
+            status['status'] = ''
+            status['offer']['status'] = ''
+        try:
+            status['offer']['error']['text'] = status['offer']['error']['#text']
+            status['offer']['product_fnac_id'] = ''
+            status['offer']['offer_fnac_id'] = ''
+        except:
+            # pass
+            status['offer']['error'] = {'text': ''}
+        print(status)
+        return JsonResponse(status)
+        # return render(request, 'test/offers_query.html', {'dict_status': status})
+
+        # data_dict = mark.batch_status({'batch_id': batch_id})
+        # return render(request, 'test/offers_query.html', {'batch_id': batch_id})
+
+
+@csrf_exempt
+@fault_decorator
+def batch_query_offer(request, param1):
+    status = mark.batch_status(param1)['batch_status_response']
+    try:
+        status['status'] = status['@status']
+        status['offer']['status'] = status['offer']['@status']
+    except:
+        status['status'] = ''
+        status['offer']['status'] = ''
+    try:
+        status['offer']['error']['text'] = status['offer']['error']['#text']
+    except:
+        pass
+    print(status)
+    # return JsonResponse(status)
+    return render(request, 'test/profile.html', {'dict_status': status})
+
+
+@csrf_exempt
+@fault_decorator
+def offers_query_price(request):
+    if request.method == 'POST':
+        data = request.POST
+        min_p = int(data.get('min_p'))
+        max_p = int(data.get('max_p'))
+        data_dict = mark.offers_query()['offers_query_response']['offer']
+        print(data_dict)
+        if type(data_dict) is list:
+            lis = []
+            for index in range(len(data_dict)):
+                if min_p <= float(data_dict[index]['price']) <= max_p:
+                    lis.append(data_dict[index])
+            print(lis)
+            return render(request, 'test/offers_query.html', {'data_dict_ls': lis})
+        ls = []
+        if min_p <= float(data_dict['price']) <= max_p:
+            ls.append(data_dict)
+        print(ls)
+        return render(request, 'test/offers_query.html', {'data_dict_ls': ls})

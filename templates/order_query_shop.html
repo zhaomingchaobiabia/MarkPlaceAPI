@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>order_query_show</title>
+</head>
+<body>
+    <div>
+       <table border="1">
+        <tr>
+            <td>firstname</td>
+            <td>lastname</td>
+            <td>company</td>
+            <td>address1</td>
+            <td>address2</td>
+            <td>address3</td>
+            <td>zipcode</td>
+            <td>city</td>
+            <td>country</td>
+        </tr>
+        {% for dict_data in data_dict %}
+        <tr>
+            <td>{{ dict_data.firstname }}</td>
+            <td>{{ dict_data.lastname }}</td>
+            <td>{{ dict_data.company }}</td>
+            <td>{{ dict_data.address1 }}</td>
+            <td>{{ dict_data.address2 }}</td>
+            <td>{{ dict_data.address3 }}</td>
+            <td>{{ dict_data.zipcode }}</td>
+            <td>{{ dict_data.city }}</td>
+            <td>{{ dict_data.country }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    </div>
+</body>
+</html>

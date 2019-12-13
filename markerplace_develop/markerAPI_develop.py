@@ -1,21 +1,23 @@
 from markerplace.market_api import MarketPlaceApi
+from markerplace.market_api import outter
 import xmltodict
 import requests
 
 
 class SalesPeriodsApi(MarketPlaceApi):
-
+    @outter
     def sales_periods_query(self, query_dict):
-        self.authentication()
+        # self.authentication()
         data_dict = {
             'sales_periods_query':
                 {
                     '@xmlns': self.xmlns, '@shop_id': self.shop_id,
                     '@partner_id': self.partner_id,
-                    '@token': self.token, '@results_count': query_dict['results_count'],
+                    '@token': self.token, '@results_count': 50,
                     'paging': query_dict['paging'],
                     'date': {'@type': query_dict['date_type'], 'min': query_dict['min'],
                              'max': query_dict['max']},
+                    'reference': query_dict['reference']
                 }
         }
         data_xml = xmltodict.unparse(data_dict, encoding='utf-8')
@@ -28,8 +30,9 @@ class SalesPeriodsApi(MarketPlaceApi):
         return response.status_code
 
     # 定价查询
+    @outter
     def pricing_query(self, query_dict):
-        self.authentication()
+        # self.authentication()
         data_dict = {
             'pricing_query':
                 {
@@ -50,8 +53,9 @@ class SalesPeriodsApi(MarketPlaceApi):
             return data
         return response.status_code
 
+    @outter
     def messages_query(self, query_dict):
-        self.authentication()
+        # self.authentication()
         data_dict = {
             'messages_query':
                 {
@@ -73,8 +77,9 @@ class SalesPeriodsApi(MarketPlaceApi):
             return data
         return response.status_code
 
+    @outter
     def messages_query_type(self, query_dict):
-        self.authentication()
+        # self.authentication()
         data_dict = {
             'messages_query':
                 {
@@ -97,8 +102,9 @@ class SalesPeriodsApi(MarketPlaceApi):
             return data
         return response.status_code
 
+    @outter
     def messages_update(self, update_dict):
-        self.authentication()
+        # self.authentication()
         data_dict = {
             'messages_update':
                 {

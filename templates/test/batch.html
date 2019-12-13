@@ -57,10 +57,50 @@
             </tr>
         </table>
         <!-- /.container-fluid -->
+        <div class="row">
+                    <div class="col-sm-12">
+                        <div class="white-box">
+                            <h3>Basic Table</h3>
+                            <p class="text-muted">Add class <code>.table</code></p>
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>status</th>
+                                            <th>batch_id</th>
+                                            <th>offer_status</th>
+                                            <th>product_fnac_id</th>
+                                            <th>offer_fnac_id</th>
+                                            <th>offer_seller_id</th>
+                                            <th>error</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% if dict_status == '' %}
+                                        <tr>
+                                            <td></td>
+                                        </tr>
+                                    {% else %}
+                                        <tr>
+                                            <td>{{ dict_status.status }}</td>
+                                            <td>{{ dict_status.batch_id }}</td>
+                                            <td>{{ dict_status.offer.status }}</td>
+                                            <td>{{ dict_status.offer.product_fnac_id }}</td>
+                                            <td>{{ dict_status.offer.offer_fnac_id }}</td>
+                                            <td>{{ dict_status.offer.offer_seller_id }}</td>
+                                            <td>{{ dict_status.offer.error.text }}</td>
+                                        </tr>
+                                    {% endif %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
     </div>
     <!-- /#page-wrapper -->
-    <footer class="footer text-center"> 2017 &copy; Myadmin brought to you by wrappixe - More Templates <a href="http://www.cssmoban.com/" target="_blank" title="模板之家">模板之家</a> - Collect from <a href="http://www.cssmoban.com/" title="网页模板" target="_blank">网页模板</a> </footer>
-    </div>
+    {% include 'test/end.html' %}
+        </div>
     <!-- /#wrapper -->
     <!-- jQuery -->
     <script src="/static/bower_components/jquery/dist/jquery.min.js"></script>

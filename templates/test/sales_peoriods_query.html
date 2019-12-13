@@ -32,50 +32,30 @@
 <!-- Page Content -->
 <div id="page-wrapper">
     <form action="{% url 'sales_periods_query' %}" accept-charset="UTF-8" enctype="multipart/form-data" method="post">
-        <table>
-            <tr>
-                <th>sales periods query:</th>
-                <th></th>
-            </tr>
-            <tr>
-                <td>results_count:</td>
-                <td><input type="text" name="results_count" value=""></td>
-            </tr>
-            <tr>
-                <td>paging:</td>
-                <td><input type="text" name="paging" value=""></td>
-            </tr>
-            <tr>
-                <td> date:</td>
-                <td><select name="date_type">
-                    <option value="StartAt">StartAt</option>
-                    <option value="EndAt">EndAt</option>
-                </select></td>
-            </tr>
-            <tr>
-                <td>min:</td>
-                <td><input type="date" name="min" value=""></td>
-            </tr>
-            <tr>
-                <td>max:</td>
-                <td><input type="date" name="max" value=""></td>
-            </tr>
-            <tr>
-                <td><input type="submit" value="提交"></td>
-            </tr>
 
-        </table>
-    </form>
-    <table>
-        <tr>
-            <th>Carriers Query:</th>
-            <th><a href="{% url 'carriers_query' %}"><input type="button" value="提交"></a></th>
-        </tr>
-    </table>
+        sales periods query:<br>
+        paging:
+        <input type="number" name="paging" value="">
+        date:
+        <select name="date_type">
+            <option value="StartAt">StartAt</option>
+            <option value="EndAt">EndAt</option>
+        </select>
+        min:
+        <input type="date" name="min" value="">
+        max:
+        <input type="date" name="max" value="">
+        reference:
+        <input type="text" name="reference" value="">
+        <input type="submit" value="提交">
+    </form><br>
+
+    <a href="{% url 'carriers_query' %}"><input type="button" value="Carriers Query"></a>
+    <br>
     <div class="row">
         <div class="col-md-12">
             <div class="white-box clearfix">
-                <h4>Data Show</h4>
+                <h4>Carriers Show</h4>
                 <div class="icon-list-demo">
                     {% for ls in data %}
                         <div class="col-sm-6 col-md-4 col-lg-3"><i class="ti-shopping-cart-full"></i>{{ ls.name }}
@@ -88,9 +68,7 @@
     <!-- /.container-fluid -->
 </div>
 <!-- /#page-wrapper -->
-<footer class="footer text-center"> 2017 &copy; Myadmin brought to you by wrappixe - More Templates <a
-        href="http://www.cssmoban.com/" target="_blank" title="模板之家">模板之家</a> - Collect from <a
-        href="http://www.cssmoban.com/" title="网页模板" target="_blank">网页模板</a></footer>
+{% include 'test/end.html' %}
 </div>
 <!-- /#wrapper -->
 <!-- jQuery -->

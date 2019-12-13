@@ -5,8 +5,12 @@ from markerplace import views
 urlpatterns = [
     path('', views.index, name='index'),
     path('offers-update/', views.offers_update, name='offers_update'),
+    path('update-offer-price/', views.update_offer_price, name='update_offer_price'),
+    path('delete-offer/', views.delete_offer, name='delete_offer'),
     path('batch-status/', views.batch_status, name='batch_status'),
     path('offers-query/', views.offers_query, name='offers_query'),
+    path('offers-query-price/', views.offers_query_price, name='offers_query_price'),
+
     path('offers-query-date/', views.offers_query_date, name='offers_query_date'),
     path('offers-query-quantity/', views.offers_query_quantity, name='offers_query_quantity'),
     path('batch-query/', views.batch_query, name='batch_query'),
@@ -25,4 +29,5 @@ urlpatterns = [
     path('incident-update/', views.incident_update, name='incident_update'),
     re_path(r'^order/(.+)/$', views.order),
     re_path(r'^order-shop/(.+)/$', views.order_shop),
+    re_path(r'^batch_query/(.+)/$', views.batch_query_offer),
 ]

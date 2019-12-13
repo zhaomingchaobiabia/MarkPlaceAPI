@@ -8,7 +8,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
-
     <link rel="icon" type="image/png" sizes="16x16" href="/static/images/favicon.png">
     <title>My Admin - is a responsive admin template</title>
     <!-- Bootstrap Core CSS -->
@@ -24,6 +23,22 @@
     <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
     <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
 <![endif]-->
+    <style type="text/css">
+        #orders_id{
+            display: none;
+        }
+         .table {
+            vertical-align: middle;
+            text-align: center;
+        }
+
+        {##img_id {#}
+        {#    text-align: center;#}
+        {#}#}
+        #tr_cen th{
+            text-align: center;
+        }
+    </style>
 </head>
 
 <body>
@@ -34,36 +49,15 @@
 {% include 'test/wrapper.html' %}
 <!-- Page Content -->
 <div id="page-wrapper">
-    <form action="{% url 'orders_query' %}" enctype="multipart/form-data" method="post" accept-charset="UTF-8">
-        <table>
-            <tr>
-                <th>order query：</th>
-                <th></th>
-            </tr>
-            <tr>
-                <td> paging:</td>
-                <td><input type="number" name="paging" value=""></td>
-            </tr>
-            <tr>
-                <td><input type="submit" value="提交"></td>
-                <td></td>
-            </tr>
-        </table>
-    </form>
-    <br>
     <form action="{% url 'orders_query_date' %}" method="post" accept-charset="UTF-8" enctype="multipart/form-data">
-        <table>
-            <tr>
-                <th>order time query：</th>
-                <th></th>
-            </tr>
-            <tr>
-                <td>paging:</td>
-                <td><input type="number" name="paging" value=""></td>
-            </tr>
-            <tr>
-                <td>state:</td>
-                <td><select name="state">
+
+        order query：<br>
+
+            paging:
+                <input type="number" name="paging" value="">
+            state:
+                <select name="state">
+                    <option value="ALL">ALL</option>
                     <option value="Created">Created</option>
                     <option value="Accepted">Accepted</option>
                     <option value="Refused">Refused</option>
@@ -74,54 +68,59 @@
                     <option value="Refunded">Refunded</option>
                     <option value="Error">Error</option>
                 </select>
-                </td>
-            </tr>
-            <tr>
-                <td>date:</td>
-                <td><select name="date-type">
+
+                date:
+                <select name="date-type">
                     <option value="CreatedAt">Created</option>
                     <option value="UpdatedAt">Modified</option>
-                </select></td>
-            </tr>
-            <tr>
-                <td>min:</td>
-                <td><input type="date" name="min" value=""></td>
-            </tr>
-            <tr>
-                <td>max:</td>
-                <td><input type="date" name="max" value=""></td>
-            </tr>
-            <tr>
-                <td><input type="submit" value="提交"></td>
-                <td></td>
-            </tr>
-        </table>
+                </select>
+
+                min:
+                <input type="date" name="min" value="">
+            max:
+            <input type="date" name="max" value="">
+           <input type="submit" value="提交">
+
+
     </form><br>
 
     <form action="{% url 'orders_query_id' %}" enctype="multipart/form-data" accept-charset="UTF-8" method="post">
-            <table>
-                <tr>
-                    <th>orders_fnac_id_query:</th>
-                </tr>
-                <tr>
-                    <td>orders_fnac_id:</td>
-                    <td><input type="text" name="orders_fnac_id" value=""></td>
-                </tr>
-                <tr>
-                    <td><input type="submit" value="提交"></td>
-                    <td></td>
-                </tr>
-            </table>
+        orders_fnac_id_query:<br>
+        orders_fnac_id:
+        <input type="text" name="orders_fnac_id" value="">
+        <input type="submit" value="提交">
+
         </form>
         <div class="row">
                     <div class="col-sm-12">
                         <div class="white-box">
                                 <h3>Order Table</h3>
-                            <p class="text-muted">Add class <code>.table</code></p>
+                            <p class="text-muted">order update <code>.table</code></p>
+                        <form method="post" action="{% url 'orders_update' %}" enctype="multipart/form-data" accept-charset="UTF-8">
+                            <input type="text"  id="orders_id" name="orders_id" value="">
+                            action:
+                                <select name="action">
+                                    <option value="accept_order">accept_order</option>
+                                    <option value="confirm_to_send">confirm_to_send</option>
+                                    <option value="update">update</option>
+                                    <option value="accept_all_orders">accept_all_orders</option>
+                                    <option value="confirm_all_to_send">confirm_all_to_send</option>
+                                    <option value="update_all">update_all</option>
+                                </select>
+                                order_detail_action:
+                                <select name="order_detail_action">
+                                    <option value="Accepted">Accepted</option>
+                                    <option value="Refused">Refused</option>
+                                    <option value="Shipped">Shipped</option>
+                                    <option value="Refunded">Refunded</option>
+                                    <option value="Updated">Updated</option>
+                                </select>
+                                <input id="sub_all" type="submit" value="提交">
+                        </form>
                             <div class="table-responsive">
                                 <table class="table">
                                     <thead>
-                                        <tr>
+                                        <tr id="tr_cen">
                                             <th><input id="all_check" type="checkbox">all</th>
                                             <th>order_id</th>
                                             <th>state</th>
@@ -138,7 +137,7 @@
                                     <tbody>
                                         {% for li in data_dict_ls %}
                                         <tr class="tr_order">
-                                            <td><input type="checkbox"></td>
+                                            <td class="cl_checkbox"><input type="checkbox" name="na_check" value="{{ li.order_id }}"></td>
                                             <td class="order_id">{{ li.order_id }}</td>
                                             <td>{{ li.state }}</td>
                                             <td>{{ li.client_firstname }}</td>
@@ -152,25 +151,38 @@
                                         </tr>
                                         {% endfor %}
                                         <script>
-                                            $(document).ready(function(){
-                                                  $(".detail").click(function(){
-                                                      th = $(this);
-                                                      id = th.parents('.tr_order').children('.order_id').text();
-                                                      this.href = '/order/' + id+ '/';
-                                                  });
-
-                                                  $(".shop").click(function(){
-                                                      th = $(this);
-                                                      id = th.parents('.tr_order').children('.order_id').text();
-                                                      this.href = '/order-shop/' + id+ '/';
-                                                  });
-
-                                                  $('#all_check').click(function () {
-                                                      th = $(this);
-                                                      
-
-                                                  })
+                                            $(document).ready(function() {
+                                                $(".detail").click(function () {
+                                                    th = $(this);
+                                                    id = th.parents('.tr_order').children('.order_id').text();
+                                                    this.href = '/order/' + id + '/';
                                                 });
+
+                                                $(".shop").click(function () {
+                                                    th = $(this);
+                                                    id = th.parents('.tr_order').children('.order_id').text();
+                                                    this.href = '/order-shop/' + id + '/';
+                                                });
+
+                                                $('#all_check').click(function () {
+                                                    th = $(this);
+                                                    if (th.is(':checked')) {
+                                                        $('.cl_checkbox input').prop('checked', true)
+                                                    } else {
+                                                        $('.cl_checkbox input').prop('checked', false)
+                                                    }
+
+                                                });
+                                                $('#sub_all').click(function () {
+                                                        var id_array = [];
+                                                        $('input[name="na_check"]:checked').each(function () {
+                                                            id_array.push($(this).val());//向数组中添加元素
+                                                        });  //获取界面复选框的所有值
+
+                                                        var chapterstr = id_array.join(',');//把复选框的值以数组形式存放
+                                                        $('#orders_id').val(chapterstr)
+                                                    })
+                                            })
                                         </script>
                                     </tbody>
                                 </table>
@@ -184,9 +196,7 @@
     <!-- /.container-fluid -->
 </div>
 <!-- /#page-wrapper -->
-<footer class="footer text-center"> 2017 &copy; Myadmin brought to you by wrappixe - More Templates <a
-        href="http://www.cssmoban.com/" target="_blank" title="模板之家">模板之家</a> - Collect from <a
-        href="http://www.cssmoban.com/" title="网页模板" target="_blank">网页模板</a></footer>
+{% include 'test/end.html' %}
 </div>
 <!-- /#wrapper -->
 <!-- jQuery -->

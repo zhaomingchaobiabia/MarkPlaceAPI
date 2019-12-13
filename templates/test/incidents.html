@@ -21,54 +21,49 @@
     <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
     <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
 <![endif]-->
+    <style>
+        .table {
+            vertical-align: middle;
+            text-align: center;
+        }
+
+
+        #tr_cen th {
+            text-align: center;
+        }
+
+
+    </style>
 </head>
 
 <body>
 <!-- Preloader -->
-<div class="preloader">
+<div class="preloader">{% load date_filter %}
     <div class="cssload-speeding-wheel"></div>
 </div>
 {% include 'test/wrapper.html' %}
 <!-- Page Content -->
 <div id="page-wrapper">
     <form action="{% url 'incidents_query' %}" method="post" enctype="multipart/form-data" accept-charset="UTF-8">
-        <table>
-            <tr>
-                <th>incidents query:</th>
-                <th></th>
-            </tr>
-            <tr>
-                <td>paging:</td>
-                <td><input type="text" name="paging" value=""></td>
-            </tr>
-            <tr>
-                <td> date:</td>
-                <td><select name="date-type">
-                    <option value="CreatedAt">CreatedAt</option>
-                    <option value="UpdatedAt">UpdatedAt</option>
-                    <option value="ClosedAt">ClosedAt</option>
-                </select></td>
-            </tr>
-            <tr>
-                <td>min:</td>
-                <td><input type="date" name="min" value=""></td>
-            </tr>
-            <tr>
-                <td>max:</td>
-                <td><input type="date" name="max" value=""></td>
-            </tr>
-            <tr>
-                <td>status:</td>
-                <td><select name="status">
-                    <option value="OPENED">OPENED</option>
-                    <option value="CLOSED">CLOSED</option>
-                </select></td>
-            </tr>
-            <tr>
-                <td><input type="submit" value="提交"></td>
-                <td></td>
-            </tr>
-        </table>
+        incidents query:<br>
+        paging:
+        <input type="text" name="paging" value="">
+        date:
+        <select name="date-type">
+            <option value="CreatedAt">CreatedAt</option>
+            <option value="UpdatedAt">UpdatedAt</option>
+            <option value="ClosedAt">ClosedAt</option>
+        </select>
+        min:
+        <input type="date" name="min" value="">
+        max:
+        <input type="date" name="max" value="">
+        status:
+        <select name="status">
+            <option value="OPENED">OPENED</option>
+            <option value="CLOSED">CLOSED</option>
+        </select>
+        <input type="submit" value="提交">
     </form>
     <br>
     <form action="{% url 'incident_update' %}" enctype="multipart/form-data" method="post" accept-charset="UTF-8">
@@ -88,21 +83,65 @@
             <tr>
                 <td>refund_reason:</td>
                 <td><select name="refund_reason">
-                <option value="no_stock">no_stock</option>
-                <option value="other">other</option>
-            </select></td>
+                    <option value="no_stock">no_stock</option>
+                    <option value="other">other</option>
+                </select></td>
             </tr>
             <tr>
                 <td><input type="submit" value="提交"></td>
             </tr>
         </table>
-        </form>
+    </form>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="white-box">
+                <h3>Incident Table</h3>
+                <p class="text-muted">Add class <code>.table</code></p>
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                        <tr id="tr_cen">
+                            <th>stauts</th>
+                            <th>waiting_for_seller_answer</th>
+                            <th>message</th>
+                            <th>order_id</th>
+                            <th>created_at</th>
+                            <th>updated_at</th>
+                            <th>opened_by</th>
+                            <th>closed_by</th>
+                            <th>detail</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% if dict_data_ls == '' %}
+                            <tr>
+                                <td></td>
+                            </tr>
+                        {% else %}
+                            {% for dict_data in dict_data_ls %}
+                                <tr class="tr_show">
+                                    <td>{{ dict_data.header.status }}</td>
+                                    <td>{{ dict_data.header.waiting_for_seller_answer }}</td>
+                                    <td>{{ dict_data.header.message }}</td>
+                                    <td>{{ dict_data.header.order_id }}</td>
+                                    <td>{{ dict_data.header.created_at | too }}</td>
+                                    <td>{{ dict_data.header.updated_at | too }}</td>
+                                    <td>{{ dict_data.header.opened_by }}</td>
+                                    <td>{{ dict_data.header.closed_by }}</td>
+                                    <td>{{ dict_data.order_details_incident.order_detail_incident | detail_filter }}</td>
+                                </tr>
+                            {% endfor %}
+                        {% endif %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
     <!-- /.container-fluid -->
 </div>
 <!-- /#page-wrapper -->
-<footer class="footer text-center"> 2017 &copy; Myadmin brought to you by wrappixe - More Templates <a
-        href="http://www.cssmoban.com/" target="_blank" title="模板之家">模板之家</a> - Collect from <a
-        href="http://www.cssmoban.com/" title="网页模板" target="_blank">网页模板</a></footer>
+{% include 'test/end.html' %}
 </div>
 <!-- /#wrapper -->
 <!-- jQuery -->
@@ -117,6 +156,7 @@
 <script src="/static/js/waves.js"></script>
 <!-- Custom Theme JavaScript -->
 <script src="/static/js/myadmin.js"></script>
+
 </body>
 
 </html>
