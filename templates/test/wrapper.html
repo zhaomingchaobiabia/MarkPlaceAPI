@@ -1,3 +1,5 @@
+<script src="/static/bower_components/jquery/dist/jquery.min.js"></script>
+
 <div id="wrapper">
         <!-- Navigation -->
         <nav class="navbar navbar-default navbar-static-top" style="margin-bottom: 0">
@@ -9,8 +11,8 @@
                 <ul class="nav navbar-top-links navbar-right pull-right">
                     <li>
                         <form role="search" class="app-search hidden-xs">
-                            <input type="text" placeholder="Search..." class="form-control">
-                            <a href=""><i class="ti-search"></i></a>
+                            <input  id="search" type="text" placeholder="Search..." class="form-control">
+                            <a href="" id="cli_a"><i class="ti-search"></i></a>
                         </form>
                     </li>
                     <li>
@@ -28,3 +30,12 @@
         </div>
         <!-- /.sidebar-collapse -->
     </div>
+<script>
+    $(document).ready(function () {
+        $('#cli_a').click(function () {
+            let th = $(this);
+            let name = $('#search').val();
+            th.attr('href', '/search-name/' + name + '/')
+        })
+    })
+</script>

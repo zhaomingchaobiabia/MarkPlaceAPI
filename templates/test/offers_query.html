@@ -49,7 +49,7 @@
 <!-- Page Content -->
 <div id="page-wrapper">
     <form action="{% url 'offers_query_date' %}" accept-charset="UTF-8" enctype="multipart/form-data" method="post">
-        根据时间查询：<br>
+        <strong>Query by time:</strong><br>
         date:
         <select name="date-type">
             <option value="Created">Created</option>
@@ -63,7 +63,7 @@
 
     </form>
     <form action="{% url 'offers_query_quantity' %}" method="post" enctype="multipart/form-data" accept-charset="UTF-8">
-        根据数量查询：<br>
+        <strong>Query by quantity:</strong><br>
 
         quantity:
         <select name="quantity-type">
@@ -77,15 +77,15 @@
 
     </form>
     <form action="{% url 'offers_query_price' %}" method="post" enctype="multipart/form-data" accept-charset="UTF-8">
-        根据价格查询：<br>
+        <strong>Query by price:</strong><br>
         min_price:
         <input type="number" name="min_p" value="">
         max_price:
         <input type="number" name="max_p" value="">
         <input type="submit" value="提交">
     </form>
-    价格更新:<br>
-    offer_reference :
+    <strong>Price update:</strong><br>
+    offer_reference:
     <input type="text" id="ref" name="offer_reference" value="" placeholder="SellerSku">
     price:
     <input type="number" id="pri" name="price" value="">

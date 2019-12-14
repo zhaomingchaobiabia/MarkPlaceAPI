@@ -51,7 +51,7 @@
 <div id="page-wrapper">
     <form action="{% url 'orders_query_date' %}" method="post" accept-charset="UTF-8" enctype="multipart/form-data">
 
-        order query：<br>
+        <strong>Order query:</strong><br>
 
             paging:
                 <input type="number" name="paging" value="">
@@ -85,7 +85,7 @@
     </form><br>
 
     <form action="{% url 'orders_query_id' %}" enctype="multipart/form-data" accept-charset="UTF-8" method="post">
-        orders_fnac_id_query:<br>
+        <strong>Orders_fnac_id_query:</strong><br>
         orders_fnac_id:
         <input type="text" name="orders_fnac_id" value="">
         <input type="submit" value="提交">

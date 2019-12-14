@@ -38,31 +38,19 @@
                 <th></th>
             </tr>
             <tr>
-                <td>action:</td>
-                <td><select name="action">
-                <option value="mark_as_read">已读</option>
-                <option value="mark_as_unread">未读</option>
-                <option value="archive">存档</option>
-                <option value="mark_as_read_and_archive">已读并存档</option>
-                <option value="unarchive">删除存档</option>
-                <option value="reply">回复</option>
-                <option value="create">创建</option>
-            </select></td>
-            </tr>
-            <tr>
                 <td>id:</td>
                 <td><input type="text" name="id" value=""></td>
             </tr>
             <tr>
                 <td>action:</td>
                 <td><select name="action1">
-                <option value="mark_as_read">已读</option>
-                <option value="mark_as_unread">未读</option>
-                <option value="archive">存档</option>
-                <option value="mark_as_read_and_archive">已读并存档</option>
-                <option value="unarchive">删除存档</option>
-                <option value="reply">回复</option>
-                <option value="create">创建</option>
+                <option value="mark_as_read">read</option>
+                <option value="mark_as_unread">unread</option>
+                <option value="archive">archive</option>
+                <option value="mark_as_">read_and_archive</option>
+                <option value="unarchive">unarchive</option>
+                <option value="reply">reply</option>
+                <option value="create">create</option>
             </select></td>
             </tr>
             <tr>
@@ -102,6 +90,8 @@
             </tr>
         </table>
         </form>
+    <span>{{ data.status }}</span>
+    <span>{{ data.id }}</span>
 </div>
 <div>
 

@@ -629,14 +629,15 @@ class IncidentsApi(MarketPlaceApi):
     def incidents_query(self, query_dict):
         # self.authentication()
         data_dict = {
-            'incidents_query ': {'@xmlns': self.xmlns, '@shop_id': self.shop_id,
-                                 '@partner_id': self.partner_id,
-                                 '@token': self.token, '@results_count': query_dict['results_count'],
-                                 'paging': query_dict['paging'],
-                                 'date': {'@type': query_dict['date_type'], 'min': query_dict['min'],
-                                          'max': query_dict['max']},
-                                 }
+            'incidents_query': {'@xmlns': self.xmlns, '@shop_id': self.shop_id,
+                                '@partner_id': self.partner_id,
+                                '@token': self.token, '@results_count': 50,
+                                'paging': query_dict['paging']
+                                }
         }
+        if 'date_type' in query_dict:
+            data_dict['incidents_query']['date'] = {'@type': query_dict['date_type'], 'min': query_dict['min'],
+                                                    'max': query_dict['max']}
         data_xml = xmltodict.unparse(data_dict, encoding='utf-8')
         print(data_xml)
         url = self.url + '/incidents_query'

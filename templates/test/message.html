@@ -15,6 +15,8 @@
     <link href="/static/bower_components/metisMenu/dist/metisMenu.min.css" rel="stylesheet">
     <!-- Custom CSS -->
     <link href="/static/css/style.css" rel="stylesheet">
+
+    <link href="/static/css/my.css" rel="stylesheet">
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -25,14 +27,14 @@
 
 <body>
 <!-- Preloader -->
-<div class="preloader">
+<div class="preloader">{% load date_filter %}
     <div class="cssload-speeding-wheel"></div>
 </div>
 {% include 'test/wrapper.html' %}
 <!-- Page Content -->
 <div id="page-wrapper">
     <form action="{% url 'messages_query' %}" accept-charset="UTF-8" enctype="multipart/form-data" method="post">
-        message query:<br>
+        <strong>Message query:</strong><br>
         paging:
         <input type="text" name="paging" value="">
         date:
@@ -48,7 +50,7 @@
     </form>
     <br>
     <form action="{% url 'messages_query_type' %}" method="post" enctype="multipart/form-data" accept-charset="UTF-8">
-        message type query：<br>
+        <strong>Message type query:</strong><br>
         message_type:
         <select name="message_type">
             <option value="OFFER">OFFER</option>
@@ -66,6 +68,71 @@
         </select>
         <input type="submit" value="提交">
     </form>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="white-box">
+                <h3>Message Table</h3>
+                <p class="text-muted"><code>state update:</code></p>
+                <form action="{% url 'message_update_state' %}" method="post" accept-charset="UTF-8" enctype="multipart/form-data">
+                    action:
+                    <select id="action" name="action">
+                        <option value="mark_as_read">read</option>
+                        <option value="mark_as_unread">unread</option>
+                        <option value="archive">archive</option>
+                        <option value="mark_as_">read_and_archive</option>
+                        <option value="unarchive">unarchive</option>
+                        <option value="reply">reply</option>
+                        <option value="create">create</option>
+                    </select>
+                    id:
+                    <input id="mes_id" type="text" name="id" value="">
+                    <input id='sub_bu' type="button" value="提交">
+                </form>
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                        <tr id="tr_cen">
+                            <th>message_id</th>
+                            <th>state</th>
+                            <th>archived</th>
+                            <th>referer_type</th>
+                            <th>referer_text</th>
+                            <th>from_type</th>
+                            <th>from_text</th>
+                            <th>subject</th>
+                            <th>description</th>
+                            <th>create</th>
+                            <th>update</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% if data_ls == '' %}
+                            <tr>
+                                <td></td>
+                            </tr>
+                        {% else %}
+                            {% for data in data_ls %}
+                                <tr>
+                                    <td>{{ data.message_id }}</td>
+                                    <td>{{ data.state }}</td>
+                                    <td>{{ data.archived }}</td>
+                                    <td>{{ data.message_referer.type }}</td>
+                                    <td>{{ data.message_referer.text }}</td>
+                                    <td>{{ data.message_from.type }}</td>
+                                    <td>{{ data.message_from.text }}</td>
+                                    <td>{{ data.message_subject }}</td>
+                                    <td>{{ data.message_description }}</td>
+                                    <td>{{ data.created_at | too }}</td>
+                                    <td>{{ data.updated_at | too }}</td>
+                                </tr>
+                            {% endfor %}
+                        {% endif %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 <div>
 
@@ -88,6 +155,26 @@
 <script src="/static/js/waves.js"></script>
 <!-- Custom Theme JavaScript -->
 <script src="/static/js/myadmin.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#sub_bu').click(function () {
+            let action = $('#action').val();
+            let mes_id = $('#mes_id').val();
+            $.ajax({
+                url: '/message_update_state/',
+                dataType: 'json',
+                type: 'post',
+                data: {'action': action, 'id': mes_id},
+                success: function (data) {
+                    window.location.reload()
+                },
+                error: function (data) {
+                    alert('error')
+                }
+            })
+        })
+    })
+</script>
 </body>
 
 </html>

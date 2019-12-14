@@ -44,6 +44,7 @@
 {% include 'test/wrapper.html' %}
 <!-- Page Content -->
 <div id="page-wrapper">
+    <strong>Add offer:</strong>
     <form action="{% url 'offers_update' %}" accept-charset="UTF-8" enctype="multipart/form-data" method="post">
         <table>
             <tr>
@@ -176,7 +177,7 @@
     </form>
     <br>
     <form action="{% url 'update_offer_price' %}" accept-charset="UTF-8" enctype="multipart/form-data" method="post">
-        update price:<br>
+        <strong>Update price:</strong><br>
         offer_reference :
         <input type="text" name="offer_reference" value="" placeholder="SellerSku">
         price:
@@ -184,7 +185,7 @@
         <input type="submit" value="提交">
     </form><br>
     <form action="{% url 'delete_offer' %}" accept-charset="UTF-8" enctype="multipart/form-data" method="post">
-        delete offer:<br>
+        <strong>Delete offer:</strong><br>
         offer_reference :
         <input type="text" name="offer_reference" value="" placeholder="SellerSku">
         <input type="submit" value="提交">

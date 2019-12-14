@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 from markerplace_develop.markerAPI_develop import SalesPeriodsApi
 from markerplace.views import fault_decorator
-
+from django.http.response import JsonResponse
 sales = SalesPeriodsApi()
 
 
@@ -42,15 +42,35 @@ def pricing_query(request):
 @fault_decorator
 def messages_query(request):
     if request.method == 'GET':
-        return render(request, 'test/message.html')
-    if request.method == 'POST':
+        data_dict = {'paging': 1}
+    else:
         data = request.POST
         data_dict = {'paging': data.get('paging'),
                      'date_type': data.get('date_type'), 'min': data.get('min'),
                      'max': data.get('max')
                      }
-        data = sales.messages_query(data_dict)
-        return render(request, 'messages_query.html', {'data': data})
+    try:
+        data = sales.messages_query(data_dict)['messages_query_response']['message']
+        if type(data) is list:
+            for li in data:
+                li['state'] = li['@state']
+                li['archived'] = li['@archived']
+                li['message_referer']['type'] = li['message_referer']['@type']
+                li['message_referer']['text'] = li['message_referer']['#text']
+                li['message_from']['type'] = li['message_from']['@type']
+                li['message_from']['text'] = li['message_from']['#text']
+            return render(request, 'test/message.html', {'data_ls': data})
+        ls = []
+        data['state'] = data['@state']
+        data['archived'] = data['@archived']
+        data['message_referer']['type'] = data['message_referer']['@type']
+        data['message_referer']['text'] = data['message_referer']['#text']
+        data['message_from']['type'] = data['message_from']['@type']
+        data['message_from']['text'] = data['message_from']['#text']
+        ls.append(data)
+        return render(request, 'test/message.html', {'data_ls': ls})
+    except:
+        return render(request, 'test/message.html', {'data_ls': ''})
 
 
 @csrf_exempt
@@ -75,12 +95,27 @@ def message_update(request):
     if request.method == 'POST':
         data = request.POST
         data_dict = {
-            'action': data.get('action'), 'id': data.get('id'), 'action1': data.get('action1'),
+            'id': data.get('id'), 'action1': data.get('action1'),
             'message_to': data.get('message_to'), 'message_subject': data.get('message_subject'),
             'message_description': data.get('message_description'), 'message_type': data.get('message_type')
         }
+        try:
+            data = sales.messages_update(data_dict)['messages_update_response']['message']
+            data['status'] = data['@status']
+        except:
+            data = ''
+        return render(request, 'test/message_update.html', {'data': data})
+
+
+@csrf_exempt
+@fault_decorator
+def message_update_state(request):
+    if request.method == 'POST':
+        data = request.POST
+        data_dict = {
+            'action': data.get('action'), 'id': data.get('id')}
         data = sales.messages_update(data_dict)
-        return render(request, 'messages_update.html', {'data': data})
+        return JsonResponse({'data': data})
 
 
 def test1(request):

@@ -349,16 +349,17 @@ def incidents_query1(request):
 @fault_decorator
 def incidents_query(request):
     if request.method == 'GET':
-        return render(request, 'test/incidents.html')
-    if request.method == 'POST':
+        data_dict = {'paging': 1}
+    else:
         data = request.POST
         min = data.get('min') + 'T00:00:00'
         max = data.get('max') + 'T23:59:59'
         data_dict = {
-            'results_count': 50, 'paging': data.get('paging'),
+            'paging': data.get('paging'),
             'date_type': data.get('date-type'), 'min': min, 'max': max, 'status': data.get('status'),
         }
         print(data_dict)
+    try:
         data = incident.incidents_query(data_dict)['incidents_query_response']['incident']
         print(data)
         for da in data:
@@ -376,6 +377,8 @@ def incidents_query(request):
                 data['order_details_incident']['order_detail_incident'], ]
         ls.append(data)
         return render(request, 'test/incidents.html', {'dict_data_ls': ls})
+    except:
+        return render(request, 'test/incidents.html', {'dict_data_ls': ''})
 
 
 @csrf_exempt
@@ -496,3 +499,20 @@ def offers_query_price(request):
             ls.append(data_dict)
         print(ls)
         return render(request, 'test/offers_query.html', {'data_dict_ls': ls})
+
+@csrf_exempt
+@fault_decorator
+def search_name(request, param1):
+    try:
+        datas = mark.offers_query()['offers_query_response']['offer']
+        data_ls = []
+        print('-------------')
+        print(datas)
+        for data in datas:
+            if param1 in data['product_name']:
+                data_ls.append(data)
+        if len(data_ls) == 0:
+            data_ls = ''
+    except:
+        data_ls = ''
+    return render(request, 'test/offers_query.html', {'data_dict_ls': data_ls})

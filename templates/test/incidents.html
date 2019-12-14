@@ -45,7 +45,7 @@
 <!-- Page Content -->
 <div id="page-wrapper">
     <form action="{% url 'incidents_query' %}" method="post" enctype="multipart/form-data" accept-charset="UTF-8">
-        incidents query:<br>
+        <strong>Incidents query:</strong><br>
         paging:
         <input type="text" name="paging" value="">
         date:
@@ -67,30 +67,17 @@
     </form>
     <br>
     <form action="{% url 'incident_update' %}" enctype="multipart/form-data" method="post" accept-charset="UTF-8">
-        <table>
-            <tr>
-                <th>incident update(refund):</th>
-                <th></th>
-            </tr>
-            <tr>
-                <td>order_id:</td>
-                <td><input type="text" name="order_id" value=""></td>
-            </tr>
-            <tr>
-                <td>order_detail_id:</td>
-                <td><input type="text" name="order_detail_id" value=""></td>
-            </tr>
-            <tr>
-                <td>refund_reason:</td>
-                <td><select name="refund_reason">
-                    <option value="no_stock">no_stock</option>
-                    <option value="other">other</option>
-                </select></td>
-            </tr>
-            <tr>
-                <td><input type="submit" value="提交"></td>
-            </tr>
-        </table>
+        <strong>Incident update(refund):</strong><br>
+        order_id:
+        <input type="text" name="order_id" value="">
+        order_detail_id:
+        <input type="text" name="order_detail_id" value="">
+        refund_reason:
+        <select name="refund_reason">
+            <option value="no_stock">no_stock</option>
+            <option value="other">other</option>
+        </select>
+        <input type="submit" value="提交">
     </form>
     <div class="row">
         <div class="col-sm-12">
