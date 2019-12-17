@@ -37,12 +37,13 @@
         #tr_cen th{
             text-align: center;
         }
+
     </style>
 </head>
 
 <body>
 <!-- Preloader -->
-<div class="preloader">
+<div class="preloader">{% load date_filter %}
     <div class="cssload-speeding-wheel"></div>
 </div>
 {% include 'test/wrapper.html' %}
@@ -125,23 +126,23 @@
                 <div class="table-responsive">
                     <table class="table">
                         <thead>
-                        <tr>
-                            {#                            <th>-_-</th>#}
+                        <tr id="tr_cen">
+
                             <th id="img_id">image</th>
-                            <th>product_name</th>
-                            <th>product_fnac_id</th>
-                            <th>offer_fnac_id</th>
-                            <th>offer_seller_id</th>
-                            <th>product_state</th>
+                            <th>pro_name</th>
+                            <th>pro_fnac_id</th>
+                            <th>off_fnac_id</th>
+                            <th>off_seller_id</th>
+                            <th>pro_state</th>
                             <th>price</th>
                             <th>quantity</th>
-                            <th>description</th>
-                            <th>internal_comment</th>
-                            <th>nb_messages</th>
-                            <th>showcase</th>
-                            <th>is_shipping_free</th>
+                            <th id="descrip">description</th>
+{#                            <th>internal_comment</th>#}
+{#                            <th>nb_messages</th>#}
+{#                            <th>showcase</th>#}
+{#                            <th>is_shipping_free</th>#}
                             <th>type_label</th>
-                            <th>product_url</th>
+                            <th>url</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -158,15 +159,15 @@
                                     <td>{{ dict_data.product_name }}</td>
                                     <td>{{ dict_data.product_fnac_id }}</td>
                                     <td>{{ dict_data.offer_fnac_id }}</td>
-                                    <td>{{ dict_data.offer_seller_id }}</td>
+                                    <td>{{ dict_data.offer_seller_id | id_strip}}</td>
                                     <td>{{ dict_data.product_state }}</td>
                                     <td>{{ dict_data.price }}</td>
                                     <td>{{ dict_data.quantity }}</td>
                                     <td>{{ dict_data.description }}</td>
-                                    <td>{{ dict_data.internal_comment }}</td>
-                                    <td>{{ dict_data.nb_messages }}</td>
-                                    <td>{{ dict_data.showcase }}</td>
-                                    <td>{{ dict_data.is_shipping_free }}</td>
+{#                                    <td>{{ dict_data.internal_comment }}</td>#}
+{#                                    <td>{{ dict_data.nb_messages }}</td>#}
+{#                                    <td>{{ dict_data.showcase }}</td>#}
+{#                                    <td>{{ dict_data.is_shipping_free }}</td>#}
                                     <td>{{ dict_data.type_label }}</td>
                                     <td><a href="{{ dict_data.product_url }}"><input type="button" value="转到fanc"></a>
                                     </td>

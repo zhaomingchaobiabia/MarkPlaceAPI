@@ -25,8 +25,13 @@ def detail_filter(value):
     return ls
 
 
+def id_strip(value):
+    new = value.replace(' ', '').strip()
+    return new
 # too('2019-12-10T02:27:19+01:00')
 
 register.filter(too)
 
 register.filter(detail_filter)
+
+register.filter(id_strip)

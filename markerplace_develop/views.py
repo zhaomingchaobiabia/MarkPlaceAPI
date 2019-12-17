@@ -17,7 +17,7 @@ def sales_periods_query(request):
         data = request.POST
         dict_data = {'paging': data.get('paging'),
                      'date_type': data.get('date_type'), 'min': data.get('min') + 'T00:00:00',
-                     'max': data.get('max') + 'T23:59:59',
+                     'max': data.get('max') + 'T23:59:00',
                      'reference': data.get('reference')
                      }
         data = sales.sales_periods_query(dict_data)
@@ -83,9 +83,28 @@ def messages_query_type(request):
                      'message_state': data.get('message_state'), 'sort_by': data.get('sort_type'),
                      'message_from_types': data.get('message_from_types')
                      }
-        data = sales.messages_query_type(data_dict)
-        return render(request, 'messages_query.html', {'data': data})
-
+        try:
+            data = sales.messages_query_type(data_dict)['messages_query_response']['message']
+            if type(data) is list:
+                for li in data:
+                    li['state'] = li['@state']
+                    li['archived'] = li['@archived']
+                    li['message_referer']['type'] = li['message_referer']['@type']
+                    li['message_referer']['text'] = li['message_referer']['#text']
+                    li['message_from']['type'] = li['message_from']['@type']
+                    li['message_from']['text'] = li['message_from']['#text']
+                return render(request, 'test/message.html', {'data_ls': data})
+            ls = []
+            data['state'] = data['@state']
+            data['archived'] = data['@archived']
+            data['message_referer']['type'] = data['message_referer']['@type']
+            data['message_referer']['text'] = data['message_referer']['#text']
+            data['message_from']['type'] = data['message_from']['@type']
+            data['message_from']['text'] = data['message_from']['#text']
+            ls.append(data)
+            return render(request, 'test/message.html', {'data_ls': ls})
+        except:
+            return render(request, 'test/message.html', {'data_ls': ''})
 
 @csrf_exempt
 @fault_decorator
@@ -114,7 +133,10 @@ def message_update_state(request):
         data = request.POST
         data_dict = {
             'action': data.get('action'), 'id': data.get('id')}
-        data = sales.messages_update(data_dict)
+        try:
+            data = sales.messages_update(data_dict)['messages_update_response']['message']['@status']
+        except:
+            data = 'error'
         return JsonResponse({'data': data})
 
 

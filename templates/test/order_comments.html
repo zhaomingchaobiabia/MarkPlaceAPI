@@ -21,11 +21,28 @@
     <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
     <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
 <![endif]-->
+    <style type="text/css">
+        .table {
+            vertical-align: middle;
+            text-align: center;
+        }
+
+        {##img_id {#}
+        {#    text-align: center;#}
+
+        #tr_cen th {
+            text-align: center;
+        }
+        textarea{
+            height: 50px;
+            width: 300px;
+        }
+    </style>
 </head>
 
 <body>
 <!-- Preloader -->
-<div class="preloader">
+<div class="preloader">{% load date_filter %}
     <div class="cssload-speeding-wheel"></div>
 </div>
 {% include 'test/wrapper.html' %}
@@ -33,56 +50,33 @@
 <div id="page-wrapper">
     <form action="{% url 'order_comments_query_date' %}" accept-charset="UTF-8" enctype="multipart/form-data"
           method="post">
-        <table>
-            <tr>
-                <th>query:</th>
-                <th></th>
-            </tr>
-            <tr>
-                <td>paging:</td>
-                <td><input type="text" name="paging" value=""></td>
-            </tr>
-            <tr>
-                <td>date:</td>
-                <td><select name="date-type">
-                    <option value="Created">Created</option>
-                    <option value="Modified">Modified</option>
-                </select></td>
-            </tr>
-            <tr>
-                <td>min:</td>
-                <td><input type="date" name="min" value=""></td>
-            </tr>
-            <tr>
-                <td>max:</td>
-                <td><input type="date" name="max" value=""></td>
-            </tr>
-            <tr>
-                <td><input type="submit" value="提交"></td>
-                <td></td>
-            </tr>
-        </table>
+        <strong>query:</strong><br>
+        paging:
+        <input type="text" name="paging" value="">
+        date:
+        <select name="date-type">
+            <option value="Created">Created</option>
+            <option value="Modified">Modified</option>
+        </select>
+        min:
+        <input type="date" name="min" value="">
+        max:
+        <input type="date" name="max" value="">
+        <input type="submit" value="提交">
+
     </form>
     <br>
     <form action="{% url 'order_comments_query_id' %}" accept-charset="UTF-8" method="post"
           enctype="multipart/form-data">
-        <table>
-            <tr>
-                <th>order_fnac_id_query:</th>
-                <th></th>
-            </tr>
-            <tr>
-                <td>order_fnac_id:</td>
-                <td><input type="text" name="order_fnac_id" value=""></td>
-            </tr>
-            <tr>
-                <td><input type="submit" value="提交"></td>
-                <td></td>
-            </tr>
-        </table>
+        <strong>order_fnac_id_query:</strong><br>
+        order_fnac_id:
+        <input type="text" name="order_fnac_id" value="">
+        <input type="submit" value="提交">
+
     </form>
     <br>
-    <form action="{% url 'client_order_comments_update' %}" accept-charset="UTF-8" enctype="multipart/form-data" method="post">
+    <form action="{% url 'client_order_comments_update' %}" accept-charset="UTF-8" enctype="multipart/form-data"
+          method="post">
         <table>
             <tr>
                 <th>update:</th>
@@ -94,15 +88,65 @@
             </tr>
             <tr>
                 <td>comment_reply:</td>
-{#                <td><input type="text" name="comment_reply" value=""></td>#}
+                {#                <td><input type="text" name="comment_reply" value=""></td>#}
                 <td><textarea name="comment_reply"></textarea></td>
             </tr>
             <tr>
                 <td><input type="submit" value="提交"></td>
-                <td></td>
+                <td>{{ data }}</td>
             </tr>
         </table>
-        </form>
+    </form>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="white-box">
+                <h3>Order Comments Table</h3>
+                <p class="text-muted">Add class <code>.table</code></p>
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                        <tr id="tr_cen">
+                            <th>rate</th>
+                            <th>order_fnac_id</th>
+                            <th>client_order_comment_id</th>
+                            <th>client_name</th>
+                            <th>comment</th>
+                            <th>reply</th>
+                            <th>is_received</th>
+                            <th>is_fast</th>
+                            <th>is_well_packed</th>
+                            <th>is_good_shape</th>
+                            <th>created_at</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% if data_dict_ls == '' %}
+                            <tr>
+                                <td></td>
+                            </tr>
+                        {% else %}
+                            {% for dict_data in data_dict_ls %}
+                                <tr>
+                                    <td>{{ dict_data.rate }}</td>
+                                    <td>{{ dict_data.order_fnac_id }}</td>
+                                    <td>{{ dict_data.client_order_comment_id }}</td>
+                                    <td>{{ dict_data.client_name }}</td>
+                                    <td>{{ dict_data.comment }}</td>
+                                    <td>{{ dict_data.reply }}</td>
+                                    <td>{{ dict_data.is_received }}</td>
+                                    <td>{{ dict_data.is_fast }}</td>
+                                    <td>{{ dict_data.is_well_packed }}</td>
+                                    <td>{{ dict_data.is_good_shape }}</td>
+                                    <td>{{ dict_data.created_at | too}}</td>
+                                </tr>
+                            {% endfor %}
+                        {% endif %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
     <!-- /.container-fluid -->
 </div>
 <!-- /#page-wrapper -->

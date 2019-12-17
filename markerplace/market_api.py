@@ -29,11 +29,11 @@ def outter(func):
 
 class MarketPlaceApi:
     def __init__(self):
-        self.url = 'https://marketplace.ws.fd-recette.net/api.php'
+        self.url = ' https://vendeur.fnac.com/api.php'
         self.headers = {"Content-Type": "text/xml"}
-        self.partner_id = 'E572D914-F603-4E7F-D023-4839FD7695A3'
-        self.shop_id = '8290D0BD-61BB-95A9-C33C-74B811429051'
-        self.key = 'D48CB7CD-70CB-6982-216D-95BD0C4438CF'
+        self.partner_id = 'CA9ACBBE-FA2C-3082-C5B6-7B4B5E614F28'
+        self.shop_id = '0C389B35-32F6-06C8-6C86-5721417F0D13'
+        self.key = '6C6BD5F6-3777-642A-DC37-6DA2F8A07B3F'
         self.xmlns = 'http://www.fnac.com/schemas/mp-dialog.xsd'
 
     # 身份验证 返回token
@@ -174,7 +174,7 @@ class MarketPlaceApi:
 
         dict_data = {
             'offers_query': {'@xmlns': self.xmlns, '@shop_id': self.shop_id, '@partner_id': self.partner_id,
-                             '@token': self.token, '@results_count': 100,
+                             '@token': self.token, '@results_count': 50,
                              'paging': 1}}
 
         # dict_data['offers_query']['promotion_types'] = {'@type': qu_dict['promotion_types']}
@@ -197,7 +197,7 @@ class MarketPlaceApi:
         # self.authentication()
         dict_data = {
             'offers_query': {'@xmlns': self.xmlns, '@shop_id': self.shop_id, '@partner_id': self.partner_id,
-                             '@token': self.token, '@results_count': 100,
+                             '@token': self.token, '@results_count': 50,
                              'paging': 1,
                              'date': {'@type': qu_dict['date-type'], 'min': qu_dict['min'], 'max': qu_dict['max']}
                              }
@@ -220,7 +220,7 @@ class MarketPlaceApi:
         # self.authentication()
         dict_data = {
             'offers_query': {'@xmlns': self.xmlns, '@shop_id': self.shop_id, '@partner_id': self.partner_id,
-                             '@token': self.token, '@results_count': 100,
+                             '@token': self.token, '@results_count': 50,
                              'paging': 1}}
         dict_data['offers_query']['quantity'] = {'@mode': qu_dict['quantity-type'], '@value': qu_dict['quantity']}
         dict_xml = xmltodict.unparse(dict_data, encoding='utf-8')
@@ -288,6 +288,39 @@ class MarketPlaceOrderApi(MarketPlaceApi):
         return response.status_code
 
     @outter
+    def orders_update_one(self, update_dict):
+        # self.authentication()
+        print(update_dict)
+        if update_dict['id2'] == '':
+            ls = {'@order_id': update_dict['order_id'], '@action': update_dict['action'],
+                  'order_detail':
+                      {'order_detail_id': update_dict['id1'], 'action': update_dict['order_detail_action1']}
+                  }
+        else:
+            ls = {'@order_id': update_dict['order_id'], '@action': update_dict['action'],
+                  'order_detail': [
+                      {'order_detail_id': update_dict['id1'], 'action': update_dict['order_detail_action1']},
+                      {'order_detail_id': update_dict['id2'], 'action': update_dict['order_detail_action2']}
+                  ]
+                  }
+        dict_data = {
+            'orders_update': {'@xmlns': self.xmlns, '@shop_id': self.shop_id, '@partner_id': self.partner_id,
+                              '@token': self.token,
+                              'order': ls
+                              }
+        }
+        print(dict_data)
+        data_xml = xmltodict.unparse(dict_data, encoding='utf-8')
+        print(data_xml)
+        url = self.url + '/orders_update'
+        response = requests.post(url, headers=self.headers, data=data_xml.encode('utf-8'))
+        print(response.text)
+        if response.status_code == 200:
+            data = self.xml_to_dict(response.text)
+            return data
+        return response.status_code
+
+    @outter
     def orders_update_accept(self, update_dict):
         # self.authentication()
         dict_data = {
@@ -341,7 +374,7 @@ class MarketPlaceOrderApi(MarketPlaceApi):
         # self.authentication()
         order_dict = {
             'orders_query': {'@xmlns': self.xmlns, '@shop_id': self.shop_id, '@partner_id': self.partner_id,
-                             '@token': self.token, '@results_count': 100}}
+                             '@token': self.token, '@results_count': 50}}
         order_dict['orders_query']['paging'] = query_dict['paging']
         order_xml = xmltodict.unparse(order_dict, encoding='utf-8')
         url = self.url + '/orders_query'
@@ -360,7 +393,7 @@ class MarketPlaceOrderApi(MarketPlaceApi):
         # self.authentication()
         dict_data = {
             'orders_query': {'@xmlns': self.xmlns, '@shop_id': self.shop_id, '@partner_id': self.partner_id,
-                             '@token': self.token, '@results_count': 100,
+                             '@token': self.token, '@results_count': 50,
                              'paging': qu_dict['paging'],
                              'states': {'state': qu_dict['state']},
                              'date': {'@type': qu_dict['date-type'], 'min': qu_dict['min'], 'max': qu_dict['max']}
@@ -533,10 +566,12 @@ class ClientOrderApi(MarketPlaceApi):
                                             '@partner_id': self.partner_id,
                                             '@token': self.token, '@results_count': client_query['results_count'],
                                             'paging': client_query['paging'],
-                                            'date': {'@type': client_query['date-type'], 'min': client_query['min'],
-                                                     'max': client_query['max']}
                                             }
         }
+        if client_query['min'] != '':
+            client_dict['client_order_comments_query']['date'] = {'@type': client_query['date-type'],
+                                                                  'min': client_query['min'] + 'T00:00:00',
+                                                                  'max': client_query['max'] + 'T23:59:00'}
         client_xml = xmltodict.unparse(client_dict, encoding='utf-8')
         url = self.url + '/client_order_comments_query'
         response = requests.post(url, headers=self.headers, data=client_xml.encode('utf-8'))

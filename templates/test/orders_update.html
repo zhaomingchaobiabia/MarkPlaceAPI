@@ -32,16 +32,16 @@
 <!-- Page Content -->
 <div id="page-wrapper">
     <form action="{% url 'orders_update' %}" method="post" accept-charset="UTF-8" enctype="multipart/form-data">
-        <table>
+        <table id="table">
             <tr>
-                <th></th>
+                <th>Order detail update:</th>
                 <th></th>
             </tr>
             <tr>
                 <td>order_id:</td>
-                <td><input type="text" name="orders_id" value=""></td>
+                <td><input id="va_change" type="text" name="orders_id" value=""></td>
             </tr>
-            <tr>
+            <tr id="add_after">
                 <td>action:</td>
                 <td><select name="action">
                     <option value="accept_order">accept_order</option>
@@ -50,16 +50,6 @@
                     <option value="accept_all_orders">accept_all_orders</option>
                     <option value="confirm_all_to_send">confirm_all_to_send</option>
                     <option value="update_all">update_all</option>
-                </select></td>
-            </tr>
-            <tr>
-                <td>order_detail_action:</td>
-                <td><select name="order_detail_action">
-                    <option value="Accepted">Accepted</option>
-                    <option value="Refused">Refused</option>
-                    <option value="Shipped">Shipped</option>
-                    <option value="Refunded">Refunded</option>
-                    <option value="Updated">Updated</option>
                 </select></td>
             </tr>
             <tr>
@@ -114,45 +104,45 @@
         </table>
     </form>
     <div class="row">
-                    <div class="col-sm-12">
-                        <div class="white-box">
-                            <h3>Order Update Table</h3>
-                            <p class="text-muted">Add class <code>.table</code></p>
-                            <div class="table-responsive">
-                                <table class="table">
-                                    <thead>
-                                        <tr>
-                                            <th>status</th>
-                                            <th>order_id</th>
-                                            <th>state</th>
-                                            <th>order_detail_id</th>
-                                            <th>status</th>
-                                            <th>state</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                    {% if data_dict_ls == '' %}
-                                        <tr>
-                                            <td></td>
-                                        </tr>
-                                    {% else %}
-                                        {% for dict_data in data_dict_ls %}
-                                        <tr>
-                                            <td>{{ dict_data.status }}</td>
-                                            <td>{{ dict_data.order_id }}</td>
-                                            <td>{{ dict_data.state }}</td>
-                                            <td>{{ dict_data.order_detail.order_detail_id }}</td>
-                                            <td>{{ dict_data.order_detail.status }}</td>
-                                            <td>{{ dict_data.order_detail.state }}</td>
-                                        </tr>
-                                        {% endfor %}
-                                    {% endif %}
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
+        <div class="col-sm-12">
+            <div class="white-box">
+                <h3>Order Update Table</h3>
+                <p class="text-muted">Add class <code>.table</code></p>
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>status</th>
+                            <th>order_id</th>
+                            <th>state</th>
+                            <th>order_detail_id</th>
+                            <th>status</th>
+                            <th>state</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% if data_dict_ls == '' %}
+                            <tr>
+                                <td></td>
+                            </tr>
+                        {% else %}
+                            {% for dict_data in data_dict_ls %}
+                                <tr>
+                                    <td>{{ dict_data.status }}</td>
+                                    <td>{{ dict_data.order_id }}</td>
+                                    <td>{{ dict_data.state }}</td>
+                                    <td>{{ dict_data.order_detail.order_detail_id }}</td>
+                                    <td>{{ dict_data.order_detail.status }}</td>
+                                    <td>{{ dict_data.order_detail.state }}</td>
+                                </tr>
+                            {% endfor %}
+                        {% endif %}
+                        </tbody>
+                    </table>
                 </div>
+            </div>
+        </div>
+    </div>
     <!-- /.container-fluid -->
 </div>
 <!-- /#page-wrapper -->
@@ -171,6 +161,53 @@
 <script src="/static/js/waves.js"></script>
 <!-- Custom Theme JavaScript -->
 <script src="/static/js/myadmin.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#va_change').change(function () {
+            let th = $(this);
+            let order_id = th.val();
+            $.ajax({
+                url: '/order/change/',
+                dataType: 'json',
+                type: 'post',
+                data: {'order_id': order_id},
+                success: function (data) {
+                    if (data.len === 'error') {
+                        alert('订单号错误')
+                    } else {
+                        len = parseInt(data.len);
+                        var html = '';
+                        for (i = 0; i < len; i++) {
+
+                            let j = i + 1;
+                            let id = 'id' + j.toString();
+                            let action = 'order_detail_action' + j.toString();
+
+                            html += `
+                            <tr>
+                            <td>order_detail_id:</td>
+                            <td><input type="number" name="` + id + `" value="` + j + `"></td>
+                        </tr>
+                        <tr>
+                            <td>order_detail_action:</td>
+                            <td><select name="` + action + `">
+                                <option value="Accepted">Accepted</option>
+                                <option value="Refused">Refused</option>
+                                <option value="Shipped">Shipped</option>
+                                <option value="Refunded">Refunded</option>
+                                <option value="Updated">Updated</option>
+                            </select></td>
+                        </tr>
+                            `
+                        }
+                        $('#add_after').after(html)
+
+                    }
+                }
+            })
+        })
+    })
+</script>
 </body>
 
 </html>
