@@ -98,9 +98,9 @@ class MarketPlaceApi:
                 del li_dict[k]
         data_dict['offers_update']['offer'] = li_dict
         xml = xmltodict.unparse(data_dict, encoding='utf-8')
-        print(xml)
+        # print(xml)
         response = requests.post(self.url + '/offers_update', headers=self.headers, data=xml.encode())
-        print(response.text)
+        # print(response.text)
         if response.status_code == 200:
             batch_id = self.xml_to_dict(response.text)['offers_update_response']['batch_id']
             return batch_id
@@ -120,7 +120,7 @@ class MarketPlaceApi:
         }
         data_xml = xmltodict.unparse(data_dict, encoding='utf-8')
         response = requests.post(self.url + '/offers_update', headers=self.headers, data=data_xml.encode())
-        print(response.text)
+        # print(response.text)
         if response.status_code == 200:
             batch_id = self.xml_to_dict(response.text)['offers_update_response']['batch_id']
             return batch_id
@@ -158,7 +158,7 @@ class MarketPlaceApi:
         batch_xml = xmltodict.unparse(batch_dict, encoding='utf-8')
         url = self.url + '/batch_status'
         response = requests.post(url, headers=self.headers, data=batch_xml.encode('utf-8'))
-        print(response.text)
+        # print(response.text)
         if response.status_code == 200:
             response_dic = self.xml_to_dict(response.text)
             return response_dic
@@ -182,7 +182,7 @@ class MarketPlaceApi:
         dict_xml = xmltodict.unparse(dict_data, encoding='utf-8')
         url = self.url + '/offers_query'
         response = requests.post(url, data=dict_xml.encode('utf-8'), headers=self.headers)
-        print(response.text)
+        # print(response.text)
         if response.status_code == 200:
             of_dict = self.xml_to_dict(response.text)
             return of_dict
@@ -205,7 +205,7 @@ class MarketPlaceApi:
         dict_xml = xmltodict.unparse(dict_data, encoding='utf-8')
         url = self.url + '/offers_query'
         response = requests.post(url, data=dict_xml.encode('utf-8'), headers=self.headers)
-        print(response.text)
+        # print(response.text)
         if response.status_code == 200:
             of_dict = self.xml_to_dict(response.text)
             return of_dict
@@ -226,7 +226,7 @@ class MarketPlaceApi:
         dict_xml = xmltodict.unparse(dict_data, encoding='utf-8')
         url = self.url + '/offers_query'
         response = requests.post(url, data=dict_xml.encode('utf-8'), headers=self.headers)
-        print(response.text)
+        # print(response.text)
         if response.status_code == 200:
             of_dict = self.xml_to_dict(response.text)
             return of_dict
@@ -247,7 +247,7 @@ class MarketPlaceApi:
         batch_xml = xmltodict.unparse(batch_dict, encoding='utf-8')
         url = self.url + '/batch_query'
         response = requests.post(url, headers=self.headers, data=batch_xml.encode('utf-8'))
-        print(response.text)
+        # print(response.text)
         if response.status_code == 200:
             response_dict = self.xml_to_dict(response.text)
 
@@ -260,7 +260,7 @@ class MarketPlaceOrderApi(MarketPlaceApi):
     def orders_update(self, update_dict):
         # self.authentication()
         ls = []
-        print(update_dict['order_id'])
+        # print(update_dict['order_id'])
         if ',' in update_dict['order_id']:
             lis_id = update_dict['order_id'].split(',')
             for id in lis_id:
@@ -278,10 +278,10 @@ class MarketPlaceOrderApi(MarketPlaceApi):
                               }
         }
         data_xml = xmltodict.unparse(dict_data, encoding='utf-8')
-        print(data_xml)
+        # print(data_xml)
         url = self.url + '/orders_update'
         response = requests.post(url, headers=self.headers, data=data_xml.encode('utf-8'))
-        print(response.text)
+        # print(response.text)
         if response.status_code == 200:
             data = self.xml_to_dict(response.text)
             return data
@@ -290,7 +290,7 @@ class MarketPlaceOrderApi(MarketPlaceApi):
     @outter
     def orders_update_one(self, update_dict):
         # self.authentication()
-        print(update_dict)
+        # print(update_dict)
         if update_dict['id2'] == '':
             ls = {'@order_id': update_dict['order_id'], '@action': update_dict['action'],
                   'order_detail':
@@ -309,12 +309,12 @@ class MarketPlaceOrderApi(MarketPlaceApi):
                               'order': ls
                               }
         }
-        print(dict_data)
+        # print(dict_data)
         data_xml = xmltodict.unparse(dict_data, encoding='utf-8')
-        print(data_xml)
+        # print(data_xml)
         url = self.url + '/orders_update'
         response = requests.post(url, headers=self.headers, data=data_xml.encode('utf-8'))
-        print(response.text)
+        # print(response.text)
         if response.status_code == 200:
             data = self.xml_to_dict(response.text)
             return data
@@ -406,7 +406,7 @@ class MarketPlaceOrderApi(MarketPlaceApi):
         dict_xml = xmltodict.unparse(dict_data, encoding='utf-8')
         url = self.url + '/orders_query'
         response = requests.post(url, data=dict_xml.encode('utf-8'), headers=self.headers)
-        print(response.text)
+        # print(response.text)
         if response.status_code == 200:
             of_dict = self.xml_to_dict(response.text)
             return of_dict
@@ -428,7 +428,7 @@ class MarketPlaceOrderApi(MarketPlaceApi):
         dict_xml = xmltodict.unparse(dict_data, encoding='utf-8')
         url = self.url + '/orders_query'
         response = requests.post(url, data=dict_xml.encode('utf-8'), headers=self.headers)
-        print(response.text)
+        # print(response.text)
         if response.status_code == 200:
             of_dict = self.xml_to_dict(response.text)
             return of_dict
@@ -452,10 +452,10 @@ class MarketPlacePricingApi(MarketPlaceApi):
         url = self.url + '/pricing_query'
         response = requests.post(url, headers=self.headers, data=pricing_xml)
         if response.status_code == 200:
-            print(response.text)
+            # print(response.text)
             response_dict = self.xml_to_dict(response.text)
             return response_dict
-        print(response.text)
+        # print(response.text)
         return 400
         # self.authentication()
         # self.pricing_query(query_dict)
@@ -473,7 +473,7 @@ class MarketPlacePricingApi(MarketPlaceApi):
         if response.status_code == 200:
             response_dict = self.xml_to_dict(response.text)
             return response_dict
-        print(response.text)
+        # print(response.text)
         return 400
 
 
@@ -500,10 +500,10 @@ class ClientOrderApi(MarketPlaceApi):
         url = self.url + '/client_order_comments_query'
         response = requests.post(url, headers=self.headers, data=client_xml.encode('utf-8'))
         if response.status_code == 200:
-            print(response.text)
+            # print(response.text)
             response_dict = self.xml_to_dict(response.text)
             return response_dict
-        print(response.text)
+        # print(response.text)
         return 400
 
     @outter
@@ -522,7 +522,7 @@ class ClientOrderApi(MarketPlaceApi):
         client_xml = xmltodict.unparse(client_dict, encoding='utf-8')
         url = self.url + '/client_order_comments_query'
         response = requests.post(url, headers=self.headers, data=client_xml.encode('utf-8'))
-        print(response.text)
+        # print(response.text)
         if response.status_code == 200:
             response_dict = self.xml_to_dict(response.text)
             return response_dict
@@ -545,7 +545,7 @@ class ClientOrderApi(MarketPlaceApi):
         client_xml = xmltodict.unparse(client_dict, encoding='utf-8')
         url = self.url + '/client_order_comments_query'
         response = requests.post(url, headers=self.headers, data=client_xml.encode('utf-8'))
-        print(response.text)
+        # print(response.text)
         if response.status_code == 200:
             response_dict = self.xml_to_dict(response.text)
             return response_dict
@@ -575,7 +575,7 @@ class ClientOrderApi(MarketPlaceApi):
         client_xml = xmltodict.unparse(client_dict, encoding='utf-8')
         url = self.url + '/client_order_comments_query'
         response = requests.post(url, headers=self.headers, data=client_xml.encode('utf-8'))
-        print(response.text)
+        # print(response.text)
         if response.status_code == 200:
             response_dict = self.xml_to_dict(response.text)
             return response_dict
@@ -602,7 +602,7 @@ class ClientOrderApi(MarketPlaceApi):
         client_xml = xmltodict.unparse(client_dict, encoding='utf-8')
         url = self.url + '/client_order_comments_update'
         response = requests.post(url, headers=self.headers, data=client_xml.encode('utf-8'))
-        print(response.text)
+        # print(response.text)
         if response == 200:
             response_dict = self.xml_to_dict(response.text)
             return response_dict
@@ -622,7 +622,7 @@ class ClientOrderApi(MarketPlaceApi):
         carriers_xml = xmltodict.unparse(carriers_dict, encoding='utf-8')
         url = self.url + '/carriers_query'
         response = requests.post(url, headers=self.headers, data=carriers_xml.encode('UTF-8'))
-        print(response.text)
+        # print(response.text)
         if response.status_code == 200:
             response_dict = self.xml_to_dict(response.text)
             return response_dict
@@ -674,7 +674,7 @@ class IncidentsApi(MarketPlaceApi):
             data_dict['incidents_query']['date'] = {'@type': query_dict['date_type'], 'min': query_dict['min'],
                                                     'max': query_dict['max']}
         data_xml = xmltodict.unparse(data_dict, encoding='utf-8')
-        print(data_xml)
+        # print(data_xml)
         url = self.url + '/incidents_query'
         response = requests.post(url, headers=self.headers, data=data_xml.encode('utf-8'))
         if response.status_code == 200:
@@ -699,7 +699,7 @@ class IncidentsApi(MarketPlaceApi):
         data_xml = xmltodict.unparse(data_dict, encoding='utf-8')
         url = self.url + '/incidents_update'
         response = requests.post(url, headers=self.headers, data=data_xml.encode('utf-8'))
-        print(response.text)
+        # print(response.text)
         if response.status_code == 200:
             data = self.xml_to_dict(response.text)
             return data

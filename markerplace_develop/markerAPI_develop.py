@@ -23,7 +23,7 @@ class SalesPeriodsApi(MarketPlaceApi):
         data_xml = xmltodict.unparse(data_dict, encoding='utf-8')
         url = self.url + '/sales_periods_query'
         response = requests.post(url, headers=self.headers, data=data_xml.encode('utf-8'))
-        print(response.text)
+        # print(response.text)
         if response.status_code == 200:
             data = self.xml_to_dict(response.text)
             return data
@@ -44,10 +44,10 @@ class SalesPeriodsApi(MarketPlaceApi):
                 }
         }
         data_xml = xmltodict.unparse(data_dict, encoding='utf-8')
-        print(data_xml)
+        # print(data_xml)
         url = self.url + '/pricing_query'
         response = requests.post(url, headers=self.headers, data=data_xml.encode('utf-8'))
-        print(response.text)
+        # print(response.text)
         if response.status_code == 200:
             data = self.xml_to_dict(response.text)
             return data
@@ -71,10 +71,10 @@ class SalesPeriodsApi(MarketPlaceApi):
                                                    'min': query_dict['min'] + 'T00:00:00',
                                                    'max': query_dict['max'] + 'T23:59:59'}
         data_xml = xmltodict.unparse(data_dict, encoding='utf-8')
-        print(data_xml)
+        # print(data_xml)
         url = self.url + '/messages_query'
         response = requests.post(url, headers=self.headers, data=data_xml.encode('utf-8'))
-        print(response.text)
+        # print(response.text)
         if response.status_code == 200:
             data = self.xml_to_dict(response.text)
             return data
@@ -97,10 +97,10 @@ class SalesPeriodsApi(MarketPlaceApi):
                 }
         }
         data_xml = xmltodict.unparse(data_dict, encoding='utf-8')
-        print(data_xml)
+        # print(data_xml)
         url = self.url + '/messages_query'
         response = requests.post(url, headers=self.headers, data=data_xml.encode('utf-8'))
-        print(response.text)
+        # print(response.text)
         if response.status_code == 200:
             data = self.xml_to_dict(response.text)
             return data
@@ -129,7 +129,7 @@ class SalesPeriodsApi(MarketPlaceApi):
         url = self.url + '/messages_update'
         data_xml = xmltodict.unparse(data_dict, encoding='utf-8')
         response = requests.post(url, headers=self.headers, data=data_xml.encode('utf-8'))
-        print(response.text)
+        # print(response.text)
         if response.status_code == 200:
             data = self.xml_to_dict(response.text)
             return data

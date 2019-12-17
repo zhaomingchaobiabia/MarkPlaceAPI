@@ -22,7 +22,7 @@ def fault_decorator(func):
         try:
             return func(request, *args, **kwargs)
         except Exception as e:
-            print(e)
+            # print(e)
             return render(request, 'test/404.html')
 
     return inner
@@ -85,7 +85,7 @@ def batch_status(request):
             status['offer']['error']['text'] = status['offer']['error']['#text']
         except:
             pass
-        print(status)
+        # print(status)
         return render(request, 'test/batch.html', {'dict_status': status})
 
 
@@ -109,10 +109,10 @@ def offers_query_date(request):
     data = request.POST
     dict_d = {}
     dict_d['date-type'] = data.get('date-type')
-    print(type(data.get('min')))
+    # print(type(data.get('min')))
     dict_d['min'] = data.get('min') + 'T00:00:00'
     dict_d['max'] = data.get('max') + 'T00:00:00'
-    print(dict_d['max'])
+    # print(dict_d['max'])
     try:
         data_dict = mark.offers_query_date(dict_d)['offers_query_response']['offer']
     except:
@@ -129,7 +129,7 @@ def offers_query_date(request):
 @fault_decorator
 def offers_query_quantity(request):
     data = request.POST
-    print(data)
+    # print(data)
     dict_d = {}
     dict_d['quantity-type'] = data.get('quantity-type')
     dict_d['quantity'] = data.get('quantity')
@@ -182,13 +182,13 @@ def orders_query_date(request):
     dict_d = {}
     dict_d['paging'] = data.get('paging')
     dict_d['date-type'] = data.get('date-type')
-    print(type(data.get('min')))
+    # print(type(data.get('min')))
     if data.get('min') or data.get('max') == '':
         dict_d['date-type'] = ''
     dict_d['min'] = data.get('min') + 'T00:00:00'
     dict_d['max'] = data.get('max') + 'T23:59:59'
     dict_d['state'] = data.get('state')
-    print(dict_d['max'])
+    # print(dict_d['max'])
     try:
         data_dict = mark_order.orders_query_date(dict_d)['orders_query_response']['order']
     except:
@@ -243,8 +243,8 @@ def orders_update(request):
             dict_data['id2'] = data.get('id2')
             dict_data['order_detail_action2'] = data.get('order_detail_action2')
 
-        print(data.get('id1'), data.get('order_detail_action1'))
-        print(data.get('id2'), data.get('order_detail_action2'))
+        # print(data.get('id1'), data.get('order_detail_action1'))
+        # print(data.get('id2'), data.get('order_detail_action2'))
 
         data = mark_order.orders_update_one(dict_data)['orders_update_response']['order']
         if type(data) is list:
@@ -368,7 +368,7 @@ def incidents_query1(request):
             'waiting_for_seller_answer': data.get('waiting_for_seller_answer'), 'opened_by': data.get('opened_by'),
             'closed_by': data.get('closed_by'), 'sort_by': data.get('sort_by'), 'order': order
         }
-        print(data_dict)
+        # print(data_dict)
         data = incident.incidents_query(data_dict)
         return render(request, 'incidents_query.html', {'data': data})
 
@@ -378,7 +378,7 @@ def incidents_query1(request):
 @fault_decorator
 def incidents_query(request):
     if request.method == 'GET':
-        data_dict = {'paging': 1}
+        return render(request, 'test/incidents.html')
     else:
         data = request.POST
         min = data.get('min') + 'T00:00:00'
@@ -387,12 +387,12 @@ def incidents_query(request):
             'paging': data.get('paging'),
             'date_type': data.get('date-type'), 'min': min, 'max': max,
         }
-        print(data_dict)
+        # print(data_dict)
     try:
         data = incident.incidents_query(data_dict)['incidents_query_response']['incident']
-        print(data)
-        for da in data:
-            print(da['order_details_incident']['order_detail_incident'])
+        # print(data)
+        # for da in data:
+            # print(da['order_details_incident']['order_detail_incident'])
         if type(data) is list:
             for da in data:
                 if not type(da['order_details_incident']['order_detail_incident']) is list:
@@ -466,7 +466,7 @@ def update_offer_price(request):
         batch_id = mark.update_offer_price(data_dict)
         time.sleep(1)
         status = mark.batch_status(batch_id)['batch_status_response']
-        print(status)
+        # print(status)
         try:
             status['status'] = status['@status']
             status['offer']['status'] = status['offer']['@status']
@@ -480,8 +480,8 @@ def update_offer_price(request):
         except:
             # pass
             status['offer']['error'] = {'text': ''}
-        print(status)
-        return JsonResponse(status)
+        # print(status)
+        # return JsonResponse(status)
         # return render(request, 'test/offers_query.html', {'dict_status': status})
 
         # data_dict = mark.batch_status({'batch_id': batch_id})
@@ -502,7 +502,7 @@ def batch_query_offer(request, param1):
         status['offer']['error']['text'] = status['offer']['error']['#text']
     except:
         pass
-    print(status)
+    # print(status)
     # return JsonResponse(status)
     return render(request, 'test/profile.html', {'dict_status': status})
 
@@ -515,18 +515,18 @@ def offers_query_price(request):
         min_p = int(data.get('min_p'))
         max_p = int(data.get('max_p'))
         data_dict = mark.offers_query()['offers_query_response']['offer']
-        print(data_dict)
+        # print(data_dict)
         if type(data_dict) is list:
             lis = []
             for index in range(len(data_dict)):
                 if min_p <= float(data_dict[index]['price']) <= max_p:
                     lis.append(data_dict[index])
-            print(lis)
+            # print(lis)
             return render(request, 'test/offers_query.html', {'data_dict_ls': lis})
         ls = []
         if min_p <= float(data_dict['price']) <= max_p:
             ls.append(data_dict)
-        print(ls)
+        # print(ls)
         return render(request, 'test/offers_query.html', {'data_dict_ls': ls})
 
 
@@ -536,8 +536,8 @@ def search_name(request, param1):
     try:
         datas = mark.offers_query()['offers_query_response']['offer']
         data_ls = []
-        print('-------------')
-        print(datas)
+        # print('-------------')
+        # print(datas)
         for data in datas:
             if param1 in data['product_name']:
                 data_ls.append(data)
