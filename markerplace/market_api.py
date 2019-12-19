@@ -165,7 +165,7 @@ class MarketPlaceApi:
         return 400
 
     @outter
-    def offers_query(self):
+    def offers_query(self, paging=1):
         '''
         :param qu_dict:传入一个字典
         :return:
@@ -175,7 +175,7 @@ class MarketPlaceApi:
         dict_data = {
             'offers_query': {'@xmlns': self.xmlns, '@shop_id': self.shop_id, '@partner_id': self.partner_id,
                              '@token': self.token, '@results_count': 50,
-                             'paging': 1}}
+                             'paging': paging}}
 
         # dict_data['offers_query']['promotion_types'] = {'@type': qu_dict['promotion_types']}
 
@@ -198,7 +198,7 @@ class MarketPlaceApi:
         dict_data = {
             'offers_query': {'@xmlns': self.xmlns, '@shop_id': self.shop_id, '@partner_id': self.partner_id,
                              '@token': self.token, '@results_count': 50,
-                             'paging': 1,
+                             'paging': qu_dict['paging'],
                              'date': {'@type': qu_dict['date-type'], 'min': qu_dict['min'], 'max': qu_dict['max']}
                              }
         }
@@ -221,7 +221,7 @@ class MarketPlaceApi:
         dict_data = {
             'offers_query': {'@xmlns': self.xmlns, '@shop_id': self.shop_id, '@partner_id': self.partner_id,
                              '@token': self.token, '@results_count': 50,
-                             'paging': 1}}
+                             'paging': qu_dict['paging']}}
         dict_data['offers_query']['quantity'] = {'@mode': qu_dict['quantity-type'], '@value': qu_dict['quantity']}
         dict_xml = xmltodict.unparse(dict_data, encoding='utf-8')
         url = self.url + '/offers_query'

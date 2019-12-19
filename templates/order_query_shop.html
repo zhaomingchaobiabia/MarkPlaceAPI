@@ -8,29 +8,47 @@
     <div>
        <table border="1">
         <tr>
-            <td>firstname</td>
-            <td>lastname</td>
-            <td>company</td>
-            <td>address1</td>
-            <td>address2</td>
-            <td>address3</td>
-            <td>zipcode</td>
-            <td>city</td>
-            <td>country</td>
+            <th></th>
+            <th>firstname</th>
+            <th>lastname</th>
+            <th>company</th>
+            <th>address1</th>
+            <th>address2</th>
+            <th>address3</th>
+            <th>zipcode</th>
+            <th>city</th>
+            <th>country</th>
         </tr>
-        {% for dict_data in data_dict %}
         <tr>
-            <td>{{ dict_data.firstname }}</td>
-            <td>{{ dict_data.lastname }}</td>
-            <td>{{ dict_data.company }}</td>
-            <td>{{ dict_data.address1 }}</td>
-            <td>{{ dict_data.address2 }}</td>
-            <td>{{ dict_data.address3 }}</td>
-            <td>{{ dict_data.zipcode }}</td>
-            <td>{{ dict_data.city }}</td>
-            <td>{{ dict_data.country }}</td>
+            <td>shipping_address</td>
+            <td>{{ ship_data.firstname }}</td>
+            <td>{{ ship_data.lastname }}</td>
+            <td>{{ ship_data.company }}</td>
+            <td>{{ ship_data.address1 }}</td>
+            <td>{{ ship_data.address2 }}</td>
+            <td>{{ ship_data.address3 }}</td>
+            <td>{{ ship_data.zipcode }}</td>
+            <td>{{ ship_data.city }}</td>
+            <td>{{ ship_data.country }}</td>
         </tr>
-        {% endfor %}
+           {% if bill_data != '' %}
+            <tr>
+                <td>billing_address</td>
+                <td>{{ bill_data.firstname }}</td>
+                <td>{{ bill_data.lastname }}</td>
+                <td>{{ bill_data.company }}</td>
+                <td>{{ bill_data.address1 }}</td>
+                <td>{{ bill_data.address2 }}</td>
+                <td>{{ bill_data.address3 }}</td>
+                <td>{{ bill_data.zipcode }}</td>
+                <td>{{ bill_data.city }}</td>
+                <td>{{ bill_data.country }}</td>
+            </tr>
+           {% else %}
+           <tr>
+                <td>billing_address</td>
+            </tr>
+           {% endif %}
     </table>
     </div>
 </body>

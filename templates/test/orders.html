@@ -129,9 +129,10 @@
                                             <th>created_at</th>
                                             <th>updated_at</th>
                                             <th>fees</th>
+                                            <th>tracking_number</th>
                                             <th>vat_rate</th>
                                             <th>order_detail</th>
-                                            <th>shipping_address</th>
+                                            <th>address</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -145,6 +146,7 @@
                                             <td>{{ li.created_at| too }}</td>
                                             <td>{{ li.updated_at | too }}</td>
                                             <td>{{ li.fees }}</td>
+                                            <td>{{ li.order_detail.tracking_number | rep_none }}</td>
                                             <td>{{ li.vat_rate }}</td>
                                             <td ><a class="detail" href="">查看</a></td>
                                             <td><a class="shop" href="">查看</a></td>

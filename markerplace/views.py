@@ -1,18 +1,27 @@
+import datetime
+import json
+import requests
+from .market_api import outter
 from markerplace.market_api import MarketPlaceApi, MarketPlacePricingApi, MarketPlaceOrderApi, ClientOrderApi, \
     IncidentsApi
 from django.shortcuts import render, redirect, reverse
 from django.http import HttpResponse
 from django.http.response import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
-
+from .offer_sql import Sql
+import xmltodict
 import time
-import math
-
+from django.core.paginator import Paginator
+# from apscheduler.scheduler import Scheduler
+from time import sleep
+from apscheduler.scheduler import Scheduler
 mark = MarketPlaceApi()
 mark_order = MarketPlaceOrderApi()
 mark_query = MarketPlacePricingApi()
 client = ClientOrderApi()
 incident = IncidentsApi()
+
+sql = Sql()
 
 
 def fault_decorator(func):
@@ -22,7 +31,7 @@ def fault_decorator(func):
         try:
             return func(request, *args, **kwargs)
         except Exception as e:
-            # print(e)
+            print(e)
             return render(request, 'test/404.html')
 
     return inner
@@ -93,12 +102,14 @@ def batch_status(request):
 @fault_decorator
 def offers_query(request):
     if request.method == 'GET':
-        data_dict = mark.offers_query()['offers_query_response']['offer']
-        if type(data_dict) is list:
-            return render(request, 'test/offers_query.html', {'data_dict_ls': data_dict})
-        ls = []
-        ls.append(data_dict)
-        return render(request, 'test/offers_query.html', {'data_dict_ls': ls})
+        # data_dict = mark.offers_query()['offers_query_response']['offer']
+        datas = sql.offer_all()
+
+        p = Paginator(datas, 10)
+        page = int(request.GET.get("page")) if request.GET.get("page") else 1
+        # 返回页面所需要的数据
+        data = p.get_page(page)
+        return render(request, 'test/offers_query.html', {'data_dict_ls': data})
 
         # return render(request, 'test/basic-table.html', {'data_dict_ls': data_dict['offers_query_response']['offer']})
 
@@ -108,6 +119,7 @@ def offers_query(request):
 def offers_query_date(request):
     data = request.POST
     dict_d = {}
+    dict_d['paging'] = data.get('paging')
     dict_d['date-type'] = data.get('date-type')
     # print(type(data.get('min')))
     dict_d['min'] = data.get('min') + 'T00:00:00'
@@ -115,34 +127,46 @@ def offers_query_date(request):
     # print(dict_d['max'])
     try:
         data_dict = mark.offers_query_date(dict_d)['offers_query_response']['offer']
+        print(data_dict)
     except:
         data_dict = ''
-        return render(request, 'test/offers_query.html', {'data_dict_ls': data_dict})
+
+        return render(request, 'test/offer_query_time.html', {'data_dict_ls': data_dict})
     if type(data_dict) is list:
-        return render(request, 'test/offers_query.html', {'data_dict_ls': data_dict})
+        return render(request, 'test/offer_query_time.html', {'data_dict_ls': data_dict})
     ls = []
     ls.append(data_dict)
-    return render(request, 'test/offers_query.html', {'data_dict_ls': ls})
+    return render(request, 'test/offer_query_time.html', {'data_dict_ls': ls})
 
 
 @csrf_exempt
-@fault_decorator
+# @fault_decorator
 def offers_query_quantity(request):
-    data = request.POST
+    data = request.GET
     # print(data)
     dict_d = {}
-    dict_d['quantity-type'] = data.get('quantity-type')
-    dict_d['quantity'] = data.get('quantity')
-    try:
-        data_dict = mark.offers_query_quantity(dict_d)['offers_query_response']['offer']
-    except:
-        data_dict = ''
-        return render(request, 'test/offers_query.html', {'data_dict_ls': data_dict})
-    if type(data_dict) is list:
-        return render(request, 'test/offers_query.html', {'data_dict_ls': data_dict})
-    ls = []
-    ls.append(data_dict)
-    return render(request, 'test/offers_query.html', {'data_dict_ls': ls})
+    # dict_d['paging'] = data.get('paging')
+    quantity_type = data.get('quantity_type')
+    quantity = data.get('quantity')
+    datas = sql.offer_quantity(quantity_type, quantity)
+    p = Paginator(datas, 10)
+    page = int(request.GET.get("page")) if request.GET.get("page") else 1
+    # 返回页面所需要的数据
+    data = p.get_page(page)
+    print(datas)
+    dicts = {'data_dict_ls': data, 'quantity_type': quantity_type,
+             'quantity': quantity}
+    # try:
+    #     data_dict = mark.offers_query_quantity(dict_d)['offers_query_response']['offer']
+    # except:
+    #     data_dict = ''
+    #     return render(request, 'test/offers_query.html', {'data_dict_ls': data_dict})
+    # if type(data_dict) is list:
+    #     return render(request, 'test/offers_query.html', {'data_dict_ls': data_dict})
+    # ls = []
+    # ls.append(data_dict)
+    print(dicts)
+    return render(request, 'test/offer_query_quantity.html', dicts)
 
 
 @csrf_exempt
@@ -392,7 +416,7 @@ def incidents_query(request):
         data = incident.incidents_query(data_dict)['incidents_query_response']['incident']
         # print(data)
         # for da in data:
-            # print(da['order_details_incident']['order_detail_incident'])
+        # print(da['order_details_incident']['order_detail_incident'])
         if type(data) is list:
             for da in data:
                 if not type(da['order_details_incident']['order_detail_incident']) is list:
@@ -436,12 +460,13 @@ def order(request, param1):
 
 @fault_decorator
 def order_shop(request, param1):
-    data_dict = mark_order.orders_query_id(param1)['orders_query_response']['order']['shipping_address']
-    if type(data_dict) is list:
-        return render(request, 'order_query_shop.html', {'data_dict': data_dict})
-    ls = []
-    ls.append(data_dict)
-    return render(request, 'order_query_shop.html', {'data_dict': ls})
+    data_dict = mark_order.orders_query_id(param1)['orders_query_response']['order']
+    ship_data = data_dict['shipping_address']
+    try:
+        bill_data = data_dict['billing_address']
+    except:
+        bill_data = ''
+    return render(request, 'order_query_shop.html', {'ship_data': ship_data, 'bill_data': bill_data})
 
 
 @csrf_exempt
@@ -510,24 +535,28 @@ def batch_query_offer(request, param1):
 @csrf_exempt
 @fault_decorator
 def offers_query_price(request):
-    if request.method == 'POST':
-        data = request.POST
-        min_p = int(data.get('min_p'))
-        max_p = int(data.get('max_p'))
-        data_dict = mark.offers_query()['offers_query_response']['offer']
-        # print(data_dict)
-        if type(data_dict) is list:
-            lis = []
-            for index in range(len(data_dict)):
-                if min_p <= float(data_dict[index]['price']) <= max_p:
-                    lis.append(data_dict[index])
-            # print(lis)
-            return render(request, 'test/offers_query.html', {'data_dict_ls': lis})
-        ls = []
-        if min_p <= float(data_dict['price']) <= max_p:
-            ls.append(data_dict)
-        # print(ls)
-        return render(request, 'test/offers_query.html', {'data_dict_ls': ls})
+    data = request.GET
+    min_p = int(data.get('min_p'))
+    max_p = int(data.get('max_p'))
+    datas = sql.price(min_p, max_p)
+    if len(datas) == 0:
+        datas = ''
+    p = Paginator(datas, 10)
+    page = int(data.get("page")) if data.get("page") else 1
+    # 返回页面所需要的数据
+    data = p.get_page(page)
+    # data_dict = mark.offers_query(paging)['offers_query_response']['offer']
+    # if type(data_dict) is list:
+    #     lis = []
+    #     for index in range(len(data_dict)):
+    #         if min_p <= float(data_dict[index]['price']) <= max_p:
+    #             lis.append(data_dict[index])
+    #     return render(request, 'test/offers_query.html', {'data_dict_ls': lis})
+    # ls = []
+    # if min_p <= float(data_dict['price']) <= max_p:
+    #     ls.append(data_dict)
+
+    return render(request, 'test/offer_query-price.html', {'data_dict_ls': data, 'min_p': min_p, 'max_p': max_p})
 
 
 @csrf_exempt
@@ -560,3 +589,84 @@ def order_change(request):
             return JsonResponse({'len': 1})
         except:
             return JsonResponse({'len': 'error'})
+
+
+# 定时任务
+class MarketPlaceApis:
+    def __init__(self):
+        self.url = ' https://vendeur.fnac.com/api.php'
+        self.headers = {"Content-Type": "text/xml"}
+        self.partner_id = 'CA9ACBBE-FA2C-3082-C5B6-7B4B5E614F28'
+        self.shop_id = '0C389B35-32F6-06C8-6C86-5721417F0D13'
+        self.key = '6C6BD5F6-3777-642A-DC37-6DA2F8A07B3F'
+        self.xmlns = 'http://www.fnac.com/schemas/mp-dialog.xsd'
+
+    # 身份验证 返回token
+    def authentication(self):
+        url = self.url + '/auth'
+        data_dict = {
+            'auth': {'@xmlns': self.xmlns, 'shop_id': self.shop_id, 'partner_id': self.partner_id,
+                     'key': self.key}}
+        data_xml = xmltodict.unparse(data_dict, encoding='utf-8')
+        response = requests.post(url, headers=self.headers, data=data_xml.encode('utf-8'))
+        content = self.xml_to_dict(response.text)
+        self.token = content['auth_response']['token']
+        return self.token
+
+    def xml_to_dict(self, response):
+        '''
+        :param response: 将xml响应转化为dict
+        :return:
+        '''
+        content = xmltodict.parse(response)
+        content_str = json.dumps(content)
+        new_dict = json.loads(content_str)
+        return new_dict
+
+    @outter
+    def offers_query(self, paging):
+        '''
+        :param qu_dict:传入一个字典
+        :return:
+        '''
+        # self.authentication()
+
+        dict_data = {
+            'offers_query': {'@xmlns': self.xmlns, '@shop_id': self.shop_id, '@partner_id': self.partner_id,
+                             '@token': self.token, '@results_count': 100,
+                             'paging': paging}}
+        dict_xml = xmltodict.unparse(dict_data, encoding='utf-8')
+        url = self.url + '/offers_query'
+        try:
+            response = requests.post(url, data=dict_xml.encode('utf-8'), headers=self.headers)
+            # print(response.text)
+            if response.status_code == 200:
+                of_dict = self.xml_to_dict(response.text)
+                return of_dict['offers_query_response']['offer']
+        except:
+            return 400
+
+def task_Fun():
+    mark = MarketPlaceApis()
+    paging = 1
+    while True:
+        data_dict = mark.offers_query(paging)
+        print(data_dict)
+        if data_dict == 400:
+            break
+        for data in data_dict:
+            sql.save_offer(data)
+        paging += 1
+    print(time.time())
+    sql.data_copy()
+    print(time.time())
+
+
+sched = Scheduler()
+
+
+@sched.interval_schedule(seconds=600)
+def my_task1():
+    print('定时任务1开始\n')
+    task_Fun()
+    print('定时任务1结束\n')
