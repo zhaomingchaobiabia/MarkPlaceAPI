@@ -42,9 +42,11 @@ INSTALLED_APPS = [
 ]
 
 # 定时任务配置
+CRONTAB_COMMAND_PREFIX = 'LANG_ALL=zh_cn.UTF-8'
+
 CRONJOBS = [
     # 每一分钟执行一次
-    ('/01 * * * *', 'markerplace.timed_task.task')
+    ('/5 * * * *', 'markerplace.timed_task.task', '>>~/test/timed_task.log')
 ]
 
 MIDDLEWARE = [
