@@ -103,13 +103,16 @@ def batch_status(request):
 def offers_query(request):
     if request.method == 'GET':
         # data_dict = mark.offers_query()['offers_query_response']['offer']
-        sql = 'select * from offers '
+        sql = 'select * from offers'
         result = Offers.objects.raw(sql)
         ls = []
-        for data in result:
-            print(data)
-            ls.append([data.image, data.product_name, data.offer_seller_id, data.price, data.quantity,
-                       data.starts_at, data.ends_at, data.pro_price, data.is_shipping_free, data.product_url])
+        try:
+            for data in result:
+                # print(data)
+                ls.append([data.image, data.product_name, data.offer_seller_id, data.price, data.quantity,
+                           data.starts_at, data.ends_at, data.pro_price, data.is_shipping_free, data.product_url])
+        except:
+            ls = []
         if len(ls) == 0:
             ls = ''
         p = Paginator(ls, 10)
@@ -163,7 +166,7 @@ def offers_query_quantity(request):
     ls = []
     try:
         for data in result:
-            print(data)
+            # print(data)
             ls.append([data.image, data.product_name, data.offer_seller_id, data.price, data.quantity,
                        data.starts_at, data.ends_at, data.pro_price, data.is_shipping_free, data.product_url])
     except:
@@ -623,10 +626,13 @@ def offers_query_price(request):
     sql = 'select * from offers where price-pro_price > %s and price-pro_price < %s'
     result = Offers.objects.raw(sql, params=(min_p, max_p))
     ls = []
-    for data in result:
-        print(data)
-        ls.append([data.image, data.product_name, data.offer_seller_id, data.price, data.quantity,
-                   data.starts_at, data.ends_at, data.pro_price, data.is_shipping_free, data.product_url])
+    try:
+        for data in result:
+            # print(data)
+            ls.append([data.image, data.product_name, data.offer_seller_id, data.price, data.quantity,
+                       data.starts_at, data.ends_at, data.pro_price, data.is_shipping_free, data.product_url])
+    except:
+        ls = []
     if len(ls) == 0:
         ls = ''
     p = Paginator(ls, 10)
