@@ -40,6 +40,23 @@ def rep_none(value):
     return value
 
 
+def page_h(value):
+    if int(value) == 1:
+        return 1
+    value = int(value) - 1
+    return value
+
+
+def page_a(value):
+    if value is None:
+        return 2
+    value = int(value) + 1
+    return value
+
+
+register.filter(page_a)
+register.filter(page_h)
+
 register.filter(rep_none)
 register.filter(too)
 

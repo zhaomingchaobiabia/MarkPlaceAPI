@@ -119,7 +119,7 @@ def offers_query(request):
         page = int(request.GET.get("page")) if request.GET.get("page") else 1
         # 返回页面所需要的数据
         data = p.get_page(page)
-        return render(request, 'test/offer_query-price.html', {'data_dict_ls': data})
+        return render(request, 'test/offers_query.html', {'data_dict_ls': data, 'ls': len(ls), 'page': page})
 
     # return render(request, 'test/basic-table.html', {'data_dict_ls': data_dict['offers_query_response']['offer']})
 
@@ -127,26 +127,40 @@ def offers_query(request):
 @csrf_exempt
 @fault_decorator
 def offers_query_date(request):
-    data = request.POST
+    data = request.GET
     dict_d = {}
-    dict_d['paging'] = data.get('paging')
+    dict_d['paging'] = int(request.GET.get("paging")) if request.GET.get("paging") else 1
+    # dict_d['paging'] = data.get('paging')
     dict_d['date-type'] = data.get('date-type')
     # print(type(data.get('min')))
     dict_d['min'] = data.get('min') + 'T00:00:00'
     dict_d['max'] = data.get('max') + 'T00:00:00'
     # print(dict_d['max'])
     try:
-        data_dict = mark.offers_query_date(dict_d)['offers_query_response']['offer']
+        data_dict_l = mark.offers_query_date(dict_d)['offers_query_response']
+        print(data_dict_l)
+        num = data_dict_l['nb_total_result']
+        page = data_dict_l['page']
+        total_page = data_dict_l['total_paging']
+        data_dict = data_dict_l['offer']
         print(data_dict)
     except:
         data_dict = ''
-
-        return render(request, 'test/offer_query_time.html', {'data_dict_ls': data_dict})
+        # ls 总条数  page  当前页面   total_page  总页码
+        return render(request, 'test/offer_query_time.html',
+                      {'data_dict_ls': data_dict, 'ls': 0, 'page': 1, 'total_page': 1, 'date_type': dict_d['date-type'],
+                       'min': data.get('min'),
+                       'max': data.get('max'), })
     if type(data_dict) is list:
-        return render(request, 'test/offer_query_time.html', {'data_dict_ls': data_dict})
+        da_dict = {'data_dict_ls': data_dict, 'ls': num, 'date_type': dict_d['date-type'], 'min': data.get('min'),
+                   'max': data.get('max'), 'page': int(page), 'total_page': total_page}
+        return render(request, 'test/offer_query_time.html', da_dict)
     ls = []
     ls.append(data_dict)
-    return render(request, 'test/offer_query_time.html', {'data_dict_ls': ls})
+    return render(request, 'test/offer_query_time.html',
+                  {'data_dict_ls': ls, 'ls': num, 'page': 1, 'total_page': 1, 'date_type': dict_d['date-type'],
+                   'min': data.get('min'),
+                   'max': data.get('max')})
 
 
 @csrf_exempt
@@ -178,7 +192,7 @@ def offers_query_quantity(request):
     # 返回页面所需要的数据
     data = p.get_page(page)
     dicts = {'data_dict_ls': data, 'quantity_type': quantity_type,
-             'quantity': quantity}
+             'quantity': quantity, 'ls': len(ls), 'page': page}
     return render(request, 'test/offer_query_quantity.html', dicts)
 
 
@@ -639,4 +653,5 @@ def offers_query_price(request):
     page = int(request.GET.get("page")) if request.GET.get("page") else 1
     # 返回页面所需要的数据
     data = p.get_page(page)
-    return render(request, 'test/offer_query-price.html', {'data_dict_ls': data, 'min_p': min_p, 'max_p': max_p})
+    return render(request, 'test/offer_query-price.html',
+                  {'data_dict_ls': data, 'min_p': min_p, 'max_p': max_p, 'ls': len(ls), 'page': page})

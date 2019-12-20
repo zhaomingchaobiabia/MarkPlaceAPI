@@ -39,7 +39,7 @@ INSTALLED_APPS = [
     'markerplace',
     'markerplace_develop',
     'markerplace.templatetags',
-    'django_crontab',
+    # 'django_crontab',
 ]
 
 # API验证

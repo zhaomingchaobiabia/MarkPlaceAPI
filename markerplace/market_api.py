@@ -197,7 +197,7 @@ class MarketPlaceApi:
         # self.authentication()
         dict_data = {
             'offers_query': {'@xmlns': self.xmlns, '@shop_id': self.shop_id, '@partner_id': self.partner_id,
-                             '@token': self.token, '@results_count': 50,
+                             '@token': self.token, '@results_count': 15,
                              'paging': qu_dict['paging'],
                              'date': {'@type': qu_dict['date-type'], 'min': qu_dict['min'], 'max': qu_dict['max']}
                              }
