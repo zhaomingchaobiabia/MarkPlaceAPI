@@ -4,7 +4,7 @@ import json
 import xmltodict
 
 import xml.etree.ElementTree as ET
-
+from django.conf import settings
 
 # 验证失败 重新获取token
 def outter(func):
@@ -31,9 +31,9 @@ class MarketPlaceApi:
     def __init__(self):
         self.url = ' https://vendeur.fnac.com/api.php'
         self.headers = {"Content-Type": "text/xml"}
-        self.partner_id = 'CA9ACBBE-FA2C-3082-C5B6-7B4B5E614F28'
-        self.shop_id = '0C389B35-32F6-06C8-6C86-5721417F0D13'
-        self.key = '6C6BD5F6-3777-642A-DC37-6DA2F8A07B3F'
+        self.partner_id = settings.PARTNER_ID
+        self.shop_id = settings.SHOP_ID
+        self.key = settings.KEY
         self.xmlns = 'http://www.fnac.com/schemas/mp-dialog.xsd'
 
     # 身份验证 返回token

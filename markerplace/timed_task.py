@@ -1,7 +1,10 @@
+import time
+
 from .models import Offers
 from .market_api import MarketPlaceApi
 from datetime import datetime
 from .views import mark
+
 
 # 定时获取offer
 def query_offer(seller_id):
@@ -36,15 +39,11 @@ def end_time(dat):
 
 
 def delete_offer(seller_id):
-    subject = Offers.objects.raw('delete from offers where offer_seller_id = %s', params=(seller_id,))
-    # subject = Offers.objects.filter(offer_seller_id=seller_id)
-    # subject.delete()
+    subject = Offers.objects.filter(offer_seller_id=seller_id)
+    subject.delete()
+
 
 def add_offer(data):
-    sql = "insert into offers(product_name, product_fnac_id, offer_fnac_id,offer_seller_id,product_state,price," \
-          "quantity,description,internal_comment,product_url,image,nb_messages,showcase,is_shipping_free," \
-          "promotion,starts_at,ends_at,pro_price,trigger_customer_type,type_label) values(%s,%s,%s,%s,%s,%s,%s," \
-          "%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"
     try:
         if 'promotion' not in data:
             data['promotion'] = {'@type': '', 'starts_at': '', 'ends_at': '', 'price': '',
@@ -52,32 +51,38 @@ def add_offer(data):
                                  }
         if 'image' not in data:
             data['image'] = ''
-        Offers.objects.raw(sql, args=(data['product_name'], data['product_fnac_id'], data['offer_fnac_id'],
-                                      data['offer_seller_id'], data['product_state'], data['price'],
-                                      data['quantity'],
-                                      data['description'], data['internal_comment'], data['product_url'],
-                                      data['image'],
-                                      data['nb_messages'], data['showcase'], data['is_shipping_free'],
-                                      data['promotion']['@type'], str_time(data['promotion']['starts_at']),
-                                      end_time(data['promotion']['ends_at']),
-                                      data['promotion']['price'],
-                                      data['promotion']['triggers']['trigger_customer_type'],
-                                      data['type_label']))
+        offers = Offers(product_name=data['product_name'], product_fnac_id=data['product_fnac_id'],
+                        offer_seller_id=data['offer_fnac_id'], product_state=data['product_state'],
+                        price=data['price'], quantity=data['quantity'], description=data['description'],
+                        internal_comment=data['internal_comment'], product_url=data['product_url'],
+                        image=data['image'], nb_messages=data['nb_messages'], showcase=data['showcase'],
+                        is_shipping_free=data['is_shipping_free'], promotion=data['promotion']['@type'],
+                        starts_at=data['promotion']['starts_at'], ends_at=data['promotion']['ends_at'],
+                        pro_price=data['promotion']['price'],
+                        trigger_customer_type=data['promotion']['triggers']['trigger_customer_type'],
+                        type_label=data['type_label'])
+        offers.save()
     except Exception as e:
         print(e)
         print(data['offer_seller_id'])
 
 
 def task():
+    print('运行:', time.strftime('%Y-%m-%d %H:%M:%S'))
     paging = 1
     while True:
         try:
             data_dict = mark.offers_query(paging)['offers_query_response']['offer']
-            print(data_dict)
+            ls = []
+            if type(data_dict) is not list:
+                data_dict = ls.append(data_dict)
             for data in data_dict:
-                delete_offer(data_dict['offer_seller_id'])
+                delete_offer(data['offer_seller_id'])
                 add_offer(data)
-                print(data_dict['offer_seller_id'], '已更新')
-        except:
+                print(data['offer_seller_id'], '已更新')
+        except Exception as e:
+            print(e)
+            print('本次结束:', time.strftime('%Y-%m-%d %H:%M:%S'))
             break
+
         paging += 1

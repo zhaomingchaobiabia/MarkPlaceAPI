@@ -41,12 +41,18 @@ INSTALLED_APPS = [
     'django_crontab',
 ]
 
+# API验证
+
+PARTNER_ID = os.environ['PARTNER_ID']
+SHOP_ID = os.environ['SHOP_ID']
+KEY = os.environ['KEY']
+
 # 定时任务配置
 CRONTAB_COMMAND_PREFIX = 'LANG_ALL=zh_cn.UTF-8'
 
 CRONJOBS = [
     # 每一分钟执行一次
-    ('/5 * * * *', 'markerplace.timed_task.task', '>>~/test/timed_task.log')
+    ('*/5 * * * *', 'markerplace.timed_task.task', '>>~/test/timed_task.log')
 ]
 
 MIDDLEWARE = [
