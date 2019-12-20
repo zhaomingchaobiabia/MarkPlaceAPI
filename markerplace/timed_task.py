@@ -43,6 +43,13 @@ def delete_offer(seller_id):
     subject.delete()
 
 
+def query_id(ls):
+    subject = Offers.objects.all()
+    for data in subject:
+        if data.offer_seller_id not in ls:
+            delete_offer(data.offer_seller_id)
+
+
 def add_offer(data):
     try:
         if 'promotion' not in data:
@@ -72,6 +79,7 @@ def add_offer(data):
 def task():
     print('运行:', time.strftime('%Y-%m-%d %H:%M:%S'))
     paging = 1
+    lis_id = []
     while True:
         try:
             data_dict = mark.offers_query(paging)['offers_query_response']['offer']
@@ -81,6 +89,7 @@ def task():
             for data in data_dict:
                 delete_offer(data['offer_seller_id'])
                 add_offer(data)
+                lis_id.append(data['offer_seller_id'])
                 print(data['offer_seller_id'], '已更新')
         except Exception as e:
             print(e)
@@ -88,3 +97,4 @@ def task():
             break
 
         paging += 1
+    query_id(lis_id)
