@@ -83,20 +83,9 @@ class Sql:
             print(data['offer_seller_id'])
             self.connect.rollback()
 
-    def data_copy(self):
-        try:
-            sql = 'truncate table offers_master'
-            sql2 = 'INSERT INTO offers_master SELECT * FROM offers'
-            sql3 = 'truncate table offers'
-            self.cursor.execute(sql)
-            print(sql)
-            self.cursor.execute(sql2)
-            print(sql2)
-            self.cursor.execute(sql3)
-            print(sql3)
-            self.connect.commit()
-        except:
-            self.connect.rollback()
+    def delete_offers(self):
+        sql = 'truncate table offers_master'
+        self.cursor.execute(sql)
 
 
 sql = Sql()
