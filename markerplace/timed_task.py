@@ -52,12 +52,14 @@ def add_offer(data):
         if 'image' not in data:
             data['image'] = ''
         offers = Offers(product_name=data['product_name'], product_fnac_id=data['product_fnac_id'],
-                        offer_seller_id=data['offer_fnac_id'], product_state=data['product_state'],
+                        offer_fnac_id=data['offer_fnac_id'],
+                        offer_seller_id=data['offer_seller_id'], product_state=data['product_state'],
                         price=data['price'], quantity=data['quantity'], description=data['description'],
                         internal_comment=data['internal_comment'], product_url=data['product_url'],
                         image=data['image'], nb_messages=data['nb_messages'], showcase=data['showcase'],
                         is_shipping_free=data['is_shipping_free'], promotion=data['promotion']['@type'],
-                        starts_at=data['promotion']['starts_at'], ends_at=data['promotion']['ends_at'],
+                        starts_at=str_time(data['promotion']['starts_at']),
+                        ends_at=str_time(data['promotion']['ends_at']),
                         pro_price=data['promotion']['price'],
                         trigger_customer_type=data['promotion']['triggers']['trigger_customer_type'],
                         type_label=data['type_label'])
