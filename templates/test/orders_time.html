@@ -58,7 +58,7 @@
     <form action="{% url 'orders_query_date' %}" method="get" accept-charset="UTF-8" enctype="multipart/form-data">
 
         <strong>Order query:</strong><br>
-          state:
+           state:
                 <select name="state">
                     <option value="ALL">ALL</option>
                     <option value="Created">Created</option>
@@ -200,7 +200,7 @@
                 </div>
             <ul class="middle_bottom" id="middle_bottom">
                 {% if page > 1 %}
-                    <a href="?paging={{ page| page_h }}">
+                    <a href="?state={{ state }}&date-type={{ date_type }}&min={{ min }}&max={{ max }}&paging={{ page| page_h }}">
                         <li><</li>
                     </a>
                 {% else %}
@@ -209,33 +209,33 @@
                     </a>
                 {% endif %}
                 <div style="display: inline">
-                    <a href="?paging=1">
+                    <a href="?state={{ state }}&date-type={{ date_type }}&min={{ min }}&max={{ max }}&paging=1">
                         <li class="active">1</li>
                     </a>
-                    <a href="?paging=2">
+                    <a href="?state={{ state }}&date-type={{ date_type }}&min={{ min }}&max={{ max }}&paging=2">
                         <li>2</li>
                     </a>
-                    <a href="?paging=3">
+                    <a href="?state={{ state }}&date-type={{ date_type }}&min={{ min }}&max={{ max }}&paging=3">
                         <li>3</li>
                     </a>
-                    <a href="?paging=4">
+                    <a href="?state={{ state }}&date-type={{ date_type }}&min={{ min }}&max={{ max }}&paging=4">
                         <li>4</li>
                     </a>
-                    <a href="?paging=5">
+                    <a href="?state={{ state }}&date-type={{ date_type }}&min={{ min }}&max={{ max }}&paging=5">
                         <li>5</li>
                     </a>
-                    <a href="?paging=6">
+                    <a href="?state={{ state }}&date-type={{ date_type }}&min={{ min }}&max={{ max }}&paging=6">
                         <li>6</li>
                     </a>
-                    <a href="?paging=7">
+                    <a href="?state={{ state }}&date-type={{ date_type }}&min={{ min }}&max={{ max }}&paging=7">
                         <li>7</li>
                     </a>
-                    <a href="?paging=8">
+                    <a href="?state={{ state }}&date-type={{ date_type }}&min={{ min }}&max={{ max }}&paging=8">
                         <li>8</li>
                     </a>
                 </div>
                 {% if page < total_page %}
-                    <a href="?paging={{ page| page_a }}">
+                    <a href="?state={{ state }}&date-type={{ date_type }}&min={{ min }}&max={{ max }}&paging={{ page| page_a }}">
                         <li>></li>
                     </a>
                 {% else %}

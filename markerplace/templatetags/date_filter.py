@@ -50,9 +50,24 @@ def page_h(value):
 def page_a(value):
     if value is None:
         return 2
-    value = int(value) + 1
+    new_value = int(value) + 1
+    return new_value
+
+
+def de_none(value):
+    if value is None:
+        return ''
     return value
 
+
+def id_num(value):
+    if value == '' or value is None:
+        return 1
+    return value
+
+
+register.filter(id_num)
+register.filter(de_none)
 
 register.filter(page_a)
 register.filter(page_h)

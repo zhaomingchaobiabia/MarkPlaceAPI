@@ -136,29 +136,32 @@ def offers_query_date(request):
     dict_d['min'] = data.get('min') + 'T00:00:00'
     dict_d['max'] = data.get('max') + 'T00:00:00'
     # print(dict_d['max'])
+    data_dict_l = mark.offers_query_date(dict_d)['offers_query_response']
+    print(data_dict_l)
+    num = data_dict_l['nb_total_result']
+    page = data_dict_l['page']
+    total_page = data_dict_l['total_paging']
     try:
-        data_dict_l = mark.offers_query_date(dict_d)['offers_query_response']
-        print(data_dict_l)
-        num = data_dict_l['nb_total_result']
-        page = data_dict_l['page']
-        total_page = data_dict_l['total_paging']
         data_dict = data_dict_l['offer']
         print(data_dict)
     except:
         data_dict = ''
         # ls 总条数  page  当前页面   total_page  总页码
         return render(request, 'test/offer_query_time.html',
-                      {'data_dict_ls': data_dict, 'ls': 0, 'page': 1, 'total_page': 1, 'date_type': dict_d['date-type'],
+                      {'data_dict_ls': data_dict, 'ls': num, 'page': int(page), 'total_page': int(total_page),
+                       'date_type': dict_d['date-type'],
                        'min': data.get('min'),
                        'max': data.get('max'), })
     if type(data_dict) is list:
         da_dict = {'data_dict_ls': data_dict, 'ls': num, 'date_type': dict_d['date-type'], 'min': data.get('min'),
-                   'max': data.get('max'), 'page': int(page), 'total_page': total_page}
+                   'max': data.get('max'), 'page': int(page), 'total_page': int(total_page)}
+        print(da_dict)
         return render(request, 'test/offer_query_time.html', da_dict)
     ls = []
     ls.append(data_dict)
     return render(request, 'test/offer_query_time.html',
-                  {'data_dict_ls': ls, 'ls': num, 'page': 1, 'total_page': 1, 'date_type': dict_d['date-type'],
+                  {'data_dict_ls': ls, 'ls': num, 'page': int(page), 'total_page': int(total_page),
+                   'date_type': dict_d['date-type'],
                    'min': data.get('min'),
                    'max': data.get('max')})
 
@@ -217,50 +220,77 @@ def batch_query(request):
 @csrf_exempt
 @fault_decorator
 def orders_query(request):
-    if request.method == 'GET':
-        dicts = {}
-        dicts['paging'] = 1
-    else:
-        data = request.POST
-        dicts = {}
-        dicts['paging'] = data.get('paging')
+    dicts = {}
+    page = int(request.GET.get('paging')) if request.GET.get('paging') else 1
+    dicts['paging'] = page
+    print(dicts)
+    data_dict_ls = mark_order.orders_query(dicts)['orders_query_response']
+    total_page = data_dict_ls['total_paging']
+    nb_total_result = data_dict_ls['nb_total_result']
+    print(data_dict_ls)
     try:
-        data_dict = mark_order.orders_query(dicts)['orders_query_response']['order']
+        data_dict = data_dict_ls['order']
     except:
         data_dict = ''
-        return render(request, 'test/orders.html', {'data_dict_ls': data_dict})
+        return render(request, 'test/orders.html',
+                      {'data_dict_ls': data_dict, 'page': int(page), 'total_page': int(total_page),
+                       'nb_total_result': nb_total_result})
     if type(data_dict) is list:
-        return render(request, 'test/orders.html', {'data_dict_ls': data_dict})
+        return render(request, 'test/orders.html',
+                      {'data_dict_ls': data_dict, 'page': int(page), 'total_page': int(total_page),
+                       'nb_total_result': nb_total_result})
     ls = []
     ls.append(data_dict)
-    return render(request, 'test/orders.html', {'data_dict_ls': ls})
+    return render(request, 'test/orders.html',
+                  {'data_dict_ls': data_dict, 'page': int(page), 'total_page': int(total_page),
+                   'nb_total_result': nb_total_result})
 
 
 @csrf_exempt
-@fault_decorator
+# @fault_decorator
 def orders_query_date(request):
-    data = request.POST
+    data = request.GET
     dict_d = {}
-    dict_d['paging'] = data.get('paging')
+    dict_d['paging'] = data.get('paging') if data.get('paging') else 1
     dict_d['date-type'] = data.get('date-type')
     # print(type(data.get('min')))
-    if data.get('min') or data.get('max') == '':
+    if data.get('min') == '' or data.get('max') == '':
         dict_d['date-type'] = ''
-    dict_d['min'] = data.get('min') + 'T00:00:00'
-    dict_d['max'] = data.get('max') + 'T23:59:59'
+        dict_d['min'] = ''
+        dict_d['max'] = ''
+    else:
+        dict_d['min'] = data.get('min') + 'T00:00:00'
+        dict_d['max'] = data.get('max') + 'T23:59:59'
     dict_d['state'] = data.get('state')
     # print(dict_d['max'])
+    print(dict_d)
+
+    data_dict_ls = mark_order.orders_query_date(dict_d)['orders_query_response']
+    page = data_dict_ls['page']
+    total_page = data_dict_ls['total_paging']
+    nb_total_result = data_dict_ls['nb_total_result']
+    print(data_dict_ls)
     try:
-        data_dict = mark_order.orders_query_date(dict_d)['orders_query_response']['order']
+        data_dict = data_dict_ls['order']
     except:
         data_dict = ''
-        return render(request, 'test/orders.html', {'data_dict_ls': data_dict})
-
+        return render(request, 'test/orders_time.html',
+                      {'data_dict_ls': data_dict, 'page': int(page), 'total_page': int(total_page),
+                       'nb_total_result': nb_total_result, 'date_type': data.get('date-type'), 'min': data.get('min'),
+                       'max': data.get('max'), 'state': dict_d['state']})
     if type(data_dict) is list:
-        return render(request, 'test/orders.html', {'data_dict_ls': data_dict})
+        return render(request, 'test/orders_time.html',
+                      {'data_dict_ls': data_dict, 'page': int(page), 'total_page': int(total_page),
+                       'nb_total_result': nb_total_result, 'date_type': data.get('date-type'),
+                       'min': data.get('min'),
+                       'max': data.get('max'), 'state': dict_d['state']})
     ls = []
     ls.append(data_dict)
-    return render(request, 'test/orders.html', {'data_dict_ls': ls})
+    return render(request, 'test/orders_time.html',
+                  {'data_dict_ls': ls, 'page': int(page), 'total_page': int(total_page),
+                   'nb_total_result': nb_total_result,
+                   'date_type': data.get('date-type'), 'min': data.get('min'),
+                   'max': data.get('max'), 'state': dict_d['state']})
 
 
 @csrf_exempt
@@ -276,13 +306,13 @@ def orders_query_id(request):
         data_dict = mark_order.orders_query_id(ls_id)['orders_query_response']['order']
     except:
         data_dict = ''
-        return render(request, 'test/orders.html', {'data_dict_ls': data_dict})
+        return render(request, 'test/orders_id.html', {'data_dict_ls': data_dict})
     if type(data_dict) is list:
-        return render(request, 'test/orders.html', {'data_dict_ls': data_dict})
+        return render(request, 'test/orders_id.html', {'data_dict_ls': data_dict})
     else:
         ls = []
         ls.append(data_dict)
-        return render(request, 'test/orders.html', {'data_dict_ls': ls})
+        return render(request, 'test/orders_id.html', {'data_dict_ls': ls})
 
 
 @csrf_exempt
@@ -342,34 +372,61 @@ def carriers_query(request):
 @csrf_exempt
 @fault_decorator
 def order_comments_query(request):
-    if request.method == 'GET':
-        return render(request, 'test/order_comments.html')
-    if request.method == 'POST':
-        data = request.POST
-        dict_query = {'paging': data.get('paging')}
-        dict_data = client.client_order_query(dict_query)
-        return render(request, 'client_comments_show.html', {'data': dict_data})
+    paging = request.GET.get('paging') if request.GET.get('paging') else 1
+    dict_data = client.client_order_query(paging)['client_order_comments_query_response']
+    print(dict_data)
+    total_page = dict_data['total_paging']
+    nb_total_result = dict_data['nb_total_result']
+    try:
+        client_order_comment = dict_data['client_order_comment']
+    except:
+        client_order_comment = ''
+        return render(request, 'test/order_comments.html',
+                      {'total_page': int(total_page), 'page': int(paging), 'nb_total_result': nb_total_result,
+                       'client_order_comment': client_order_comment})
+    if type(client_order_comment) is list:
+        return render(request, 'test/order_comments.html',
+                      {'total_page': int(total_page), 'page': int(paging), 'nb_total_result': nb_total_result,
+                       'client_order_comment': client_order_comment})
+    ls = []
+    ls.append(client_order_comment)
+    return render(request, 'test/order_comments.html',
+                  {'total_page': int(total_page), 'page': int(paging), 'nb_total_result': nb_total_result,
+                   'client_order_comment': ls})
 
 
 @csrf_exempt
 @fault_decorator
 def order_comments_query_date(request):
-    if request.method == 'POST':
-        data = request.POST
-        dict_d = {'paging': data.get('paging'), 'results_count': 50,
+    if request.method == 'GET':
+        data = request.GET
+        paging = data.get('paging') if data.get('paging') else 1
+        dict_d = {'paging': paging, 'results_count': 20,
                   'date-type': data.get('date-type'), 'min': data.get('min'),
                   'max': data.get('max')}
+        dict_data = client.client_order_query_date(dict_d)['client_order_comments_query_response']
+        total_page = dict_data['total_paging']
+        nb_total_result = dict_data['nb_total_result']
         try:
-            data_dict = client.client_order_query_date(dict_d)['client_order_comments_query_response'][
-                'client_order_comment']
-            ls = []
-            if not type(data_dict) is list:
-                ls.append(data_dict)
-                print(data_dict)
-                return render(request, 'test/order_comments.html', {'data_dict_ls': ls})
+            client_order_comment = dict_data['client_order_comment']
         except:
-            data_dict = ''
-        return render(request, 'test/order_comments.html', {'data_dict_ls': data_dict})
+            client_order_comment = ''
+            return render(request, 'test/order_comment_time.html',
+                          {'date_type': data.get('date-type'), 'min': data.get('min'), 'max': data.get('max'),
+                           'total_page': int(total_page), 'page': int(paging),
+                           'nb_total_result': nb_total_result,
+                           'client_order_comment': client_order_comment})
+        if type(client_order_comment) is list:
+            return render(request, 'test/order_comment_time.html',
+                          {'date_type': data.get('date-type'), 'min': data.get('min'), 'max': data.get('max'),
+                           'total_page': int(total_page), 'page': int(paging), 'nb_total_result': nb_total_result,
+                           'client_order_comment': client_order_comment})
+        ls = []
+        ls.append(client_order_comment)
+        return render(request, 'test/order_comment_time.html',
+                      {'date_type': data.get('date-type'), 'min': data.get('min'), 'max': data.get('max'),
+                       'total_page': int(total_page), 'page': int(paging), 'nb_total_result': nb_total_result,
+                       'client_order_comment': ls})
 
 
 @csrf_exempt
@@ -385,7 +442,7 @@ def order_comments_query_id(request):
             ls.append(data_dict)
         except:
             ls = ''
-        return render(request, 'test/order_comments.html', {'data_dict_ls': ls})
+        return render(request, 'test/order_comment_id.html', {'client_order_comment': ls})
 
 
 @csrf_exempt
@@ -436,39 +493,59 @@ def incidents_query1(request):
 
 # 废弃
 @csrf_exempt
-@fault_decorator
+# @fault_decorator
 def incidents_query(request):
-    if request.method == 'GET':
-        return render(request, 'test/incidents.html')
+    datas = request.GET
+    paging = request.GET.get('paging') if request.GET.get('paging') else 1
+    print(paging)
+    print(datas.get('min'))
+    if datas.get('min') is None or datas.get('max') is None:
+        return render(request, 'test/incidents_des.html')
+
+    elif datas.get('min') == '' or datas.get('max') == '':
+        return render(request, 'test/incidents_des.html')
     else:
-        data = request.POST
-        min = data.get('min') + 'T00:00:00'
-        max = data.get('max') + 'T23:59:59'
+        min = datas.get('min') + 'T00:00:00'
+        max = datas.get('max') + 'T23:59:59'
         data_dict = {
-            'paging': data.get('paging'),
-            'date_type': data.get('date-type'), 'min': min, 'max': max,
+            'paging': paging,
+            'date_type': datas.get('date-type'), 'min': min, 'max': max,
         }
-        # print(data_dict)
+    print(data_dict)
+
+    data_dict_ls = incident.incidents_query(data_dict)['incidents_query_response']
+    print(datas)
+    total_page = data_dict_ls['total_paging']
+    nb_total_result = data_dict_ls['nb_total_result']
     try:
-        data = incident.incidents_query(data_dict)['incidents_query_response']['incident']
-        # print(data)
-        # for da in data:
-        # print(da['order_details_incident']['order_detail_incident'])
+        data = data_dict_ls['incident']
         if type(data) is list:
             for da in data:
                 if not type(da['order_details_incident']['order_detail_incident']) is list:
                     da['order_details_incident']['order_detail_incident'] = [
                         da['order_details_incident']['order_detail_incident'], ]
 
-            return render(request, 'test/incidents.html', {'dict_data_ls': data})
+            return render(request, 'test/incidents.html',
+                          {'dict_data_ls': data, 'date_type': datas.get('date-type'), 'min': datas.get('min'),
+                           'max': datas.get('max'),
+                           'total_page': int(total_page),
+                           'nb_total_result': nb_total_result, 'page': int(paging)})
         ls = []
-        if not type(data['order_details_incident']['order_detail_incident']) is list:
+        if type(data['order_details_incident']['order_detail_incident']) is not list:
             data['order_details_incident']['order_detail_incident'] = [
                 data['order_details_incident']['order_detail_incident'], ]
         ls.append(data)
-        return render(request, 'test/incidents.html', {'dict_data_ls': ls})
+        return render(request, 'test/incidents.html',
+                      {'dict_data_ls': data, 'date_type': datas.get('date-type'), 'min': datas.get('min'),
+                       'max': datas.get('max'),
+                       'total_page': int(total_page),
+                       'nb_total_result': nb_total_result, 'page': int(paging)})
     except:
-        return render(request, 'test/incidents.html', {'dict_data_ls': ''})
+        return render(request, 'test/incidents.html',
+                      {'dict_data_ls': '', 'date_type': datas.get('date-type'), 'min': datas.get('min'),
+                       'max': datas.get('max'),
+                       'total_page': int(total_page),
+                       'nb_total_result': nb_total_result, 'page': int(paging)})
 
 
 @csrf_exempt
@@ -598,19 +675,24 @@ def batch_query_offer(request, param1):
 @csrf_exempt
 @fault_decorator
 def search_name(request, param1):
+    sql = 'select * from offers where product_name like %s'
+    result = Offers.objects.raw(sql, params=(f'%{param1}%',))
+    ls = []
     try:
-        datas = mark.offers_query()['offers_query_response']['offer']
-        data_ls = []
-        # print('-------------')
-        # print(datas)
-        for data in datas:
-            if param1 in data['product_name']:
-                data_ls.append(data)
-        if len(data_ls) == 0:
-            data_ls = ''
+        for data in result:
+            # print(data)
+            ls.append([data.image, data.product_name, data.offer_seller_id, data.price, data.quantity,
+                       data.starts_at, data.ends_at, data.pro_price, data.is_shipping_free, data.product_url])
     except:
-        data_ls = ''
-    return render(request, 'test/offers_query.html', {'data_dict_ls': data_ls})
+        ls = []
+    if len(ls) == 0:
+        ls = ''
+    p = Paginator(ls, 10)
+    page = int(request.GET.get("page")) if request.GET.get("page") else 1
+    # 返回页面所需要的数据
+    data = p.get_page(page)
+    return render(request, 'test/offer_query_name.html',
+                  {'data_dict_ls': data, 'ls': len(ls), 'page': page})
 
 
 @csrf_exempt

@@ -23,6 +23,14 @@
     <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
     <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
 <![endif]-->
+    <style>
+        ul li{ list-style: none;
+            display: inline;
+        }
+        #middle_bottom {
+            text-align: center;
+        }
+    </style>
 </head>
 
 <body>
@@ -70,6 +78,10 @@
         <div class="col-sm-12">
             <div class="white-box">
                 <h3>Message Table</h3>
+                <div>
+                    <p class="text-muted"><code>共{{ nb_total_result }}条,{{ min }}--{{ max }}</code></p>
+                    <p class="text-muted"><code>第{{ page }}页</code></p>
+                </div>
                 <p class="text-muted"><code>state update:</code></p>
                 <form action="{% url 'message_update_state' %}" method="post" accept-charset="UTF-8" enctype="multipart/form-data">
                     action:
@@ -130,6 +142,54 @@
                 </div>
             </div>
         </div>
+    <ul class="middle_bottom" id="middle_bottom">
+            {% if page > 1 %}
+                <a href="?date_type={{ date_type }}&min={{ min }}&max={{ max }}&paging={{ page| page_h }}">
+                    <li><</li>
+                </a>
+            {% else %}
+                <a href="">
+                    <li><</li>
+                </a>
+            {% endif %}
+            <div style="display: inline">
+                <a href="?date_type={{ date_type }}&min={{ min }}&max={{ max }}&paging=1">
+                    <li class="active">1</li>
+                </a>
+                <a href="?date_type={{ date_type }}&min={{ min }}&max={{ max }}&paging=2">
+                    <li>2</li>
+                </a>
+                <a href="?date_type={{ date_type }}&min={{ min }}&max={{ max }}&paging=3">
+                    <li>3</li>
+                </a>
+                <a href="?date_type={{ date_type }}&min={{ min }}&max={{ max }}&paging=4">
+                    <li>4</li>
+                </a>
+                <a href="?date_type={{ date_type }}&min={{ min }}&max={{ max }}&paging=5">
+                    <li>5</li>
+                </a>
+                <a href="?date_type={{ date_type }}&min={{ min }}&max={{ max }}&paging=6">
+                    <li>6</li>
+                </a>
+                <a href="?date-type={{ date_type }}&min={{ min }}&max={{ max }}&paging=7">
+                    <li>7</li>
+                </a>
+                <a href="?date_type={{ date_type }}&min={{ min }}&max={{ max }}&paging=8">
+                    <li>8</li>
+                </a>
+            </div>
+            {% if page < total_page %}
+                <a href="?date_type={{ date_type }}&min={{ min }}&max={{ max }}&paging={{ page| page_a }}">
+                    <li>></li>
+                </a>
+            {% else %}
+                <a href="">
+                    <li>></li>
+                </a>
+            {% endif %}
+
+
+        </ul>
     </div>
 </div>
 <div>

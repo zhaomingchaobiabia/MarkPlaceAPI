@@ -106,7 +106,7 @@
         <div class="col-sm-12">
             <div class="white-box">
                 <h3>Order Comments Table</h3>
-                <p class="text-muted">Add class <code>共{{ nb_total_result }}条</code></p>
+                <p class="text-muted">Add class <code>共{{ nb_total_result }}条,{{ min }}--{{ max }}</code></p>
                         <div>
                             <p class="text-muted"><code>第{{ page }}页</code></p>
                         </div>
@@ -140,7 +140,7 @@
                                     <td>{{ dict_data.client_order_comment_id }}</td>
                                     <td>{{ dict_data.client_name }}</td>
                                     <td>{{ dict_data.comment | de_none}}</td>
-                                    <td>{{ dict_data.reply | de_none }}</td>
+                                    <td>{{ dict_data.reply | de_none}}</td>
                                     <td>{{ dict_data.is_received | de_none }}</td>
                                     <td>{{ dict_data.is_fast | de_none }}</td>
                                     <td>{{ dict_data.is_well_packed | de_none }}</td>
@@ -156,7 +156,7 @@
         </div>
     <ul class="middle_bottom" id="middle_bottom">
                 {% if page > 1 %}
-                    <a href="?paging={{ page| page_h }}">
+                    <a href="?date-type={{ date_type }}&min={{ min }}&max={{ max }}&paging={{ page| page_h }}">
                         <li><</li>
                     </a>
                 {% else %}
@@ -165,33 +165,33 @@
                     </a>
                 {% endif %}
                 <div style="display: inline">
-                    <a href="?&paging=1">
+                    <a href="?date-type={{ date_type }}&min={{ min }}&max={{ max }}&paging=1">
                         <li class="active">1</li>
                     </a>
-                    <a href="?paging=2">
+                    <a href="?date-type={{ date_type }}&min={{ min }}&max={{ max }}&paging=2">
                         <li>2</li>
                     </a>
-                    <a href="?paging=3">
+                    <a href="?date-type={{ date_type }}&min={{ min }}&max={{ max }}&paging=3">
                         <li>3</li>
                     </a>
-                    <a href="?paging=4">
+                    <a href="?date-type={{ date_type }}&min={{ min }}&max={{ max }}&paging=4">
                         <li>4</li>
                     </a>
-                    <a href="?paging=5">
+                    <a href="?date-type={{ date_type }}&min={{ min }}&max={{ max }}&paging=5">
                         <li>5</li>
                     </a>
-                    <a href="?paging=6">
+                    <a href="?date-type={{ date_type }}&min={{ min }}&max={{ max }}&paging=6">
                         <li>6</li>
                     </a>
-                    <a href="?paging=7">
+                    <a href="?date-type={{ date_type }}&min={{ min }}&max={{ max }}&paging=7">
                         <li>7</li>
                     </a>
-                    <a href="?paging=8">
+                    <a href="?date-type={{ date_type }}&min={{ min }}&max={{ max }}&paging=8">
                         <li>8</li>
                     </a>
                 </div>
                 {% if page < total_page %}
-                    <a href="?paging={{ page| page_a }}">
+                    <a href="?date-type={{ date_type }}&min={{ min }}&max={{ max }}&paging={{ page| page_a }}">
                         <li>></li>
                     </a>
                 {% else %}

@@ -3,6 +3,7 @@ from django.views.decorators.csrf import csrf_exempt
 from markerplace_develop.markerAPI_develop import SalesPeriodsApi
 from markerplace.views import fault_decorator
 from django.http.response import JsonResponse
+
 sales = SalesPeriodsApi()
 
 
@@ -41,36 +42,52 @@ def pricing_query(request):
 @csrf_exempt
 @fault_decorator
 def messages_query(request):
-    if request.method == 'GET':
-        data_dict = {'paging': 1}
-    else:
-        data = request.POST
-        data_dict = {'paging': data.get('paging'),
-                     'date_type': data.get('date_type'), 'min': data.get('min'),
-                     'max': data.get('max')
-                     }
+    paging = request.GET.get('paging') if request.GET.get('paging') else 1
+    if request.GET.get('min') is None:
+        return render(request, 'test/message.html')
+    elif request.GET.get('min') == '':
+        return render(request, 'test/message.html')
+    data = request.GET
+    data_dict = {'paging': paging,
+                 'date_type': data.get('date_type'), 'min': data.get('min'),
+                 'max': data.get('max')
+                 }
+    print(data_dict)
+    data_dict_ls = sales.messages_query(data_dict)['messages_query_response']
+    print(data_dict_ls)
+    total_page = data_dict_ls['total_paging']
+    nb_total_result = data_dict_ls['nb_total_result']
     try:
-        data = sales.messages_query(data_dict)['messages_query_response']['message']
-        if type(data) is list:
-            for li in data:
+        datas = data_dict_ls['message']
+        if type(datas) is list:
+            for li in datas:
                 li['state'] = li['@state']
                 li['archived'] = li['@archived']
                 li['message_referer']['type'] = li['message_referer']['@type']
                 li['message_referer']['text'] = li['message_referer']['#text']
                 li['message_from']['type'] = li['message_from']['@type']
                 li['message_from']['text'] = li['message_from']['#text']
-            return render(request, 'test/message.html', {'data_ls': data})
+            return render(request, 'test/message_query_time.html',
+                          {'data_ls': datas, 'max': data.get('max'), 'min': data.get('min'),
+                           'date_type': data.get('date_type'), 'page': int(paging), 'total_page': int(total_page),
+                           'nb_total_result': nb_total_result})
         ls = []
-        data['state'] = data['@state']
-        data['archived'] = data['@archived']
-        data['message_referer']['type'] = data['message_referer']['@type']
-        data['message_referer']['text'] = data['message_referer']['#text']
-        data['message_from']['type'] = data['message_from']['@type']
-        data['message_from']['text'] = data['message_from']['#text']
+        datas['state'] = datas['@state']
+        datas['archived'] = datas['@archived']
+        datas['message_referer']['type'] = datas['message_referer']['@type']
+        datas['message_referer']['text'] = datas['message_referer']['#text']
+        datas['message_from']['type'] = datas['message_from']['@type']
+        datas['message_from']['text'] = datas['message_from']['#text']
         ls.append(data)
-        return render(request, 'test/message.html', {'data_ls': ls})
+        return render(request, 'test/message_query_time.html',
+                      {'data_ls': ls, 'max': data.get('max'), 'min': data.get('min'),
+                       'date_type': data.get('date_type'), 'page': int(paging), 'total_page': int(total_page),
+                       'nb_total_result': nb_total_result})
     except:
-        return render(request, 'test/message.html', {'data_ls': ''})
+        return render(request, 'test/message_query_time.html',
+                      {'data_ls': '', 'max': data.get('max'), 'min': data.get('min'),
+                       'date_type': data.get('date_type'), 'page': int(paging), 'total_page': int(total_page),
+                       'nb_total_result': nb_total_result})
 
 
 @csrf_exempt
@@ -105,6 +122,7 @@ def messages_query_type(request):
             return render(request, 'test/message.html', {'data_ls': ls})
         except:
             return render(request, 'test/message.html', {'data_ls': ''})
+
 
 @csrf_exempt
 @fault_decorator

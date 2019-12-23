@@ -6,6 +6,7 @@ import xmltodict
 import xml.etree.ElementTree as ET
 from django.conf import settings
 
+
 # 验证失败 重新获取token
 def outter(func):
     func = func
@@ -374,7 +375,7 @@ class MarketPlaceOrderApi(MarketPlaceApi):
         # self.authentication()
         order_dict = {
             'orders_query': {'@xmlns': self.xmlns, '@shop_id': self.shop_id, '@partner_id': self.partner_id,
-                             '@token': self.token, '@results_count': 50}}
+                             '@token': self.token, '@results_count': 20}}
         order_dict['orders_query']['paging'] = query_dict['paging']
         order_xml = xmltodict.unparse(order_dict, encoding='utf-8')
         url = self.url + '/orders_query'
@@ -393,7 +394,7 @@ class MarketPlaceOrderApi(MarketPlaceApi):
         # self.authentication()
         dict_data = {
             'orders_query': {'@xmlns': self.xmlns, '@shop_id': self.shop_id, '@partner_id': self.partner_id,
-                             '@token': self.token, '@results_count': 50,
+                             '@token': self.token, '@results_count': 20,
                              'paging': qu_dict['paging'],
                              'states': {'state': qu_dict['state']},
                              'date': {'@type': qu_dict['date-type'], 'min': qu_dict['min'], 'max': qu_dict['max']}
@@ -507,7 +508,7 @@ class ClientOrderApi(MarketPlaceApi):
         return 400
 
     @outter
-    def client_order_query(self, client_query):
+    def client_order_query(self, paging):
         '''
         客户订单评论查询
         :param client_query:
@@ -517,8 +518,8 @@ class ClientOrderApi(MarketPlaceApi):
         client_dict = {
             'client_order_comments_query': {'@xmlns': self.xmlns, '@shop_id': self.shop_id,
                                             '@partner_id': self.partner_id,
-                                            '@token': self.token, '@results_count': '50',
-                                            'paging': client_query['paging']}}
+                                            '@token': self.token, '@results_count': '20',
+                                            'paging': paging}}
         client_xml = xmltodict.unparse(client_dict, encoding='utf-8')
         url = self.url + '/client_order_comments_query'
         response = requests.post(url, headers=self.headers, data=client_xml.encode('utf-8'))
@@ -666,7 +667,7 @@ class IncidentsApi(MarketPlaceApi):
         data_dict = {
             'incidents_query': {'@xmlns': self.xmlns, '@shop_id': self.shop_id,
                                 '@partner_id': self.partner_id,
-                                '@token': self.token, '@results_count': 50,
+                                '@token': self.token, '@results_count': 25,
                                 'paging': query_dict['paging']
                                 }
         }

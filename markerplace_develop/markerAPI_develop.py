@@ -61,12 +61,12 @@ class SalesPeriodsApi(MarketPlaceApi):
                 {
                     '@xmlns': self.xmlns, '@shop_id': self.shop_id,
                     '@partner_id': self.partner_id,
-                    '@token': self.token, '@results_count': 50,
+                    '@token': self.token, '@results_count': 25,
                     'paging': query_dict['paging'],
 
                 }
         }
-        if 'data_type' in query_dict:
+        if 'date_type' in query_dict:
             data_dict['messages_query']['date'] = {'@type': query_dict['date_type'],
                                                    'min': query_dict['min'] + 'T00:00:00',
                                                    'max': query_dict['max'] + 'T23:59:59'}
