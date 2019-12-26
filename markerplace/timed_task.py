@@ -1,7 +1,6 @@
 import time
 
 from .models import Offers
-from .market_api import MarketPlaceApi
 from datetime import datetime
 from .views import mark
 

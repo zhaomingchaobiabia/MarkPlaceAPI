@@ -29,3 +29,14 @@ class Offers(models.Model):
 
     class Meta:
         db_table = 'offers'
+
+
+# class CommentTable(models.Model):
+#     id = models.IntegerField('id', primary_key=True, auto_created=True)
+#     rater = models.CharField('rater', max_length=30, null=True, default='')
+#     rating = models.CharField('rating', max_length=5)
+#     com_date = models.CharField('com_date', max_length=30, null=True, default='')
+#     text = models.TextField('text', default='')
+#
+#     class Meta:
+#         db_table = 'comment_table'

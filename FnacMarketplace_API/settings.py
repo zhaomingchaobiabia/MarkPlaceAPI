@@ -53,7 +53,7 @@ CRONTAB_COMMAND_PREFIX = 'LANG_ALL=zh_cn.UTF-8'
 
 CRONJOBS = [
     # 每一分钟执行一次
-    ('*/10 * * * *', 'markerplace.timed_task.task', '>>~/test/timed_task.log')
+    ('*/15 * * * *', 'markerplace.timed_task.task', '>>~/test/timed_task.log')
 
 ]
 
