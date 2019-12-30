@@ -8,7 +8,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <link rel="icon" type="image/png" sizes="16x16" href="/static/images/favicon.png">
-    <title>My Admin - is a responsive admin template</title>
+    <title>My Admin - is FnacMarketplaceAPI</title>
     <!-- Bootstrap Core CSS -->
     <link href="/static/bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" type="text/css">
     <!-- Menu CSS -->
@@ -67,7 +67,6 @@
         max:
         <input type="date" name="max" value="">
         <input type="submit" value="提交">
-
     </form>
     <form action="{% url 'offers_query_quantity' %}" method="get" enctype="multipart/form-data" accept-charset="UTF-8">
         <strong>Query by quantity:</strong><br>
@@ -88,6 +87,12 @@
         <input type="number" name="min_p" value="">
         max_price:
         <input type="number" name="max_p" value="">
+        <input type="submit" value="提交">
+    </form>
+    <form action="{% url 'offers_query_sort' %}" accept-charset="UTF-8" enctype="multipart/form-data" method="get">
+        <strong>Query by sort:</strong><br>
+        sort:
+        <input type="text" name="sort" value="">
         <input type="submit" value="提交">
     </form>
     <strong>Price update:</strong><br>

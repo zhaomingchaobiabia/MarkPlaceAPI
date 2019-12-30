@@ -1,8 +1,10 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views.decorators.csrf import csrf_exempt
 from markerplace_develop.markerAPI_develop import SalesPeriodsApi
 from markerplace.views import fault_decorator
 from django.http.response import JsonResponse
+from .models import User
+import hashlib
 
 sales = SalesPeriodsApi()
 
@@ -39,6 +41,18 @@ def pricing_query(request):
         return render(request, 'test/pricing_query.html', {'data': data})
 
 
+# 登录验证
+def login_verify(func):
+    def inner(request, *args, **kwargs):
+        if 'loginFlag' in request.session:
+            return func(request, *args, **kwargs)
+
+        return redirect(to='login')
+
+    return inner
+
+
+# @login_verify
 @csrf_exempt
 @fault_decorator
 def messages_query(request):
@@ -159,4 +173,22 @@ def message_update_state(request):
 
 
 def test1(request):
-    return render(request, 'test/themifyicon.html')
+    return render(request, 'test/dashboard.html')
+
+
+# 登录
+@csrf_exempt
+@fault_decorator
+def login(request):
+    if request.method == 'GET':
+        return render(request, 'login.html')
+    if request.method == 'POST':
+        user = request.POST.get('user')
+        if not User.objects.filter(user=user):
+            return render(request, 'login.html')
+        password = request.POST.get('password')
+
+        if User.objects.filter(user=user, password=password):
+            request.session['loginFlag'] = {'user': user}
+            return redirect(to='index')
+        return render(request, 'login.html')

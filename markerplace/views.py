@@ -737,3 +737,25 @@ def offers_query_price(request):
     data = p.get_page(page)
     return render(request, 'test/offer_query-price.html',
                   {'data_dict_ls': data, 'min_p': min_p, 'max_p': max_p, 'ls': len(ls), 'page': page})
+
+
+def offers_query_sort(request):
+    sort = request.GET.get('sort')
+    result = Offers.objects.filter(sort=sort)
+    ls = []
+    print(result)
+    try:
+        for data in result:
+            # print(data)
+            ls.append([data.image, data.product_name, data.offer_seller_id, data.price, data.quantity,
+                       data.starts_at, data.ends_at, data.pro_price, data.is_shipping_free, data.product_url])
+    except:
+        ls = []
+    if len(ls) == 0:
+        ls = ''
+    p = Paginator(ls, 10)
+    page = int(request.GET.get("page")) if request.GET.get("page") else 1
+    # 返回页面所需要的数据
+    data = p.get_page(page)
+    return render(request, 'test/offer_query-sort.html',
+                  {'data_dict_ls': data, 'sort': sort, 'ls': len(ls), 'page': page})

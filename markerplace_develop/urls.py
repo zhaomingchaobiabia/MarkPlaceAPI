@@ -9,6 +9,6 @@ urlpatterns = [
     path('messages_query_type/', views.messages_query_type, name="messages_query_type"),
     path('message_update/', views.message_update, name='message_update'),
     path('message_update_state/', views.message_update_state, name='message_update_state'),
-
-    path('test1/', views.test1, name='test1')
+    # path('test1/', views.test1, name='test1'),
+    # path('login/', views.login, name='login')
 ]

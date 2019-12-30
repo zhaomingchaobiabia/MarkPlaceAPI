@@ -7,8 +7,12 @@ from .views import mark
 
 # 定时获取offer
 def query_offer(seller_id):
-    subject = Offers.objects.filter(offer_seller_id=seller_id)
-    print(subject)
+    try:
+        subject = Offers.objects.filter(offer_seller_id=seller_id).values_list('sort', flat=True)[0]
+        # print(subject.get('sort'))
+    except:
+        print(seller_id, ':查询sort失败')
+        return ''
     return subject
 
 
@@ -49,7 +53,7 @@ def query_id(ls):
             delete_offer(data.offer_seller_id)
 
 
-def add_offer(data):
+def add_offer(data, sort):
     try:
         if 'promotion' not in data:
             data['promotion'] = {'@type': '', 'starts_at': '', 'ends_at': '', 'price': '',
@@ -68,7 +72,7 @@ def add_offer(data):
                         ends_at=str_time(data['promotion']['ends_at']),
                         pro_price=data['promotion']['price'],
                         trigger_customer_type=data['promotion']['triggers']['trigger_customer_type'],
-                        type_label=data['type_label'])
+                        type_label=data['type_label'], sort=sort)
         offers.save()
     except Exception as e:
         print(e)
@@ -86,8 +90,9 @@ def task():
             if type(data_dict) is not list:
                 data_dict = ls.append(data_dict)
             for data in data_dict:
+                sort = query_offer(data['offer_seller_id'])
                 delete_offer(data['offer_seller_id'])
-                add_offer(data)
+                add_offer(data, sort)
                 lis_id.append(data['offer_seller_id'])
                 print(data['offer_seller_id'], '已更新')
         except Exception as e:

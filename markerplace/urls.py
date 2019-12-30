@@ -10,7 +10,7 @@ urlpatterns = [
     path('batch-status/', views.batch_status, name='batch_status'),
     path('offers-query/', views.offers_query, name='offers_query'),
     path('offers-query-price/', views.offers_query_price, name='offers_query_price'),
-
+    path('offers-query-sort/', views.offers_query_sort, name="offers_query_sort"),
     path('offers-query-date/', views.offers_query_date, name='offers_query_date'),
     path('offers-query-quantity/', views.offers_query_quantity, name='offers_query_quantity'),
     path('batch-query/', views.batch_query, name='batch_query'),

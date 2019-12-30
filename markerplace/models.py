@@ -26,10 +26,10 @@ class Offers(models.Model):
     pro_price = models.CharField('pro_price', max_length=20, null=True, default='')
     trigger_customer_type = models.CharField('trigger_customer_type', max_length=20, null=True, default='')
     type_label = models.CharField('type_label', max_length=20, null=True, default='')
+    sort = models.CharField('sort', max_length=20, null=True)
 
     class Meta:
         db_table = 'offers'
-
 
 # class CommentTable(models.Model):
 #     id = models.IntegerField('id', primary_key=True, auto_created=True)
