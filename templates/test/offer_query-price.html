@@ -34,13 +34,17 @@
         #img_id {
             text-align: center;
         }
-        #middle_bottom{
+
+        #middle_bottom {
             text-align: center;
         }
-        #tr_cen th{
+
+        #tr_cen th {
             text-align: center;
         }
-        ul li{ list-style: none;
+
+        ul li {
+            list-style: none;
             display: inline;
         }
     </style>
@@ -54,54 +58,7 @@
 {% include 'test/wrapper.html' %}
 <!-- Page Content -->
 <div id="page-wrapper">
-    <form action="{% url 'offers_query_date' %}" accept-charset="UTF-8" enctype="multipart/form-data" method="get">
-        <strong>Query by time:</strong><br>
-        date:
-        <select name="date-type">
-            <option value="Created">Created</option>
-            <option value="Modified">Modified</option>
-        </select>
-        min:
-        <input type="date" name="min" value="">
-        max:
-        <input type="date" name="max" value="">
-        <input type="submit" value="提交">
-
-    </form>
-    <form action="{% url 'offers_query_quantity' %}" method="get" enctype="multipart/form-data" accept-charset="UTF-8">
-        <strong>Query by quantity:</strong><br>
-        quantity:
-        <select name="quantity_type">
-            <option value="Equals">Equals</option>
-            <option value="LessThan">LessThan</option>
-            <option value="GreaterThan">GreaterThan</option>
-            <option value="LessThanOrEquals">LessThanOrEquals</option>
-            <option value="GreaterThanOrEquals">GreaterThanOrEquals</option>
-        </select>
-        <input type="number" name="quantity" value=""><input type="submit" value="提交">
-
-    </form>
-    <form action="{% url 'offers_query_price' %}" method="get" enctype="multipart/form-data" accept-charset="UTF-8">
-        <strong>Query by price:</strong><br>
-        min_price:
-        <input type="number" name="min_p" value="">
-        max_price:
-        <input type="number" name="max_p" value="">
-        <input type="submit" value="提交">
-    </form>
-    <form action="{% url 'offers_query_sort' %}" accept-charset="UTF-8" enctype="multipart/form-data" method="get">
-        <strong>Query by sort:</strong><br>
-        sort:
-        <input type="text" name="sort" value="">
-        <input type="submit" value="提交">
-    </form>
-    <strong>Price update:</strong><br>
-    offer_reference:
-    <input type="text" id="ref" name="offer_reference" value="" placeholder="SellerSku">
-    price:
-    <input type="number" id="pri" name="price" value="">
-    <input id="subm" type="button" value="提交">
-
+    {% include 'test/base_offer.html' %}
 
     <div class="row" id="offer_stat">
         <div class="col-sm-12">
@@ -149,12 +106,12 @@
                             <th>starts_at</th>
                             <th>ends_at</th>
                             <th>pro_price</th>
-                            <th>is_ship_free </th>
-{#                            <th>internal_comment</th>#}
-{#                            <th>nb_messages</th>#}
-{#                            <th>showcase</th>#}
-{#                            <th>is_shipping_free</th>#}
-{#                            <th>type_label</th>#}
+                            <th>is_ship_free</th>
+                            {#                            <th>internal_comment</th>#}
+                            {#                            <th>nb_messages</th>#}
+                            {#                            <th>showcase</th>#}
+                            {#                            <th>is_shipping_free</th>#}
+                            {#                            <th>type_label</th>#}
                             <th>url</th>
                         </tr>
                         </thead>
@@ -177,10 +134,10 @@
                                     <td>{{ dict_data.6 }}</td>
                                     <td>{{ dict_data.7 }}</td>
                                     <td>{{ dict_data.8 }}</td>
-{#                                    <td>{{ dict_data.internal_comment }}</td>#}
-{#                                    <td>{{ dict_data.nb_messages }}</td>#}
-{#                                    <td>{{ dict_data.showcase }}</td>#}
-{#                                    <td>{{ dict_data.is_shipping_free }}</td>#}
+                                    {#                                    <td>{{ dict_data.internal_comment }}</td>#}
+                                    {#                                    <td>{{ dict_data.nb_messages }}</td>#}
+                                    {#                                    <td>{{ dict_data.showcase }}</td>#}
+                                    {#                                    <td>{{ dict_data.is_shipping_free }}</td>#}
 
                                     <td><a href="{{ dict_data.9 }}"><input type="button" value="转到fnac"></a>
                                     </td>
@@ -192,34 +149,58 @@
                 </div>
             </div>
 
-			<ul class="middle_bottom" id="middle_bottom">
+            <ul class="middle_bottom" id="middle_bottom">
                 {% if data_dict_ls.has_previous %}
-				<a href="?min_p={{ min_p }}&max_p={{ max_p }}&page={{ data_dict_ls.previous_page_number }}"><li><</li></a>
+                    <a href="?min_p={{ min_p }}&max_p={{ max_p }}&page={{ data_dict_ls.previous_page_number }}">
+                        <li><</li>
+                    </a>
                 {% else %}
-                <a href=""><li><</li></a>
+                    <a href="">
+                        <li><</li>
+                    </a>
                 {% endif %}
-				<div style="display: inline">
-					<a href="?min_p={{ min_p }}&max_p={{ max_p }}&page=1"><li class="active">1</li></a>
-					<a href="?min_p={{ min_p }}&max_p={{ max_p }}&page=2"><li>2</li></a>
-					<a href="?min_p={{ min_p }}&max_p={{ max_p }}&page=3"><li>3</li></a>
-					<a href="?min_p={{ min_p }}&max_p={{ max_p }}&page=4"><li>4</li></a>
-                    <a href="?min_p={{ min_p }}&max_p={{ max_p }}&page=5"><li>5</li></a>
-					<a href="?min_p={{ min_p }}&max_p={{ max_p }}&page=6"><li>6</li></a>
-					<a href="?min_p={{ min_p }}&max_p={{ max_p }}&page=7"><li>7</li></a>
-					<a href="?min_p={{ min_p }}&max_p={{ max_p }}&page=8"><li>8</li></a>
-				</div>
-				{% if data_dict_ls.has_next %}
-                    <a href="?min_p={{ min_p }}&max_p={{ max_p }}&page={{ data_dict_ls.next_page_number}}"><li>></li></a>
+                <div style="display: inline">
+                    <a href="?min_p={{ min_p }}&max_p={{ max_p }}&page=1">
+                        <li class="active">1</li>
+                    </a>
+                    <a href="?min_p={{ min_p }}&max_p={{ max_p }}&page=2">
+                        <li>2</li>
+                    </a>
+                    <a href="?min_p={{ min_p }}&max_p={{ max_p }}&page=3">
+                        <li>3</li>
+                    </a>
+                    <a href="?min_p={{ min_p }}&max_p={{ max_p }}&page=4">
+                        <li>4</li>
+                    </a>
+                    <a href="?min_p={{ min_p }}&max_p={{ max_p }}&page=5">
+                        <li>5</li>
+                    </a>
+                    <a href="?min_p={{ min_p }}&max_p={{ max_p }}&page=6">
+                        <li>6</li>
+                    </a>
+                    <a href="?min_p={{ min_p }}&max_p={{ max_p }}&page=7">
+                        <li>7</li>
+                    </a>
+                    <a href="?min_p={{ min_p }}&max_p={{ max_p }}&page=8">
+                        <li>8</li>
+                    </a>
+                </div>
+                {% if data_dict_ls.has_next %}
+                    <a href="?min_p={{ min_p }}&max_p={{ max_p }}&page={{ data_dict_ls.next_page_number }}">
+                        <li>></li>
+                    </a>
                 {% else %}
-				    <a href=""><li>></li></a>
-				{% endif %}
+                    <a href="">
+                        <li>></li>
+                    </a>
+                {% endif %}
 
-			</ul>
+            </ul>
 
-		</div>
-            </div>
         </div>
     </div>
+</div>
+</div>
 
 </div>
 <!-- /.container-fluid -->
@@ -240,44 +221,8 @@
 <script src="/static/js/waves.js"></script>
 <!-- Custom Theme JavaScript -->
 <script src="/static/js/myadmin.js"></script>
-<script>
-    $(document).ready(function () {
-        function reload() {
-            window.location.reload()
-        }
+<script src="/static/js/baseadmin.js"></script>
 
-        $('#subm').click(function () {
-            let refer = $('#ref').val();
-            let price = $('#pri').val();
-            $.ajax({
-                url: '/update-offer-price/',
-                dataType: 'json',
-                type: 'post',
-                data: {'offer_reference': refer, 'price': price},
-                success: function (data) {
-                    {#reload();#}
-                    $('#offer_stat').css('display', 'block');
-                    $('#table').append(
-                        `
-                            <tr>
-                            <td>` + data.status + `</td>
-                            <td>` + data.batch_id + `</td>
-                            <td>` + data.offer.status + `</td>
-                            <td>` + data.offer.product_fnac_id + `</td>
-                            <td>` + data.offer.offer_fnac_id + `</td>
-                            <td>` + data.offer.offer_seller_id + `</td>
-                            <td>` + data.offer.error.text + `</td>
-                            </tr>`
-                    )
-                },
-                error: function (data) {
-                    alert('error')
-                }
-            })
-        })
-    })
-
-</script>
 <script>
     $(document).ready(function () {
         $('#sub_all').click(function () {

@@ -110,13 +110,19 @@ class MarketPlaceApi:
     @outter
     def update_offer_price(self, update_dict):
         # self.authentication()
+        dic = {
+            'offer_reference': {'@type': 'SellerSku', '#text': update_dict['offer_reference']},
+            'price': update_dict['price'],
+            'quantity': update_dict['quantity']
+        }
+        for k in list(dic.keys()):
+            if not dic[k]:
+                del dic[k]
+        print(dic)
         data_dict = {
             'offers_update': {'@xmlns': self.xmlns, '@shop_id': self.shop_id, '@partner_id': self.partner_id,
                               '@token': self.token,
-                              'offer': {
-                                  'offer_reference': {'@type': 'SellerSku', '#text': update_dict['offer_reference']},
-                                  'price': update_dict['price']
-                              }
+                              'offer': dic
                               }
         }
         data_xml = xmltodict.unparse(data_dict, encoding='utf-8')
@@ -253,6 +259,27 @@ class MarketPlaceApi:
             response_dict = self.xml_to_dict(response.text)
 
             return response_dict
+        return 400
+
+    @outter
+    def offers_query_id(self, data):
+        # print(data)
+        # if ',' in data:
+        #     data = data.split(',')
+        # print(data)
+        dict_data = {
+            'offers_query': {'@xmlns': self.xmlns, '@shop_id': self.shop_id, '@partner_id': self.partner_id,
+                             '@token': self.token,
+                             'offer_seller_id': data}
+        }
+        dict_xml = xmltodict.unparse(dict_data, encoding='utf-8')
+        print(dict_xml)
+        url = self.url + '/offers_query'
+        response = requests.post(url, data=dict_xml.encode('utf-8'), headers=self.headers)
+        print(response.text)
+        if response.status_code == 200:
+            of_dict = self.xml_to_dict(response.text)
+            return of_dict
         return 400
 
 

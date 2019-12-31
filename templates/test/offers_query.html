@@ -55,53 +55,7 @@
 {% include 'test/wrapper.html' %}
 <!-- Page Content -->
 <div id="page-wrapper">
-    <form action="{% url 'offers_query_date' %}" accept-charset="UTF-8" enctype="multipart/form-data" method="get">
-        <strong>Query by time:</strong><br>
-        date:
-        <select name="date-type">
-            <option value="Created">Created</option>
-            <option value="Modified">Modified</option>
-        </select>
-        min:
-        <input type="date" name="min" value="">
-        max:
-        <input type="date" name="max" value="">
-        <input type="submit" value="提交">
-    </form>
-    <form action="{% url 'offers_query_quantity' %}" method="get" enctype="multipart/form-data" accept-charset="UTF-8">
-        <strong>Query by quantity:</strong><br>
-        quantity:
-        <select name="quantity_type">
-            <option value="Equals">Equals</option>
-            <option value="LessThan">LessThan</option>
-            <option value="GreaterThan">GreaterThan</option>
-            <option value="LessThanOrEquals">LessThanOrEquals</option>
-            <option value="GreaterThanOrEquals">GreaterThanOrEquals</option>
-        </select>
-        <input type="number" name="quantity" value=""><input type="submit" value="提交">
-
-    </form>
-    <form action="{% url 'offers_query_price' %}" method="GET" enctype="multipart/form-data" accept-charset="UTF-8">
-        <strong>Query by price:</strong><br>
-        min_price:
-        <input type="number" name="min_p" value="">
-        max_price:
-        <input type="number" name="max_p" value="">
-        <input type="submit" value="提交">
-    </form>
-    <form action="{% url 'offers_query_sort' %}" accept-charset="UTF-8" enctype="multipart/form-data" method="get">
-        <strong>Query by sort:</strong><br>
-        sort:
-        <input type="text" name="sort" value="">
-        <input type="submit" value="提交">
-    </form>
-    <strong>Price update:</strong><br>
-    offer_reference:
-    <input type="text" id="ref" name="offer_reference" value="" placeholder="SellerSku">
-    price:
-    <input type="number" id="pri" name="price" value="">
-    <input id="subm" type="button" value="提交">
-
+    {% include 'test/base_offer.html' %}
 
     <div class="row" id="offer_stat">
         <div class="col-sm-12">
@@ -235,44 +189,8 @@
 <script src="/static/js/waves.js"></script>
 <!-- Custom Theme JavaScript -->
 <script src="/static/js/myadmin.js"></script>
-<script>
-    $(document).ready(function () {
-        function reload() {
-            window.location.reload()
-        }
+<script src="/static/js/baseadmin.js"></script>
 
-        $('#subm').click(function () {
-            let refer = $('#ref').val();
-            let price = $('#pri').val();
-            $.ajax({
-                url: '/update-offer-price/',
-                dataType: 'json',
-                type: 'post',
-                data: {'offer_reference': refer, 'price': price},
-                success: function (data) {
-                    {#reload();#}
-                    $('#offer_stat').css('display', 'block');
-                    $('#table').append(
-                        `
-                            <tr>
-                            <td>` + data.status + `</td>
-                            <td>` + data.batch_id + `</td>
-                            <td>` + data.offer.status + `</td>
-                            <td>` + data.offer.product_fnac_id + `</td>
-                            <td>` + data.offer.offer_fnac_id + `</td>
-                            <td>` + data.offer.offer_seller_id + `</td>
-                            <td>` + data.offer.error.text + `</td>
-                            </tr>`
-                    )
-                },
-                error: function (data) {
-                    alert('error')
-                }
-            })
-        })
-    })
-
-</script>
 <script>
     $(document).ready(function () {
         $('#sub_all').click(function () {

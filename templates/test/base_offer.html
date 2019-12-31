@@ -1,0 +1,57 @@
+<form action="{% url 'offers_query_date' %}" accept-charset="UTF-8" enctype="multipart/form-data" method="get">
+        <strong>Query by time:</strong><br>
+        date:
+        <select name="date-type">
+            <option value="Created">Created</option>
+            <option value="Modified">Modified</option>
+        </select>
+        min:
+        <input type="date" name="min" value="">
+        max:
+        <input type="date" name="max" value="">
+        <input type="submit" value="提交">
+
+    </form>
+<form action="{% url 'offers_query_id' %}" accept-charset="UTF-8" enctype="multipart/form-data" method="post">
+        <strong>Query by ID:</strong><br>
+        SKU:
+        <input type="text" name="seller_id" value="">
+
+        <input type="submit" value="提交">
+
+    </form>
+    <form action="{% url 'offers_query_quantity' %}" method="get" enctype="multipart/form-data" accept-charset="UTF-8">
+        <strong>Query by quantity:</strong><br>
+        quantity:
+        <select name="quantity_type">
+            <option value="Equals">Equals</option>
+            <option value="LessThan">LessThan</option>
+            <option value="GreaterThan">GreaterThan</option>
+            <option value="LessThanOrEquals">LessThanOrEquals</option>
+            <option value="GreaterThanOrEquals">GreaterThanOrEquals</option>
+        </select>
+        <input type="number" name="quantity" value=""><input type="submit" value="提交">
+
+    </form>
+    <form action="{% url 'offers_query_price' %}" method="get" enctype="multipart/form-data" accept-charset="UTF-8">
+        <strong>Query by price:</strong><br>
+        min_price:
+        <input type="number" name="min_p" value="">
+        max_price:
+        <input type="number" name="max_p" value="">
+        <input type="submit" value="提交">
+    </form>
+    <form action="{% url 'offers_query_sort' %}" accept-charset="UTF-8" enctype="multipart/form-data" method="get">
+        <strong>Query by sort:</strong><br>
+        sort:
+        <input type="text" name="sort" value="">
+        <input type="submit" value="提交">
+    </form>
+    <strong>Price\Quantity update:</strong><br>
+    offer_reference:
+    <input type="text" id="ref" name="offer_reference" value="" placeholder="SellerSku">
+    price:
+    <input type="number" id="pri" name="price" value="">
+    quantity:
+    <input type="number" id="qua" name="quantity" value="">
+    <input id="subm" type="button" value="提交">

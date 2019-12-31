@@ -167,7 +167,7 @@ def offers_query_date(request):
 
 
 @csrf_exempt
-# @fault_decorator
+@fault_decorator
 def offers_query_quantity(request):
     data = request.GET
     # print(data)
@@ -600,8 +600,10 @@ def update_offer_price(request):
         data = request.POST
         data_dict = {
             'offer_reference': data.get('offer_reference'),
-            'price': data.get('price')
+            'price': data.get('price'),
+            'quantity': data.get('quantity')
         }
+
         batch_id = mark.update_offer_price(data_dict)
         time.sleep(1)
         status = mark.batch_status(batch_id)['batch_status_response']
@@ -619,8 +621,8 @@ def update_offer_price(request):
         except:
             # pass
             status['offer']['error'] = {'text': ''}
-        # print(status)
-        # return JsonResponse(status)
+        print(status)
+        return JsonResponse(status)
         # return render(request, 'test/offers_query.html', {'dict_status': status})
 
         # data_dict = mark.batch_status({'batch_id': batch_id})
@@ -739,6 +741,8 @@ def offers_query_price(request):
                   {'data_dict_ls': data, 'min_p': min_p, 'max_p': max_p, 'ls': len(ls), 'page': page})
 
 
+@csrf_exempt
+@fault_decorator
 def offers_query_sort(request):
     sort = request.GET.get('sort')
     result = Offers.objects.filter(sort=sort)
@@ -759,3 +763,22 @@ def offers_query_sort(request):
     data = p.get_page(page)
     return render(request, 'test/offer_query-sort.html',
                   {'data_dict_ls': data, 'sort': sort, 'ls': len(ls), 'page': page})
+
+
+@csrf_exempt
+@fault_decorator
+def offers_query_id(request):
+    data = request.POST.get('seller_id')
+    data_dict_ls = mark.offers_query_id(data)['offers_query_response']
+    print(data_dict_ls)
+    try:
+        data_dict_l = data_dict_ls['offer']
+    except:
+        return render(request, 'test/offer_query_id.html', {'data_dict_ls': ''})
+    if type(data_dict_l) is list:
+        da_dict = {'data_dict_ls': data_dict_l}
+        print(da_dict)
+        return render(request, 'test/offer_query_id.html', {'data_dict_ls': da_dict})
+    ls = []
+    ls.append(data_dict_l)
+    return render(request, 'test/offer_query_id.html', {'data_dict_ls': ls})
