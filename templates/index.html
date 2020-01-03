@@ -1,37 +1,66 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <link rel="stylesheet" type="text/css" href="/static/mystyle.css"/>
-    <meta charset="UTF-8">
-    <title>首页</title>
+    <title>Login</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script type="application/x-javascript"> addEventListener("load", function () {
+        setTimeout(hideURLbar, 0);
+    }, false);
+
+    function hideURLbar() {
+        window.scrollTo(0, 1);
+    } </script>
+    <meta name="keywords"
+          content="Flat Dark Web Login Form Responsive Templates, Iphone Widget Template, Smartphone login forms,Login form, Widget Template, Responsive Templates, a Ipad 404 Templates, Flat Responsive Templates"/>
+    <link href="/static/style.css" rel='stylesheet' type='text/css'/>
+    <!--webfonts-->
+    <link href='http://fonts.useso.com/css?family=PT+Sans:400,700,400italic,700italic|Oswald:400,300,700'
+          rel='stylesheet' type='text/css'>
+    <link href='http://fonts.useso.com/css?family=Exo+2' rel='stylesheet' type='text/css'>
+    <!--//webfonts-->
+    <script src="http://ajax.useso.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 </head>
 <body>
-<p><a href="{% url 'index' %}">index页面</a></p>
-    <div id="title_d">
-        <ul id="title_d_ul">
-            <li><a href="{% url 'offers_update' %}" methods="GET">Offers Update</a></li>
-            <li><a href="{% url 'offers_query' %}" methods="GET">Offers Query</a></li>
-            <li><a href="{% url 'batch_query' %}" methods="GET">Batch Query</a></li>
-            <li><a href="{% url 'batch_status' %}" methods="GET">Batch Status</a></li>
-            <li><a href="{% url 'orders_query' %}" methods="GET">Orders Query</a></li>
-            <li><a href="{% url 'orders_update' %}" methods="GET">Orders Update</a></li>
-            <li><a href="{% url 'carriers_query' %}" methods="GET">Carriers Query</a></li>
-            <li><a href="{% url 'order_comments_query' %}">Client Order Comments Query</a></li>
-            <li><a href="{% url 'client_order_comments_update' %}">Client Order Comments Update</a></li>
-            <li><a href="{% url 'messages_query' %}" methods="get">Messages Query</a></li>
-            <li><a href="{% url 'message_update' %}" methods="get">Messages Update</a></li>
-            <li><a href="{% url 'incidents_query' %}" methods="get">Incidents Query</a></li>
-            <li><a href="{% url 'incident_update' %}" methods="get">Incidents Update</a></li>
-            <li><a href="{% url 'pricing_query' %}">Pricing Query</a></li>
-            <li><a href="{% url 'sales_periods_query' %}" methods="get">Sales Periods Query</a></li>
+<script>$(document).ready(function (c) {
+    $('.close').on('click', function (c) {
+        $('.login-form').fadeOut('slow', function (c) {
+            $('.login-form').remove();
+        });
+    });
+});
+</script>
+<!--SIGN UP-->
+<h1>klasikal Login Form</h1>
+<div class="login-form">
+    <div class="close"></div>
+    <div class="head-info">
+        <label class="lbl-1"> </label>
+        <label class="lbl-2"> </label>
+        <label class="lbl-3"> </label>
+    </div>
+    <div class="clear"></div>
+    <div class="avtar">
+        <img src="/static/images/avtar.png"/>
+    </div>
+    <form accept-charset="UTF-8" enctype="multipart/form-data" method="post" action="{% url 'login' %}">
+        <input type="text" name="username" class="text" value="" onfocus="this.value = '';"
+               onblur="if (this.value == '') {this.value = 'Username';}">
+        <div class="key">
+            <input type="password" name="password" value="" onfocus="this.value = '';"
+                   onblur="if (this.value == '') {this.value = 'Password';}">
+        </div>
 
-        </ul>
-    </div>
-    <div>
+        <div class="signin">
+            <input type="submit" value="Login">
+        </div>
+    </form>
+</div>
+<div class="copy-rights">
+    <p>Copyright &copy; 2015.Company name All rights reserved.More Templates <a href="http://www.cssmoban.com/"
+                                                                                target="_blank"
+                                                                                title="ģ��֮��">ģ��֮��</a> - Collect from
+        <a href="http://www.cssmoban.com/" title="��ҳģ��" target="_blank">��ҳģ��</a></p>
+</div>
 
-    </div>
-    <div>
-        {{ data_ls }}
-    </div>
 </body>
 </html>

@@ -92,6 +92,8 @@ def task():
             for data in data_dict:
                 sort = query_offer(data['offer_seller_id'])
                 delete_offer(data['offer_seller_id'])
+                if sort != '':
+                    sort = sort.replace('\n', '').strip()
                 add_offer(data, sort)
                 lis_id.append(data['offer_seller_id'])
                 print(data['offer_seller_id'], '已更新')

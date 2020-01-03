@@ -3,7 +3,8 @@ from django.urls import path, re_path
 from markerplace import views
 
 urlpatterns = [
-    path('', views.index, name='index'),
+    path('', views.login, name='login'),
+    path('index/', views.index, name='index'),
     path('offers-update/', views.offers_update, name='offers_update'),
     path('update-offer-price/', views.update_offer_price, name='update_offer_price'),
     path('delete-offer/', views.delete_offer, name='delete_offer'),

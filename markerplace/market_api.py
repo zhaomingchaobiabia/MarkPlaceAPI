@@ -273,10 +273,10 @@ class MarketPlaceApi:
                              'offer_seller_id': data}
         }
         dict_xml = xmltodict.unparse(dict_data, encoding='utf-8')
-        print(dict_xml)
+        # print(dict_xml)
         url = self.url + '/offers_query'
         response = requests.post(url, data=dict_xml.encode('utf-8'), headers=self.headers)
-        print(response.text)
+        # print(response.text)
         if response.status_code == 200:
             of_dict = self.xml_to_dict(response.text)
             return of_dict
@@ -680,7 +680,7 @@ class IncidentsApi(MarketPlaceApi):
         }
 
         data_xml = xmltodict.unparse(data_dict, encoding='utf-8')
-        print(data_xml)
+        # print(data_xml)
         url = self.url + '/incidents_query'
         response = requests.post(url, headers=self.headers, data=data_xml.encode('utf-8'))
         if response.status_code == 200:

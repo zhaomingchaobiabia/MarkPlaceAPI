@@ -36,11 +36,21 @@ def fault_decorator(func):
 
     return inner
 
+@csrf_exempt
+def login(request):
+    if request.method == 'GET':
+        return render(request, 'index.html')
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        redirect(to='index/')
 
 @fault_decorator
 # Create your views here.
 def index(request):
+
     return render(request, 'test/dashboard.html')
+
 
 
 @csrf_exempt
@@ -223,11 +233,11 @@ def orders_query(request):
     dicts = {}
     page = int(request.GET.get('paging')) if request.GET.get('paging') else 1
     dicts['paging'] = page
-    print(dicts)
+    # print(dicts)
     data_dict_ls = mark_order.orders_query(dicts)['orders_query_response']
     total_page = data_dict_ls['total_paging']
     nb_total_result = data_dict_ls['nb_total_result']
-    print(data_dict_ls)
+    # print(data_dict_ls)
     try:
         data_dict = data_dict_ls['order']
     except:
@@ -374,7 +384,7 @@ def carriers_query(request):
 def order_comments_query(request):
     paging = request.GET.get('paging') if request.GET.get('paging') else 1
     dict_data = client.client_order_query(paging)['client_order_comments_query_response']
-    print(dict_data)
+    # print(dict_data)
     total_page = dict_data['total_paging']
     nb_total_result = dict_data['nb_total_result']
     try:
@@ -511,10 +521,10 @@ def incidents_query(request):
             'paging': paging,
             'date_type': datas.get('date-type'), 'min': min, 'max': max,
         }
-    print(data_dict)
+    # print(data_dict)
 
     data_dict_ls = incident.incidents_query(data_dict)['incidents_query_response']
-    print(datas)
+    # print(datas)
     total_page = data_dict_ls['total_paging']
     nb_total_result = data_dict_ls['nb_total_result']
     try:
@@ -536,7 +546,7 @@ def incidents_query(request):
                 data['order_details_incident']['order_detail_incident'], ]
         ls.append(data)
         return render(request, 'test/incidents.html',
-                      {'dict_data_ls': data, 'date_type': datas.get('date-type'), 'min': datas.get('min'),
+                      {'dict_data_ls': ls, 'date_type': datas.get('date-type'), 'min': datas.get('min'),
                        'max': datas.get('max'),
                        'total_page': int(total_page),
                        'nb_total_result': nb_total_result, 'page': int(paging)})
@@ -745,9 +755,10 @@ def offers_query_price(request):
 @fault_decorator
 def offers_query_sort(request):
     sort = request.GET.get('sort')
+    print(sort.encode())
     result = Offers.objects.filter(sort=sort)
     ls = []
-    print(result)
+    print(result[0].sort)
     try:
         for data in result:
             # print(data)
@@ -782,3 +793,5 @@ def offers_query_id(request):
     ls = []
     ls.append(data_dict_l)
     return render(request, 'test/offer_query_id.html', {'data_dict_ls': ls})
+
+
