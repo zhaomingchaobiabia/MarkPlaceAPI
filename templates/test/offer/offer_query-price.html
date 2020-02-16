@@ -34,13 +34,17 @@
         #img_id {
             text-align: center;
         }
-        #middle_bottom{
+
+        #middle_bottom {
             text-align: center;
         }
-        #tr_cen th{
+
+        #tr_cen th {
             text-align: center;
         }
-        ul a li{ list-style: none;
+
+        ul li {
+            list-style: none;
             display: inline;
         }
     </style>
@@ -54,8 +58,7 @@
 {% include 'test/wrapper.html' %}
 <!-- Page Content -->
 <div id="page-wrapper">
-    {% include 'test/base_offer.html' %}
-
+    {% include 'test/offer/base_offer.html' %}
 
     <div class="row" id="offer_stat">
         <div class="col-sm-12">
@@ -87,7 +90,7 @@
             <div class="white-box">
                 <h3>Offer Table</h3>
                 <p class="text-muted">Add class <code>共{{ ls }}条</code></p>
-            <div>
+                <div>
                     <p class="text-muted"><code>第{{ page }}页</code></p>
                 </div>
                 <div class="table-responsive">
@@ -103,12 +106,12 @@
                             <th>starts_at</th>
                             <th>ends_at</th>
                             <th>pro_price</th>
-                            <th>is_ship_free </th>
-{#                            <th>internal_comment</th>#}
-{#                            <th>nb_messages</th>#}
-{#                            <th>showcase</th>#}
-{#                            <th>is_shipping_free</th>#}
-{#                            <th>type_label</th>#}
+                            <th>is_ship_free</th>
+                            {#                            <th>internal_comment</th>#}
+                            {#                            <th>nb_messages</th>#}
+                            {#                            <th>showcase</th>#}
+                            {#                            <th>is_shipping_free</th>#}
+                            {#                            <th>type_label</th>#}
                             <th>url</th>
                         </tr>
                         </thead>
@@ -131,10 +134,10 @@
                                     <td>{{ dict_data.6 }}</td>
                                     <td>{{ dict_data.7 }}</td>
                                     <td>{{ dict_data.8 }}</td>
-{#                                    <td>{{ dict_data.internal_comment }}</td>#}
-{#                                    <td>{{ dict_data.nb_messages }}</td>#}
-{#                                    <td>{{ dict_data.showcase }}</td>#}
-{#                                    <td>{{ dict_data.is_shipping_free }}</td>#}
+                                    {#                                    <td>{{ dict_data.internal_comment }}</td>#}
+                                    {#                                    <td>{{ dict_data.nb_messages }}</td>#}
+                                    {#                                    <td>{{ dict_data.showcase }}</td>#}
+                                    {#                                    <td>{{ dict_data.is_shipping_free }}</td>#}
 
                                     <td><a href="{{ dict_data.9 }}"><input type="button" value="转到fnac"></a>
                                     </td>
@@ -146,34 +149,58 @@
                 </div>
             </div>
 
-			<ul class="middle_bottom" id="middle_bottom">
+            <ul class="middle_bottom" id="middle_bottom">
                 {% if data_dict_ls.has_previous %}
-				<a href="?quantity_type={{ quantity_type }}&quantity={{ quantity }}&page={{ data_dict_ls.previous_page_number }}"><li><</li></a>
+                    <a href="?min_p={{ min_p }}&max_p={{ max_p }}&page={{ data_dict_ls.previous_page_number }}">
+                        <li><</li>
+                    </a>
                 {% else %}
-                <a href=""><li><</li></a>
+                    <a href="">
+                        <li><</li>
+                    </a>
                 {% endif %}
-				<div style="display: inline">
-					<a href="?quantity_type={{ quantity_type }}&quantity={{ quantity }}&page=1"><li class="active">1</li></a>
-					<a href="?quantity_type={{ quantity_type }}&quantity={{ quantity }}&page=2"><li>2</li></a>
-					<a href="?quantity_type={{ quantity_type }}&quantity={{ quantity }}&page=3"><li>3</li></a>
-					<a href="?quantity_type={{ quantity_type }}&quantity={{ quantity }}&page=4"><li>4</li></a>
-                    <a href="?quantity_type={{ quantity_type }}&quantity={{ quantity }}&page=5"><li>5</li></a>
-					<a href="?quantity_type={{ quantity_type }}&quantity={{ quantity }}&page=6"><li>6</li></a>
-					<a href="?quantity_type={{ quantity_type }}&quantity={{ quantity }}&page=7"><li>7</li></a>
-					<a href="?quantity_type={{ quantity_type }}&quantity={{ quantity }}&page=8"><li>8</li></a>
-				</div>
-				{% if data_dict_ls.has_next %}
-                    <a href="?quantity_type={{ quantity_type }}&quantity={{ quantity }}&page={{ data_dict_ls.next_page_number}}"><li>></li></a>
+                <div style="display: inline">
+                    <a href="?min_p={{ min_p }}&max_p={{ max_p }}&page=1">
+                        <li class="active">1</li>
+                    </a>
+                    <a href="?min_p={{ min_p }}&max_p={{ max_p }}&page=2">
+                        <li>2</li>
+                    </a>
+                    <a href="?min_p={{ min_p }}&max_p={{ max_p }}&page=3">
+                        <li>3</li>
+                    </a>
+                    <a href="?min_p={{ min_p }}&max_p={{ max_p }}&page=4">
+                        <li>4</li>
+                    </a>
+                    <a href="?min_p={{ min_p }}&max_p={{ max_p }}&page=5">
+                        <li>5</li>
+                    </a>
+                    <a href="?min_p={{ min_p }}&max_p={{ max_p }}&page=6">
+                        <li>6</li>
+                    </a>
+                    <a href="?min_p={{ min_p }}&max_p={{ max_p }}&page=7">
+                        <li>7</li>
+                    </a>
+                    <a href="?min_p={{ min_p }}&max_p={{ max_p }}&page=8">
+                        <li>8</li>
+                    </a>
+                </div>
+                {% if data_dict_ls.has_next %}
+                    <a href="?min_p={{ min_p }}&max_p={{ max_p }}&page={{ data_dict_ls.next_page_number }}">
+                        <li>></li>
+                    </a>
                 {% else %}
-				    <a href=""><li>></li></a>
-				{% endif %}
+                    <a href="">
+                        <li>></li>
+                    </a>
+                {% endif %}
 
-			</ul>
+            </ul>
 
-		</div>
-            </div>
         </div>
     </div>
+</div>
+</div>
 
 </div>
 <!-- /.container-fluid -->

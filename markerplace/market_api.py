@@ -13,12 +13,13 @@ def outter(func):
 
     def inner(self, *args, **kwargs):
         try:
-            if func(self, *args, **kwargs) == 400:
+            result = func(self, *args, **kwargs)
+            if result == 400:
                 #     print(111)
                 self.authentication()
                 return func(self, *args, **kwargs)
 
-            return func(self, *args, **kwargs)
+            return result
         except:
             # if func(self, *args, **kwargs) == 400:
             #     print(111)
@@ -77,22 +78,22 @@ class MarketPlaceApi:
                    "price": l_dict['price'],
                    "product_state": l_dict['product_state'],
                    "quantity": l_dict['quantity'], "description": l_dict['description'],
-                   "adherent_price": l_dict['adherent_price'],
+                   # "adherent_price": l_dict['adherent_price'],
                    "internal_comment": l_dict['internal_comment'],
                    "showcase": l_dict['showcase'],
                    "logistic_type_id": l_dict['logistic_type_id'],
-                   "time_to_ship": l_dict['time_to_ship'],
-                   'promotion': {
-                       '@type': l_dict['promotion-type'],
-                       'sales_period_reference': l_dict['sales_period_reference'],
-                       'promotion_uid': l_dict['Promotion_uid'],
-                       'starts_at': l_dict['starts_at'], 'ends_at': l_dict['ends_at'],
-                       'discount_type': l_dict['discount_type'],
-                       'discount_value': l_dict['discount_value'],
-                       'triggers': {
-                           'trigger_customer_type': l_dict['trigger_customer_type'],
-                       }
-                   }
+                   # "time_to_ship": l_dict['time_to_ship'],
+                   # 'promotion': {
+                   #     '@type': l_dict['promotion-type'],
+                   #     'sales_period_reference': l_dict['sales_period_reference'],
+                   #     'promotion_uid': l_dict['Promotion_uid'],
+                   #     'starts_at': l_dict['starts_at'], 'ends_at': l_dict['ends_at'],
+                   #     'discount_type': l_dict['discount_type'],
+                   #     'discount_value': l_dict['discount_value'],
+                   #     'triggers': {
+                   #         'trigger_customer_type': l_dict['trigger_customer_type'],
+                   #     }
+                   # }
                    }
         for k in list(li_dict.keys()):
             if not li_dict[k]:
@@ -106,6 +107,7 @@ class MarketPlaceApi:
             batch_id = self.xml_to_dict(response.text)['offers_update_response']['batch_id']
             return batch_id
         return 400
+
 
     @outter
     def update_offer_price(self, update_dict):
@@ -276,11 +278,11 @@ class MarketPlaceApi:
         # print(dict_xml)
         url = self.url + '/offers_query'
         response = requests.post(url, data=dict_xml.encode('utf-8'), headers=self.headers)
-        # print(response.text)
-        if response.status_code == 200:
-            of_dict = self.xml_to_dict(response.text)
-            return of_dict
-        return 400
+        print(response.text)
+        # if response.status_code == 200:
+        of_dict = self.xml_to_dict(response.text)
+        return of_dict
+        # return 400
 
 
 class MarketPlaceOrderApi(MarketPlaceApi):
@@ -546,7 +548,9 @@ class ClientOrderApi(MarketPlaceApi):
             'client_order_comments_query': {'@xmlns': self.xmlns, '@shop_id': self.shop_id,
                                             '@partner_id': self.partner_id,
                                             '@token': self.token, '@results_count': '20',
-                                            'paging': paging}}
+                                            'paging': paging,
+                                            }
+            }
         client_xml = xmltodict.unparse(client_dict, encoding='utf-8')
         url = self.url + '/client_order_comments_query'
         response = requests.post(url, headers=self.headers, data=client_xml.encode('utf-8'))
@@ -695,7 +699,8 @@ class IncidentsApi(MarketPlaceApi):
             'incidents_query': {'@xmlns': self.xmlns, '@shop_id': self.shop_id,
                                 '@partner_id': self.partner_id,
                                 '@token': self.token, '@results_count': 25,
-                                'paging': query_dict['paging']
+                                'paging': query_dict['paging'],
+                                'sort_by': 'DESC'
                                 }
         }
         if 'date_type' in query_dict:

@@ -34,7 +34,7 @@
         #img_id {
             text-align: center;
         }
-        #middle_bottom {
+        #middle_bottom{
             text-align: center;
         }
         #tr_cen th{
@@ -43,7 +43,6 @@
         ul li{ list-style: none;
             display: inline;
         }
-
     </style>
 </head>
 
@@ -55,7 +54,8 @@
 {% include 'test/wrapper.html' %}
 <!-- Page Content -->
 <div id="page-wrapper">
-    {% include 'test/base_offer.html' %}
+    {% include 'test/offer/base_offer.html' %}
+
 
     <div class="row" id="offer_stat">
         <div class="col-sm-12">
@@ -87,7 +87,7 @@
             <div class="white-box">
                 <h3>Offer Table</h3>
                 <p class="text-muted">Add class <code>共{{ ls }}条</code></p>
-            <div>
+                <div>
                     <p class="text-muted"><code>第{{ page }}页</code></p>
                 </div>
                 <div class="table-responsive">
@@ -145,7 +145,8 @@
                     </table>
                 </div>
             </div>
-        <ul class="middle_bottom" id="middle_bottom">
+
+			<ul class="middle_bottom" id="middle_bottom">
                 {% if data_dict_ls.has_previous %}
 				<a href="?page={{ data_dict_ls.previous_page_number }}"><li><</li></a>
                 {% else %}
@@ -168,8 +169,12 @@
 				{% endif %}
 
 			</ul>
+
+		</div>
+            </div>
         </div>
     </div>
+
 </div>
 <!-- /.container-fluid -->
 

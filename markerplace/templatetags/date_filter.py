@@ -20,9 +20,11 @@ def too(value):
 def detail_filter(value):
     ls = ''
     for li in value:
-        upd_date = datetime.datetime.strptime(li['updated_at'], "%Y-%m-%dT%H:%M:%S+01:00")
-        cre_date = datetime.datetime.strptime(li['created_at'], "%Y-%m-%dT%H:%M:%S+01:00")
-        ls += f"detail_id:{li['order_detail_id']};type:{li['type']};status:{li['status']}" \
+        upd = li['updated_at'].split('+')[0]
+        cre = li['created_at'].split('+')[0]
+        upd_date = datetime.datetime.strptime(upd, "%Y-%m-%dT%H:%M:%S")
+        cre_date = datetime.datetime.strptime(cre, "%Y-%m-%dT%H:%M:%S")
+        ls += f"detail_id:{li['order_detail_id']}type:{li['type']}\nstatus:{li['status']}" \
               f"\ncreated_at:{cre_date}\nupdated_at:{upd_date}\n\n"
     return ls
 

@@ -15,7 +15,6 @@ import os
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
@@ -40,10 +39,11 @@ INSTALLED_APPS = [
     'markerplace_develop',
     'markerplace.templatetags',
     # 'django_crontab',
+    # 'django_celery_results',
 ]
 
-# API验证
 
+# API验证
 PARTNER_ID = os.environ['PARTNER_ID']
 SHOP_ID = os.environ['SHOP_ID']
 KEY = os.environ['KEY']
@@ -56,8 +56,6 @@ CRONJOBS = [
     ('*/20 * * * *', 'markerplace.timed_task.task', '>>~/API/timed_task.log 2>&1')
 
 ]
-
-
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -90,7 +88,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'FnacMarketplace_API.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
@@ -111,7 +108,6 @@ DATABASES = {
 
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
@@ -151,3 +147,10 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
 ]
+
+# Celery
+# from FnacMarketplace_API.celery import *
+#
+# CELERY_RESULT_BACKEND = 'django-db'
+# CELERY_RESULT_SERIALIZER = 'json'  # 结果序列化方案
+#

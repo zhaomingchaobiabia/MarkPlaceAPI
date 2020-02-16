@@ -24,7 +24,7 @@ img{max-width:100%;}
 /*end reset*/
 /****-----start-body----****/
 body{
-	background: url(/static/images/bg1.jpg) no-repeat 0px 0px;
+	background: url('/static/images/bg1.jpg') no-repeat 0px 0px;
 	font-family: 'Open Sans', sans-serif;
 	background-size:cover;
 	-webkit-background-size:cover;

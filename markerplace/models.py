@@ -31,12 +31,22 @@ class Offers(models.Model):
     class Meta:
         db_table = 'offers'
 
-# class CommentTable(models.Model):
-#     id = models.IntegerField('id', primary_key=True, auto_created=True)
-#     rater = models.CharField('rater', max_length=30, null=True, default='')
-#     rating = models.CharField('rating', max_length=5)
-#     com_date = models.CharField('com_date', max_length=30, null=True, default='')
-#     text = models.TextField('text', default='')
-#
-#     class Meta:
-#         db_table = 'comment_table'
+
+class User(models.Model):
+    id = models.IntegerField('id', primary_key=True, auto_created=True)
+    user = models.CharField('user', max_length=30)
+    password = models.CharField('password', max_length=5)
+
+    class Meta:
+        db_table = 'user'
+
+
+class OfferOrder(models.Model):
+    id = models.IntegerField('id', primary_key=True, auto_created=True)
+    offer = models.CharField('offer', max_length=10)
+    order = models.CharField('order', max_length=10)
+    message = models.CharField('message', max_length=10)
+    incident = models.CharField('incident', max_length=10)
+
+    class Meta:
+        db_table = 'offer_order_message_incident_num'

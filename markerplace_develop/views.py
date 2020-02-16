@@ -3,7 +3,7 @@ from django.views.decorators.csrf import csrf_exempt
 from markerplace_develop.markerAPI_develop import SalesPeriodsApi
 from markerplace.views import fault_decorator
 from django.http.response import JsonResponse
-from .models import User
+# from .models import User
 import hashlib
 
 sales = SalesPeriodsApi()
@@ -42,14 +42,54 @@ def pricing_query(request):
 
 
 # 登录验证
-def login_verify(func):
-    def inner(request, *args, **kwargs):
-        if 'loginFlag' in request.session:
-            return func(request, *args, **kwargs)
+# def login_verify(func):
+#     def inner(request, *args, **kwargs):
+#         if 'loginFlag' in request.session:
+#             return func(request, *args, **kwargs)
+#
+#         return redirect(to='login')
+#
+#     return inner
+#
 
-        return redirect(to='login')
 
-    return inner
+@csrf_exempt
+@fault_decorator
+def messages_query1(request):
+    paging = request.GET.get('paging') if request.GET.get('paging') else 1
+    data_dict = {'paging': paging}
+    data_dict_ls = sales.messages_query(data_dict)['messages_query_response']
+    print(data_dict_ls)
+    total_page = data_dict_ls['total_paging']
+    nb_total_result = data_dict_ls['nb_total_result']
+    try:
+        datas = data_dict_ls['message']
+        if type(datas) is list:
+            for li in datas:
+                li['state'] = li['@state']
+                li['archived'] = li['@archived']
+                li['message_referer']['type'] = li['message_referer']['@type']
+                li['message_referer']['text'] = li['message_referer']['#text']
+                li['message_from']['type'] = li['message_from']['@type']
+                li['message_from']['text'] = li['message_from']['#text']
+            return render(request, 'test/message/message.html',
+                          {'data_ls': datas, 'page': int(paging), 'total_page': int(total_page),
+                           'nb_total_result': nb_total_result})
+        ls = []
+        datas['state'] = datas['@state']
+        datas['archived'] = datas['@archived']
+        datas['message_referer']['type'] = datas['message_referer']['@type']
+        datas['message_referer']['text'] = datas['message_referer']['#text']
+        datas['message_from']['type'] = datas['message_from']['@type']
+        datas['message_from']['text'] = datas['message_from']['#text']
+        ls.append(datas)
+        return render(request, 'test/message/message.html',
+                      {'data_ls': ls, 'page': int(paging), 'total_page': int(total_page),
+                       'nb_total_result': nb_total_result})
+    except:
+        return render(request, 'test/message/message.html',
+                      {'data_ls': '', 'page': int(paging), 'total_page': int(total_page),
+                       'nb_total_result': nb_total_result})
 
 
 # @login_verify
@@ -58,9 +98,9 @@ def login_verify(func):
 def messages_query(request):
     paging = request.GET.get('paging') if request.GET.get('paging') else 1
     if request.GET.get('min') is None:
-        return render(request, 'test/message.html')
+        return render(request, 'test/message/message.html')
     elif request.GET.get('min') == '':
-        return render(request, 'test/message.html')
+        return render(request, 'test/message/message.html')
     data = request.GET
     data_dict = {'paging': paging,
                  'date_type': data.get('date_type'), 'min': data.get('min'),
@@ -81,7 +121,7 @@ def messages_query(request):
                 li['message_referer']['text'] = li['message_referer']['#text']
                 li['message_from']['type'] = li['message_from']['@type']
                 li['message_from']['text'] = li['message_from']['#text']
-            return render(request, 'test/message_query_time.html',
+            return render(request, 'test/message/message_query_time.html',
                           {'data_ls': datas, 'max': data.get('max'), 'min': data.get('min'),
                            'date_type': data.get('date_type'), 'page': int(paging), 'total_page': int(total_page),
                            'nb_total_result': nb_total_result})
@@ -92,13 +132,13 @@ def messages_query(request):
         datas['message_referer']['text'] = datas['message_referer']['#text']
         datas['message_from']['type'] = datas['message_from']['@type']
         datas['message_from']['text'] = datas['message_from']['#text']
-        ls.append(data)
-        return render(request, 'test/message_query_time.html',
+        ls.append(datas)
+        return render(request, 'test/message/message_query_time.html',
                       {'data_ls': ls, 'max': data.get('max'), 'min': data.get('min'),
                        'date_type': data.get('date_type'), 'page': int(paging), 'total_page': int(total_page),
                        'nb_total_result': nb_total_result})
     except:
-        return render(request, 'test/message_query_time.html',
+        return render(request, 'test/message/message_query_time.html',
                       {'data_ls': '', 'max': data.get('max'), 'min': data.get('min'),
                        'date_type': data.get('date_type'), 'page': int(paging), 'total_page': int(total_page),
                        'nb_total_result': nb_total_result})
@@ -124,7 +164,7 @@ def messages_query_type(request):
                     li['message_referer']['text'] = li['message_referer']['#text']
                     li['message_from']['type'] = li['message_from']['@type']
                     li['message_from']['text'] = li['message_from']['#text']
-                return render(request, 'test/message.html', {'data_ls': data})
+                return render(request, 'test/message/message.html', {'data_ls': data})
             ls = []
             data['state'] = data['@state']
             data['archived'] = data['@archived']
@@ -133,16 +173,16 @@ def messages_query_type(request):
             data['message_from']['type'] = data['message_from']['@type']
             data['message_from']['text'] = data['message_from']['#text']
             ls.append(data)
-            return render(request, 'test/message.html', {'data_ls': ls})
+            return render(request, 'test/message/message.html', {'data_ls': ls})
         except:
-            return render(request, 'test/message.html', {'data_ls': ''})
+            return render(request, 'test/message/message.html', {'data_ls': ''})
 
 
 @csrf_exempt
 @fault_decorator
 def message_update(request):
     if request.method == 'GET':
-        return render(request, 'test/message_update.html')
+        return render(request, 'test/message/message_update.html')
     if request.method == 'POST':
         data = request.POST
         data_dict = {
@@ -155,7 +195,7 @@ def message_update(request):
             data['status'] = data['@status']
         except:
             data = ''
-        return render(request, 'test/message_update.html', {'data': data})
+        return render(request, 'test/message/message_update.html', {'data': data})
 
 
 @csrf_exempt
@@ -175,20 +215,19 @@ def message_update_state(request):
 def test1(request):
     return render(request, 'test/dashboard.html')
 
-
 # 登录
-@csrf_exempt
-@fault_decorator
-def login(request):
-    if request.method == 'GET':
-        return render(request, 'login.html')
-    if request.method == 'POST':
-        user = request.POST.get('user')
-        if not User.objects.filter(user=user):
-            return render(request, 'login.html')
-        password = request.POST.get('password')
-
-        if User.objects.filter(user=user, password=password):
-            request.session['loginFlag'] = {'user': user}
-            return redirect(to='index')
-        return render(request, 'login.html')
+# @csrf_exempt
+# @fault_decorator
+# def login(request):
+#     if request.method == 'GET':
+#         return render(request, 'login.html')
+#     if request.method == 'POST':
+#         user = request.POST.get('user')
+#         if not User.objects.filter(user=user):
+#             return render(request, 'login.html')
+#         password = request.POST.get('password')
+#
+#         if User.objects.filter(user=user, password=password):
+#             request.session['loginFlag'] = {'user': user}
+#             return redirect(to='index')
+#         return render(request, 'login.html')

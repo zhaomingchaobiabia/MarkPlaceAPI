@@ -57,11 +57,7 @@
             </tr>
             <tr>
                 <td>price:</td>
-                <td><input type="number" name="price" value=""></td>
-            </tr>
-            <tr>
-                <td>adherent_price:</td>
-                <td><input type="number" name="adherent_price" value=""></td>
+                <td><input type="text" name="price" value=""></td>
             </tr>
             <tr>
                 <td>product_state:</td>
@@ -75,12 +71,12 @@
                     <option value="7">7</option>
                     <option value="8">8</option>
                     <option value="10">10</option>
-                    <option value="11">11</option>
+                    <option value="11" selected>11</option>
                 </select></td>
             </tr>
             <tr>
                 <td>internal_comment:</td>
-                <td><input type="text" name="internal_comment" value=""></td>
+                <td><textarea name="internal_comment"></textarea></td>
             </tr>
             <tr>
                 <td>quantity:</td>
@@ -97,78 +93,30 @@
             <tr>
                 <td>logistic_type_id:</td>
                 <td><select name="logistic_type_id">
-                    <option value="101">Logistic type / Category A</option>
-                    <option value="102">Logistic type / Category B</option>
-                    <option value="103">Logistic type / Category C</option>
-                    <option value="104">Logistic type / Category D</option>
-                    <option value="105">Logistic type / Category E</option>
-                    <option value="106">Logistic type / Category F</option>
-                    <option value="107">Logistic type / Category G</option>
-                    <option value="108">Logistic type / Category H</option>
-                    <option value="109">Logistic type / Category I</option>
-                    <option value="110">Logistic type / Category J</option>
-                    <option value="111">Logistic type / Category K</option>
-                    <option value="201">Logistic type / Category custom #1</option>
-                    <option value="202">Logistic type / Category custom #2</option>
-                    <option value="203">Logistic type / Category custom #3</option>
-                    <option value="204">Logistic type / Category custom #4</option>
-                    <option value="205">Logistic type / Category custom #5</option>
-                    <option value="206">Logistic type / Category large products #1 (qualified sellers only)</option>
-                    <option value="207">Logistic type / Category large products #2 (qualified sellers only)</option>
-                    <option value="208">Logistic type / Category large products #3 (qualified sellers only)</option>
-                    <option value="209">Logistic type / Category large products #4 (qualified sellers only)</option>
-                    <option value="210">Logistic type / Category large products #5 (qualified sellers only)</option>
+                    <option value="101">101</option>
+                    <option value="102">102</option>
+                    <option value="103">103</option>
+                    <option value="104">104</option>
+                    <option value="105">105</option>
+                    <option value="106">106</option>
+                    <option value="107" selected>107</option>
+                    <option value="108">108</option>
+                    <option value="109">109</option>
+                    <option value="110">110</option>
+                    <option value="111">111</option>
+                    <option value="201">201</option>
+                    <option value="202">202</option>
+                    <option value="203">203</option>
+                    <option value="204">204</option>
+                    <option value="205">205</option>
+                    <option value="206">206</option>
+                    <option value="207">207</option>
+                    <option value="208">208</option>
+                    <option value="209">209</option>
+                    <option value="210">210</option>
                 </select></td>
             </tr>
-            <tr>
-                <td>promotion-type:</td>
-                <td><select name="promotion-type">
-                    <option value="Sales">Sales</option>
-                    <option value="Destocking">Destocking</option>
-                    <option value="GoodDeal">GoodDeal</option>
-                    <option value="Batch">Batch</option>
-                    <option value="FlashSale">FlashSale</option>
-                    <option value="FreeShipping">FreeShipping</option>
-                </select></td>
-            </tr>
-            <tr>
-                <td>sales_period_reference:</td>
-                <td><input type="text" name="sales_period_reference" value=""></td>
-            </tr>
-            <tr>
-                <td>Promotion_uid:</td>
-                <td><input type="text" name="Promotion_uid" value=""></td>
-            </tr>
-            <tr>
-                <td>starts_at:</td>
-                <td><input type="date" name="starts_at" value=""></td>
-            </tr>
-            <tr>
-                <td>ends_at:</td>
-                <td><input type="date" name="ends_at" value=""></td>
-            </tr>
-            <tr>
-                <td>discount_type:</td>
-                <td><select name="discount_type">
-                    <option value="percentage">fixed</option>
-                    <option value="percentage">percentage</option>
-                </select></td>
-            </tr>
-            <tr>
-                <td>discount_value:</td>
-                <td><input type="number" name="discount_value" value=""></td>
-            </tr>
-            <tr>
-                <td>trigger_customer_type:</td>
-                <td><select name="trigger_customer_type">
-                    <option value="all">all</option>
-                    <option value="adherent">adherent</option>
-                </select></td>
-            </tr>
-            <tr>
-                <td>time_to_ship</td>
-                <td><input type="text" name="time_to_ship" value=""></td>
-            </tr>
+
             <tr>
                 <td><input type="submit" value="提交offer"></td>
                 <td></td>
@@ -278,17 +226,17 @@
 </div>
 <!-- /#wrapper -->
 <!-- jQuery -->
-<script src="../static/bower_components/jquery/dist/jquery.min.js"></script>
+<script src="/static/bower_components/jquery/dist/jquery.min.js"></script>
 <!-- Bootstrap Core JavaScript -->
-<script src="../static/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+<script src="/static/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 <!-- Menu Plugin JavaScript -->
-<script src="../static/bower_components/metisMenu/dist/metisMenu.min.js"></script>
+<script src="/static/bower_components/metisMenu/dist/metisMenu.min.js"></script>
 <!--Nice scroll JavaScript -->
-<script src="../static/js/jquery.nicescroll.js"></script>
+<script src="/static/js/jquery.nicescroll.js"></script>
 <!--Wave Effects -->
-<script src="../static/js/waves.js"></script>
+<script src="/static/js/waves.js"></script>
 <!-- Custom Theme JavaScript -->
-<script src="../static/js/myadmin.js"></script>
+<script src="/static/js/myadmin.js"></script>
 <script>
     $(document).ready(function() {
         $('#batch_query').click(function () {

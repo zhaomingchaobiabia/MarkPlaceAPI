@@ -24,6 +24,11 @@
         <option value="$MODULE_DIR$/templates" />
         <option value="$MODULE_DIR$/templates/test" />
         <option value="$MODULE_DIR$/markerplace/templatetags" />
+        <option value="$MODULE_DIR$/templates/test/offer" />
+        <option value="$MODULE_DIR$/templates/test/order" />
+        <option value="$MODULE_DIR$/templates/test/message" />
+        <option value="$MODULE_DIR$/templates/test/incident" />
+        <option value="$MODULE_DIR$/templates/test/comment" />
       </list>
     </option>
   </component>
